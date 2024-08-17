@@ -1,0 +1,75 @@
+﻿@page "/symptomtracker"
+@using MediPal.Data
+@using Microsoft.Maui.Storage
+@using System.IO
+@using System.Text.Json
+
+<h3>Symptom Tracker (@symptomtracker.Count())</h3>
+
+<button @onclick="Save">Save</button>
+<button @onclick="Load">Load</button>
+
+<ul class="list-unstyled">
+    @foreach (var symptom in symptomtracker)
+    {
+                <input type="text" @bind="symptom.Symptom" />
+    <input type="date" @bind="symptom.Date" />
+    <input type="text" @bind="symptom.PainLevel" />
+    <input type="text" @bind="symptom.Activity" />
+   
+        <h4 @bind"symptom.Date" />
+        <h4 @bind"symptom.Date" />
+        <h4 @bind"symptom.PainLevel" />
+        <h4 @bind"symptom.Activity" />
+
+
+    }
+</ul>
+
+<input placeholder="Symptom" @bind="newSymptom" />
+<input placeholder="Date" @bind="newDate" />
+<input placeholder="Pain Level" @bind="newPainLevel" />
+<input placeholder="Activity" @bind="newActivity" />
+<button @onclick="AddSymptom">Add symptom</button>
+
+@code {
+    private List<SymptomItem> symptomtracker = new();
+    private string? newSymptom;
+    private DateOnly? newDate;
+    private int? newPainLevel;
+    private string? newActivity;
+
+
+    private void AddSymptom()
+    {
+        if (!string.IsNullOrWhiteSpace(newSymptom))
+        {
+            symptomtracker.Add(new SymptomItem { Symptom = newSymptom, Date = newDate, PainLevel = newPainLevel, Activity = newActivity });
+            newSymptom = string.Empty;
+            newDate = null;
+            newPainLevel = null;
+            newActivity = string.Empty;
+
+        }
+    }
+
+    private async Task Save()
+    @*save method*@
+    {
+        var contents = JsonSerializer.Serialize(symptomtracker);
+        var path = Path.Combine(FileSystem.AppDataDirectory, "symptom.json");
+        File.WriteAllText(path, contents);
+        await App.Current.MainPage.DisplayAlert("List Saved", $"List has been saved to {path}", "OK");
+    }
+
+    private void Load() @*load method*@
+    {
+        var path = Path.Combine(FileSystem.AppDataDirectory, "symptom.json");
+        if (!File.Exists(path))
+            return;
+        var contents = File.ReadAllText(path);
+        var savedItems = JsonSerializer.Deserialize<List<SymptomItem>>(contents);
+        symptomtracker.Clear();
+        symptomtracker.AddRange(savedItems);
+    }
+}
