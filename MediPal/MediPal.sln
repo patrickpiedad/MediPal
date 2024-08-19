@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediPal", "MediPal\MediPal.csproj", "{3472AFFE-8B7F-497F-A445-0D095287E7C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediPal", "MediPal\MediPal.csproj", "{AA2AB283-990C-4D1D-8DA3-0188B45ECCE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediPal.Client", "MediPal.Client\MediPal.Client.csproj", "{A5B41B76-1E68-4EF5-BE5D-583D5FA39E01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,17 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3472AFFE-8B7F-497F-A445-0D095287E7C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3472AFFE-8B7F-497F-A445-0D095287E7C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3472AFFE-8B7F-497F-A445-0D095287E7C4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{3472AFFE-8B7F-497F-A445-0D095287E7C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3472AFFE-8B7F-497F-A445-0D095287E7C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3472AFFE-8B7F-497F-A445-0D095287E7C4}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{AA2AB283-990C-4D1D-8DA3-0188B45ECCE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA2AB283-990C-4D1D-8DA3-0188B45ECCE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA2AB283-990C-4D1D-8DA3-0188B45ECCE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA2AB283-990C-4D1D-8DA3-0188B45ECCE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5B41B76-1E68-4EF5-BE5D-583D5FA39E01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5B41B76-1E68-4EF5-BE5D-583D5FA39E01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5B41B76-1E68-4EF5-BE5D-583D5FA39E01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5B41B76-1E68-4EF5-BE5D-583D5FA39E01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {C5DE72A9-D783-4606-85D0-1B899A9579D2}
+		SolutionGuid = {A39C860C-F2CD-4B33-837D-44E6EDA2F5B7}
 	EndGlobalSection
 EndGlobal
