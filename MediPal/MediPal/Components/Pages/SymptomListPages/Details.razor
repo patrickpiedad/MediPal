@@ -1,0 +1,53 @@
+﻿@page "/symptomlists/details"
+
+@using Microsoft.EntityFrameworkCore
+@using MediPal.Models
+@inject IDbContextFactory<MediPal.Data.MediPalContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>SymptomList</h4>
+    <hr />
+    @if (symptomlist is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Symptom</dt>
+            <dd class="col-sm-10">@symptomlist.Symptom</dd>
+            <dt class="col-sm-2">Date</dt>
+            <dd class="col-sm-10">@symptomlist.Date</dd>
+            <dt class="col-sm-2">PainLevel</dt>
+            <dd class="col-sm-10">@symptomlist.PainLevel</dd>
+            <dt class="col-sm-2">Activity</dt>
+            <dd class="col-sm-10">@symptomlist.Activity</dd>
+        </dl>
+        <div>
+            <a href="@($"/symptomlists/edit?symptomid={symptomlist.SymptomID}")">Edit</a> |
+            <a href="@($"/symptomlists")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    SymptomList? symptomlist;
+
+    [SupplyParameterFromQuery]
+    public int? SymptomID { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        symptomlist = await context.SymptomList.FirstOrDefaultAsync(m => m.SymptomID == SymptomID);
+
+        if (symptomlist is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}
