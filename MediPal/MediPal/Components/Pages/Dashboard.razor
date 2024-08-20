@@ -1,9 +1,68 @@
 ﻿@page "/dashboard"
 
+<div class="container-fluid">
 
-<PageTitle>Dashboard</PageTitle>
-<h3>Dashboard</h3>
+    @* start row 1 *@
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card border">
+                <div class="card-body" style="text-align: center;">
+                    @* need to detach this into a separate component and link to it here *@
+                    <h5 class="card-title">Patient Information</h5>
+                    <p class="card-text">Name: Jane Doe</p>
+                    <p class="card-text">Date of Birth: 31.12.1994</p>
+                    <p class="card-text">Medical Diagnosis: Leukemia</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border">
+                <div class="card-body" style=" text-align: center;">
+                    @* need to detach this into a separate component and link to it here *@
+                    <h5 class="card-title">Treatment Timeline</h5>
+                    <p class="card-text">Insert timeline here.</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border">
+                <div class="card-body" style=" text-align: center;">
+                    @* need to detach this into a separate component and link to it here *@
+                    <h5 class="card-title">My Profile</h5>
+                    <p class="card-text">Insert profile picture and link to profile here.</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-@code {
+    @* start row 2 *@
+    <div class="row">
+        <div class="col-md-4">
+            <SymptomTracker />
+        </div>
+        <div class="col-md-4">
+            <div class="card border">
+                <div class="card-body" style=" text-align: center;">
+                    @* need to detach this into a separate component and link to it here *@
+                    <h5 class="card-title">Week Outlook</h5>
+                    <p class="card-text">Insert calendar of events for the week here.</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border">
+                <div class="card-body" style=" text-align: center;">
+                    @* need to detach this into a separate component and link to it here *@
+                    <h5 class="card-title">Your Medical Team</h5>
+                    <p class="card-text">Insert list of medical people here.</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-}
+</div>

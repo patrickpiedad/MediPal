@@ -7,9 +7,9 @@
 
 <PageTitle>Edit</PageTitle>
 
-<h1>Edit</h1>
+@* <h1>Edit</h1> *@
 
-<h4>SymptomList</h4>
+@* <h4>SymptomList</h4> *@
 <hr />
 @if (SymptomList is null)
 {
@@ -34,7 +34,7 @@ else
                     <ValidationMessage For="() => SymptomList.Date" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="painlevel" class="form-label">PainLevel:</label>
+                    <label for="painlevel" class="form-label">Pain Level:</label>
                     <InputNumber id="painlevel" @bind-Value="SymptomList.PainLevel" class="form-control" />
                     <ValidationMessage For="() => SymptomList.PainLevel" class="text-danger" />
                 </div>
