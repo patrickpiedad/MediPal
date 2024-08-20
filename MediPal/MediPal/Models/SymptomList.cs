@@ -12,7 +12,9 @@ namespace MediPal.Models
         public string? Symptom { get; set; }
 
         [Required]
-        public DateTime Date { get; set; } = DateTime.Today;
+        public DateOnly Date { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+        //public DateTime Date { get; set; } = DateTime.Today;
+
 
         [Required]
         [Range(0, 10, ErrorMessage = "Pain level must be between 0 and 10.")]

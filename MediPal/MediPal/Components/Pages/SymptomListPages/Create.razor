@@ -17,32 +17,32 @@
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
-                <label for="symptom" class="form-label">Symptom:</label> 
-                <InputText id="symptom" @bind-Value="SymptomList.Symptom" class="form-control" /> 
-                <ValidationMessage For="() => SymptomList.Symptom" class="text-danger" /> 
-            </div>        
+                <label for="symptom" class="form-label">Symptom:</label>
+                <InputText id="symptom" @bind-Value="SymptomList.Symptom" class="form-control" />
+                <ValidationMessage For="() => SymptomList.Symptom" class="text-danger" />
+            </div>
             <div class="mb-3">
-                <label for="date" class="form-label">Date:</label> 
-                <InputDate id="date" @bind-Value="SymptomList.Date" class="form-control" /> 
-                <ValidationMessage For="() => SymptomList.Date" class="text-danger" /> 
-            </div>        
+                <label for="date" class="form-label">Date:</label>
+                <InputDate id="date" @bind-Value="SymptomList.Date" class="form-control" />
+                <ValidationMessage For="() => SymptomList.Date" class="text-danger" />
+            </div>
             <div class="mb-3">
-                <label for="painlevel" class="form-label">Pain Level:</label> 
-                <InputNumber id="painlevel" @bind-Value="SymptomList.PainLevel" class="form-control" /> 
-                <ValidationMessage For="() => SymptomList.PainLevel" class="text-danger" /> 
-            </div>        
+                <label for="painlevel" class="form-label">Pain Level:</label>
+                <InputNumber id="painlevel" @bind-Value="SymptomList.PainLevel" class="form-control" />
+                <ValidationMessage For="() => SymptomList.PainLevel" class="text-danger" />
+            </div>
             <div class="mb-3">
-                <label for="activity" class="form-label">Activity:</label> 
-                <InputText id="activity" @bind-Value="SymptomList.Activity" class="form-control" /> 
-                <ValidationMessage For="() => SymptomList.Activity" class="text-danger" /> 
-            </div>        
+                <label for="activity" class="form-label">Activity:</label>
+                <InputText id="activity" @bind-Value="SymptomList.Activity" class="form-control" />
+                <ValidationMessage For="() => SymptomList.Activity" class="text-danger" />
+            </div>
             <button type="submit" class="btn btn-primary">Create</button>
         </EditForm>
     </div>
 </div>
 
 <div>
-    <a href="/symptomlists">Back to List</a>
+    <a href="/symptomTracker">Back to List</a>
 </div>
 
 @code {
@@ -58,4 +58,5 @@
         await context.SaveChangesAsync();
         NavigationManager.NavigateTo("/symptomlists");
     }
+
 }
