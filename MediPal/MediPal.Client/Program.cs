@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor.Services;
 
 namespace MediPal.Client
 {
@@ -9,6 +10,8 @@ namespace MediPal.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
             await builder.Build().RunAsync();
+
+            builder.Services.AddMudServices();
         }
     }
 }

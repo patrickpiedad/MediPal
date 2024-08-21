@@ -2,9 +2,9 @@
 
 @using Microsoft.EntityFrameworkCore
 @using MediPal.Models
-@inject IDbContextFactory<MediPal.Data.MediPalContext> DbFactory
+@* @inject IDbContextFactory<MediPal.Data.MediPalContext> DbFactory
 @inject NavigationManager NavigationManager
-
+ *@
 
 <PageTitle>Delete</PageTitle>
 
@@ -48,22 +48,22 @@
     [SupplyParameterFromQuery]
     public int? SymptomID { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        using var context = DbFactory.CreateDbContext();
-        symptomlist = await context.SymptomList.FirstOrDefaultAsync(m => m.SymptomID == SymptomID);
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     using var context = DbFactory.CreateDbContext();
+    //     symptomlist = await context.SymptomList.FirstOrDefaultAsync(m => m.SymptomID == SymptomID);
 
-        if (symptomlist is null)
-        {
-            NavigationManager.NavigateTo("notfound");
-        }
-    }
+    //     if (symptomlist is null)
+    //     {
+    //         NavigationManager.NavigateTo("notfound");
+    //     }
+    // }
 
     public async Task DeleteSymptomList()
     {
-        using var context = DbFactory.CreateDbContext();
-        context.SymptomList.Remove(symptomlist!);
-        await context.SaveChangesAsync();
-        NavigationManager.NavigateTo("/symptomlists");
+        // using var context = DbFactory.CreateDbContext();
+        // context.SymptomList.Remove(symptomlist!);
+        // await context.SaveChangesAsync();
+        // NavigationManager.NavigateTo("/symptomlists");
     }
 }

@@ -1,13 +1,80 @@
 ﻿@page "/symptomTracker"
 @rendermode InteractiveServer
+@using MediPal.Models
+@using MediPal.Data
+@using Microsoft.EntityFrameworkCore
 
 
 <PageTitle>Symptom Tracker</PageTitle>
-@* <h3>Symptom Tracker</h3> *@
+<h3>Symptom Tracker</h3>
 
-<MediPal.Components.Pages.SymptomListPages.Index />
+@* <MediPal.Components.Pages.SymptomListPages.Index /> *@
+
+<MudButton OnClick="@AddSymptom" Color="@Color.Success" Class="add-item-btn">Add Symptom</MudButton>
+<MudButton OnClick="@RemoveSymptom" Color="@Color.Error" Class="remove-item-btn">Remove Symptom</MudButton>
+
+<MudDataGrid T="SymptomList" Items="@SymptomList" EditMode="DataGridEditMode.Form" Bordered="true" Dense="true" EditTrigger="@DataGridEditTrigger.Manual">
+
+    <Columns>
+        <PropertyColumn Property="SymptomList => SymptomList.Symptom" />
+        <PropertyColumn Property="SymptomList => SymptomList.Date" />
+        <PropertyColumn Property="SymptomList => SymptomList.PainLevel" Title="Pain Level" />
+        <PropertyColumn Property="SymptomList => SymptomList.Activity" />
+
+        <TemplateColumn CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="context.Item." />
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+
+</MudDataGrid>
+
 
 @code {
+    // private IEnumerable<SymptomList> SymptomList;
 
+
+    // public List<SymptomList> SymptomList;
+
+    private IList<SymptomList> SymptomList = new List<SymptomList>();
+    private bool _isCellEditMode;
+    private List<string> _events = new();
+    private bool _editTriggerRowClick;
+    private SymptomList symptom = new SymptomList();
+
+
+    protected override void OnInitialized()
+    {
+        SymptomList = new List<SymptomList>();
+        SymptomList.Add(new SymptomList { SymptomID = 1, Symptom = "Cough", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 3, Activity = "Work" });
+        SymptomList.Add(new SymptomList { SymptomID = 2, Symptom = "Headache", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Sleeping" });
+        SymptomList.Add(new SymptomList { SymptomID = 3, Symptom = "Chills", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Work" });
+        SymptomList.Add(new SymptomList { SymptomID = 4, Symptom = "Running nose", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Working out" });
+        SymptomList.Add(new SymptomList { SymptomID = 5, Symptom = "Body aches", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Work" });
+        SymptomList.Add(new SymptomList { SymptomID = 6, Symptom = "Headache", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Reading" });
+
+    }
+
+
+    void AddSymptom()
+    {
+
+    }
+
+    void DeleteSymptom()
+    {
+        var symptom = SymptomList.
+    }
+
+    void EditSymptom(int id)
+    {
+        symptom = SymptomList.FirstOrDefault(SymptomList => SymptomList.SymptomID == id);
+    }
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     Elements = await httpClient.GetFromJsonAsync<List<Element>>("webapi/periodictable");
+    // }
 
 }

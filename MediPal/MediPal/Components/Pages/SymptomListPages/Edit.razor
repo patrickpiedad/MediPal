@@ -2,8 +2,8 @@
 
 @using Microsoft.EntityFrameworkCore
 @using MediPal.Models
-@inject IDbContextFactory<MediPal.Data.MediPalContext> DbFactory
-@inject NavigationManager NavigationManager
+@* @inject IDbContextFactory<MediPal.Data.MediPalContext> DbFactory
+@inject NavigationManager NavigationManager *@
 
 <PageTitle>Edit</PageTitle>
 
@@ -17,7 +17,7 @@
 }
 else
 {
-    <div class="row">
+@*     <div class="row">
         <div class="col-md-4">
             <EditForm method="post" Model="SymptomList" OnValidSubmit="UpdateSymptomList" FormName="edit" Enhance>
                 <DataAnnotationsValidator />
@@ -46,7 +46,7 @@ else
                 <button type="submit" class="btn btn-primary">Save</button>
             </EditForm>
         </div>
-    </div>
+    </div> *@
 }
 
 <div>
@@ -60,46 +60,46 @@ else
     [SupplyParameterFromForm]
     public SymptomList? SymptomList { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        using var context = DbFactory.CreateDbContext();
-        SymptomList ??= await context.SymptomList.FirstOrDefaultAsync(m => m.SymptomID == SymptomID);
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     using var context = DbFactory.CreateDbContext();
+    //     SymptomList ??= await context.SymptomList.FirstOrDefaultAsync(m => m.SymptomID == SymptomID);
 
-        if (SymptomList is null)
-        {
-            NavigationManager.NavigateTo("notfound");
-        }
-    }
+    //     if (SymptomList is null)
+    //     {
+    //         NavigationManager.NavigateTo("notfound");
+    //     }
+    // }
 
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see https://aka.ms/RazorPagesCRUD.
-    public async Task UpdateSymptomList()
-    {
-        using var context = DbFactory.CreateDbContext();
-        context.Attach(SymptomList!).State = EntityState.Modified;
+    // public async Task UpdateSymptomList()
+    // {
+    //     using var context = DbFactory.CreateDbContext();
+    //     context.Attach(SymptomList!).State = EntityState.Modified;
 
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!SymptomListExists(SymptomList!.SymptomID))
-            {
-                NavigationManager.NavigateTo("notfound");
-            }
-            else
-            {
-                throw;
-            }
-        }
+    //     try
+    //     {
+    //         await context.SaveChangesAsync();
+    //     }
+    //     catch (DbUpdateConcurrencyException)
+    //     {
+    //         if (!SymptomListExists(SymptomList!.SymptomID))
+    //         {
+    //             NavigationManager.NavigateTo("notfound");
+    //         }
+    //         else
+    //         {
+    //             throw;
+    //         }
+    //     }
 
-        NavigationManager.NavigateTo("/symptomlists");
-    }
+    //     NavigationManager.NavigateTo("/symptomlists");
+    // }
 
-    bool SymptomListExists(int? symptomid)
-    {
-        using var context = DbFactory.CreateDbContext();
-        return context.SymptomList.Any(e => e.SymptomID == symptomid);
-    }
+    // bool SymptomListExists(int? symptomid)
+    // {
+    //     using var context = DbFactory.CreateDbContext();
+    //     return context.SymptomList.Any(e => e.SymptomID == symptomid);
+    // }
 }

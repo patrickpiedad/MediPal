@@ -2,8 +2,8 @@
 
 @using Microsoft.EntityFrameworkCore
 @using MediPal.Models
-@inject IDbContextFactory<MediPal.Data.MediPalContext> DbFactory
-@inject NavigationManager NavigationManager
+@* @inject IDbContextFactory<MediPal.Data.MediPalContext> DbFactory
+@inject NavigationManager NavigationManager *@
 
 <PageTitle>Create</PageTitle>
 
@@ -53,10 +53,12 @@
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
     public async Task AddSymptomList()
     {
-        using var context = DbFactory.CreateDbContext();
-        context.SymptomList.Add(SymptomList);
-        await context.SaveChangesAsync();
-        NavigationManager.NavigateTo("/symptomlists");
+        // using var context = DbFactory.CreateDbContext();
+        // context.SymptomList.Add(SymptomList);
+        // await context.SaveChangesAsync();
+        // NavigationManager.NavigateTo("/symptomlists");
+        // MudNavLink.("/symptomlists");
+
     }
 
 }

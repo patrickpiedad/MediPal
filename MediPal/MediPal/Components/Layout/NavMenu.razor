@@ -1,4 +1,28 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
+    <MudNavLink Href="/symptomtracker" Match="NavLinkMatch.Prefix">Symptom Tracker</MudNavLink>
+    <MudNavLink Href="/counter" Match="NavLinkMatch.Prefix">Counter</MudNavLink>
+    <MudNavLink Href="/weather" Match="NavLinkMatch.Prefix">Weather</MudNavLink>
+    <MudNavLink Href="/description" Match="NavLinkMatch.Prefix">Description</MudNavLink>
+    <MudNavLink Href="/symptomlists/create" Match="NavLinkMatch.Prefix">Symptom List Create</MudNavLink>
+    <MudNavLink Href="/symptomlists/delete" Match="NavLinkMatch.Prefix">Symptom List Create</MudNavLink>
+    <MudNavLink Href="/symptomlists/details" Match="NavLinkMatch.Prefix">Symptom List Create</MudNavLink>
+    <MudNavLink Href="/symptomlists/edit" Match="NavLinkMatch.Prefix">Symptom List Create</MudNavLink>
+
+
+
+    <MudNavGroup Title="Settings" Expanded="true">
+        <MudNavLink Href="#" Match="NavLinkMatch.Prefix">Users</MudNavLink>
+        <MudNavLink Href="#" Match="NavLinkMatch.Prefix">Security</MudNavLink>
+    </MudNavGroup>
+
+</MudNavMenu>
+
+
+@*
+Uncomment for Original Blazor Nav Menu
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">MediPal</a>
     </div>
@@ -42,3 +66,4 @@
     </nav>
 </div>
 
+ *@
