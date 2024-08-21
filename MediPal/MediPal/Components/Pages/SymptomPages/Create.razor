@@ -1,0 +1,61 @@
+﻿@page "/symptoms/create"
+
+@using Microsoft.EntityFrameworkCore
+@using MediPal.Models
+@inject IDbContextFactory<MediPal.Data.MediPalContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>Symptom</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="Symptom" OnValidSubmit="AddSymptom" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="symptomname" class="form-label">SymptomName:</label> 
+                <InputText id="symptomname" @bind-Value="Symptom.SymptomName" class="form-control" /> 
+                <ValidationMessage For="() => Symptom.SymptomName" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="date" class="form-label">Date:</label> 
+                <InputDate id="date" @bind-Value="Symptom.Date" class="form-control" /> 
+                <ValidationMessage For="() => Symptom.Date" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="painlevel" class="form-label">PainLevel:</label> 
+                <InputNumber id="painlevel" @bind-Value="Symptom.PainLevel" class="form-control" /> 
+                <ValidationMessage For="() => Symptom.PainLevel" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="activity" class="form-label">Activity:</label> 
+                <InputText id="activity" @bind-Value="Symptom.Activity" class="form-control" /> 
+                <ValidationMessage For="() => Symptom.Activity" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/symptoms">Back to List</a>
+</div>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public Symptom Symptom { get; set; } = new();
+
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task AddSymptom()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Symptom.Add(Symptom);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/symptoms");
+    }
+}

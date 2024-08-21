@@ -1,5 +1,10 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
+using MediPal.Client.Pages;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MudBlazor.Services;
+using MudBlazor;
 
 namespace MediPal.Client
 {

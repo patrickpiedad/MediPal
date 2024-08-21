@@ -6,14 +6,14 @@
 
 
 <PageTitle>Symptom Tracker</PageTitle>
-<h3>Symptom Tracker</h3>
+@* <h3>Symptom Tracker</h3> *@
 
-@* <MediPal.Components.Pages.SymptomListPages.Index /> *@
+<MediPal.Components.Pages.SymptomPages.Index />
 
-<MudButton OnClick="@AddSymptom" Color="@Color.Success" Class="add-item-btn">Add Symptom</MudButton>
+@* <MudButton OnClick="@AddSymptom" Color="@Color.Success" Class="add-item-btn">Add Symptom</MudButton> *@
 @* <MudButton OnClick="@DeleteSymptom" Color="@Color.Error" Class="remove-item-btn">Remove Symptom</MudButton> *@
 
-<MudDataGrid T="Symptom" Items="@SymptomList" EditMode="DataGridEditMode.Form" Bordered="true" Dense="true" EditTrigger="@DataGridEditTrigger.Manual">
+@* <MudDataGrid T="Symptom" Items="@SymptomList" EditMode="DataGridEditMode.Form" Bordered="true" Dense="true" EditTrigger="@DataGridEditTrigger.Manual">
 
     <Columns>
         <PropertyColumn Property="SymptomList => SymptomList.SymptomName" />
@@ -28,53 +28,65 @@
         </TemplateColumn>
     </Columns>
 
-</MudDataGrid>
+</MudDataGrid> *@
 
 
 @code {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // private IEnumerable<SymptomList> SymptomList;
 
 
     // public List<SymptomList> SymptomList;
 
-    private IList<Symptom> SymptomList = new List<Symptom>();
-    private bool _isCellEditMode;
-    private List<string> _events = new();
-    private bool _editTriggerRowClick;
-    private Symptom symptom = new Symptom();
+    // private IList<Symptom> SymptomList = new List<Symptom>();
+    // private bool _isCellEditMode;
+    // private List<string> _events = new();
+    // private bool _editTriggerRowClick;
+    // private Symptom symptom = new Symptom();
 
 
-    protected override void OnInitialized()
-    {
-        SymptomList = new List<Symptom>();
-        SymptomList.Add(new Symptom { SymptomID = 1, SymptomName = "Cough", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 3, Activity = "Work" });
-        SymptomList.Add(new Symptom { SymptomID = 2, SymptomName = "Headache", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Sleeping" });
-        SymptomList.Add(new Symptom { SymptomID = 3, SymptomName = "Chills", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Work" });
-        SymptomList.Add(new Symptom { SymptomID = 4, SymptomName = "Running nose", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Working out" });
-        SymptomList.Add(new Symptom { SymptomID = 5, SymptomName = "Body aches", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Work" });
-        SymptomList.Add(new Symptom { SymptomID = 6, SymptomName = "Headache", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Reading" });
+    // protected override void OnInitialized()
+    // {
+    //     SymptomList = new List<Symptom>();
+    //     SymptomList.Add(new Symptom { SymptomID = 1, SymptomName = "Cough", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 3, Activity = "Work" });
+    //     SymptomList.Add(new Symptom { SymptomID = 2, SymptomName = "Headache", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Sleeping" });
+    //     SymptomList.Add(new Symptom { SymptomID = 3, SymptomName = "Chills", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Work" });
+    //     SymptomList.Add(new Symptom { SymptomID = 4, SymptomName = "Running nose", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Working out" });
+    //     SymptomList.Add(new Symptom { SymptomID = 5, SymptomName = "Body aches", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Work" });
+    //     SymptomList.Add(new Symptom { SymptomID = 6, SymptomName = "Headache", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Reading" });
 
-    }
+    // }
 
 
-    void AddSymptom()
-    {
-        SymptomList.Add(new Symptom { SymptomID = SymptomList.Count +1 , SymptomName = "AddedSymptom", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 3, Activity = "Work" });
-    }
+    // void AddSymptom()
+    // {
+    //     SymptomList.Add(new Symptom { SymptomID = SymptomList.Count +1 , SymptomName = "AddedSymptom", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 3, Activity = "Work" });
+    // }
 
     // void DeleteSymptom()
     // {
     //     var symptomToBeDeleted =;
     // }
 
-    void EditSymptom(int id)
-    {
-        symptom = SymptomList.FirstOrDefault(SymptomList => SymptomList.SymptomID == id);
-    }
-
-    // protected override async Task OnInitializedAsync()
+    // void EditSymptom(int id)
     // {
-    //     Elements = await httpClient.GetFromJsonAsync<List<Element>>("webapi/periodictable");
+    //     symptom = SymptomList.FirstOrDefault(SymptomList => SymptomList.SymptomID == id);
     // }
 
 }

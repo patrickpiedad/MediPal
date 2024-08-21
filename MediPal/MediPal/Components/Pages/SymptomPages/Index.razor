@@ -1,0 +1,40 @@
+﻿@page "/symptoms"
+
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using MediPal.Models
+@using MediPal.Data
+@inject IDbContextFactory<MediPal.Data.MediPalContext> DbFactory
+@implements IAsyncDisposable
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="symptoms/create">Create New</a>
+</p>
+
+@* <QuickGrid Class="table" Items="context.Symptom">
+    <PropertyColumn Property="Symptom => Symptom.SymptomName" />
+    <PropertyColumn Property="Symptom => Symptom.Date" />
+    <PropertyColumn Property="Symptom => Symptom.PainLevel" />
+    <PropertyColumn Property="Symptom => Symptom.Activity" />
+
+    <TemplateColumn Context="symptom">
+        <a href="@($"symptoms/edit?symptomid={symptom.SymptomID}")">Edit</a> |
+        <a href="@($"symptoms/details?symptomid={symptom.SymptomID}")">Details</a> |
+        <a href="@($"symptoms/delete?symptomid={symptom.SymptomID}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid> *@
+
+@code {
+    MediPalContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}

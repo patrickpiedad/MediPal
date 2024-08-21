@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediPal.Migrations
 {
     [DbContext(typeof(MediPalContext))]
-    [Migration("20240820192414_Initial")]
-    partial class Initial
+    [Migration("20240821235114_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,13 +20,15 @@ namespace MediPal.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
 
-            modelBuilder.Entity("MediPal.Models.SymptomList", b =>
+            modelBuilder.Entity("MediPal.Models.Symptom", b =>
                 {
                     b.Property<int>("SymptomID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Activity")
+                        .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<DateOnly>("Date")
@@ -35,12 +37,14 @@ namespace MediPal.Migrations
                     b.Property<int>("PainLevel")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Symptom")
+                    b.Property<string>("SymptomName")
+                        .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.HasKey("SymptomID");
 
-                    b.ToTable("SymptomList");
+                    b.ToTable("Symptom");
                 });
 #pragma warning restore 612, 618
         }

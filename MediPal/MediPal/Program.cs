@@ -2,9 +2,9 @@ using MediPal.Client.Pages;
 using MediPal.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MediPal.Data;
 using MudBlazor.Services;
 using MudBlazor;
+using MediPal.Data;
 
 namespace MediPal
 {
@@ -13,6 +13,8 @@ namespace MediPal
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddDbContextFactory<MediPalContext>(options =>
+                options.UseSqlite(builder.Configuration.GetConnectionString("MediPalContext") ?? throw new InvalidOperationException("Connection string 'MediPalContext' not found.")));
 
 
 
@@ -20,9 +22,9 @@ namespace MediPal
             //builder.Services.AddDbContextFactory<MediPalContext>(options =>
             //    options.UseSqlite(builder.Configuration.GetConnectionString("MediPalContext") ?? throw new InvalidOperationException("Connection string 'MediPalContext' not found.")));
 
-            //builder.Services.AddQuickGridEntityFrameworkAdapter();
+            builder.Services.AddQuickGridEntityFrameworkAdapter();
 
-            //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
             builder.Services.AddMudServices(); // Add MudBlazor services
