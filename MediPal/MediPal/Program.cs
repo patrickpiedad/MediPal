@@ -3,6 +3,7 @@ using MediPal.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MediPal.Data;
+using MudBlazor.Services;
 
 namespace MediPal
 {
@@ -22,6 +23,8 @@ namespace MediPal
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
+
+            builder.Services.AddMudServices(); // Add MudBlazor services
 
             var app = builder.Build();
 

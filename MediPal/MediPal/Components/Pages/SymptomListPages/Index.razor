@@ -1,7 +1,7 @@
 ﻿@page "/symptomlists"
 
 @using Microsoft.EntityFrameworkCore
-@using Microsoft.AspNetCore.Components.QuickGrid
+@* @using Microsoft.AspNetCore.Components.QuickGrid *@
 @using MediPal.Models
 @using MediPal.Data
 @inject IDbContextFactory<MediPal.Data.MediPalContext> DbFactory
@@ -16,7 +16,7 @@
     <a href="symptomlists/create">Create New</a>
 </p>
 
-<QuickGrid Class="table" Items="context.SymptomList">
+@* <QuickGrid Class="table" Items="context.SymptomList">
     <PropertyColumn Property="symptomlist => symptomlist.Symptom" />
     <PropertyColumn Property="symptomlist => symptomlist.Date" />
     <PropertyColumn Property="symptomlist => symptomlist.PainLevel" />
@@ -27,7 +27,25 @@
         <a href="@($"symptomlists/details?symptomid={symptomlist.SymptomID}")">Details</a> |
         <a href="@($"symptomlists/delete?symptomid={symptomlist.SymptomID}")">Delete</a>
     </TemplateColumn>
-</QuickGrid>
+</QuickGrid> *@
+
+
+<MudDataGrid Items="context.SymptomList" Filterable="true" SortMode="@SortMode.None" Groupable="false">
+
+    <Columns>
+        <PropertyColumn Property="symptomlist => symptomlist.Symptom" />
+        <PropertyColumn Property="symptomlist => symptomlist.Date" />
+        <PropertyColumn Property="symptomlist => symptomlist.PainLevel" title="Pain Level" />
+        <PropertyColumn Property="symptomlist => symptomlist.Activity" />
+    </Columns>
+
+@*     <TemplateColumn Context="symptomlist">
+        <a href="@($"symptomlists/edit?symptomid={symptomlist.SymptomID}")">Edit</a> |
+        <a href="@($"symptomlists/details?symptomid={symptomlist.SymptomID}")">Details</a> |
+        <a href="@($"symptomlists/delete?symptomid={symptomlist.SymptomID}")">Delete</a>
+    </TemplateColumn> *@
+
+</MudDataGrid>
 
 @code {
     MediPalContext context = default!;
