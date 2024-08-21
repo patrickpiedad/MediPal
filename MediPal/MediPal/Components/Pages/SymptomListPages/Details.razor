@@ -12,30 +12,30 @@
 <div>
     <h4>SymptomList</h4>
     <hr />
-    @if (symptomlist is null)
+    @if (Symptom is null)
     {
         <p><em>Loading...</em></p>
     }
-    else {
-        <dl class="row">
+    else
+    {
             <dt class="col-sm-2">Symptom</dt>
-            <dd class="col-sm-10">@symptomlist.Symptom</dd>
+            <dd class="col-sm-10">@Symptom.SymptomName</dd>
             <dt class="col-sm-2">Date</dt>
-            <dd class="col-sm-10">@symptomlist.Date</dd>
+            <dd class="col-sm-10">@Symptom.Date</dd>
             <dt class="col-sm-2">Pain Level</dt>
-            <dd class="col-sm-10">@symptomlist.PainLevel</dd>
+            <dd class="col-sm-10">@Symptom.PainLevel</dd>
             <dt class="col-sm-2">Activity</dt>
-            <dd class="col-sm-10">@symptomlist.Activity</dd>
+            <dd class="col-sm-10">@Symptom.Activity</dd>
         </dl>
         <div>
-            <a href="@($"/symptomlists/edit?symptomid={symptomlist.SymptomID}")">Edit</a> |
-            <a href="@($"/symptomlists")">Back to List</a>
+            <a href="@($"/Symptoms/edit?symptomid={Symptom.SymptomID}")">Edit</a> |
+            <a href="@($"/Symptoms")">Back to List</a>
         </div>
     }
 </div>
 
 @code {
-    SymptomList? symptomlist;
+    Symptom? Symptom;
 
     [SupplyParameterFromQuery]
     public int? SymptomID { get; set; }

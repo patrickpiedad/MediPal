@@ -14,36 +14,36 @@
 <div>
     @* <h4>SymptomList</h4> *@
     <hr />
-    @if (symptomlist is null)
+    @if (Symptom is null)
     {
         <p><em>Loading...</em></p>
     }
     else {
         <dl class="row">
             <dt class="col-sm-2">Symptom</dt>
-            <dd class="col-sm-10">@symptomlist.Symptom</dd>
+            <dd class="col-sm-10">@Symptom.SymptomName</dd>
         </dl>
         <dl class="row">
             <dt class="col-sm-2">Date</dt>
-            <dd class="col-sm-10">@symptomlist.Date</dd>
+            <dd class="col-sm-10">@Symptom.Date</dd>
         </dl>
         <dl class="row">
             <dt class="col-sm-2">Pain Level</dt>
-            <dd class="col-sm-10">@symptomlist.PainLevel</dd>
+            <dd class="col-sm-10">@Symptom.PainLevel</dd>
         </dl>
         <dl class="row">
             <dt class="col-sm-2">Activity</dt>
-            <dd class="col-sm-10">@symptomlist.Activity</dd>
+            <dd class="col-sm-10">@Symptom.Activity</dd>
         </dl>
-        <EditForm method="post" Model="symptomlist" OnValidSubmit="DeleteSymptomList" FormName="delete" Enhance>
-            <button type="submit" class="btn btn-danger" disabled="@(symptomlist is null)">Delete</button> |
+        <EditForm method="post" Model="Symptom" OnValidSubmit="DeleteSymptomList" FormName="delete" Enhance>
+            <button type="submit" class="btn btn-danger" disabled="@(Symptom is null)">Delete</button> |
             <a href="/symptomlists">Back to List</a>
         </EditForm>
     }
 </div>
 
 @code {
-    SymptomList? symptomlist;
+    Symptom? Symptom;
 
     [SupplyParameterFromQuery]
     public int? SymptomID { get; set; }

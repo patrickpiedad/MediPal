@@ -11,7 +11,7 @@
 
 @* <h4>SymptomList</h4> *@
 <hr />
-@if (SymptomList is null)
+@if (Symptom is null)
 {
     <p><em>Loading...</em></p>
 }
@@ -58,7 +58,7 @@ else
     public int? SymptomID { get; set; }
 
     [SupplyParameterFromForm]
-    public SymptomList? SymptomList { get; set; }
+    public Symptom? Symptom { get; set; }
 
     // protected override async Task OnInitializedAsync()
     // {
