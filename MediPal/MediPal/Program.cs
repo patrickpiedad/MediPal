@@ -5,8 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 using MudBlazor;
 using System.Data.Common;
-using MediPal.Data;
-using MediPal.Services;
+using MediPal.Shared.Data;
+using MediPal.Shared.Services;
 
 namespace MediPal
 {
@@ -20,6 +20,13 @@ namespace MediPal
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
+
+            builder.Services.AddControllers();
+
+            builder.Services.AddScoped(http => new HttpClient
+            {
+                BaseAddress = new Uri(builder.Configuration.GetSection("BaseUri").Value!)
+            });
 
             // Add database context ans SQLite integration
             builder.Services.AddDbContextFactory<MediPalContext>(options =>
@@ -54,6 +61,8 @@ namespace MediPal
             }
 
             app.UseHttpsRedirection();
+
+            app.MapControllers();
 
             app.UseStaticFiles();
             app.UseAntiforgery();

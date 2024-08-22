@@ -1,6 +1,6 @@
-﻿using MediPal.Models;
+﻿using MediPal.Shared.Models;
 
-namespace MediPal.Services
+namespace MediPal.Shared.Services
 {
     public interface ISymptomService
     {

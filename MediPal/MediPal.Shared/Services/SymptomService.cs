@@ -1,8 +1,8 @@
-﻿using MediPal.Data;
-using MediPal.Models;
+﻿using MediPal.Shared.Data;
+using MediPal.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace MediPal.Services
+namespace MediPal.Shared.Services
 {
     public class SymptomService : ISymptomService
     {
@@ -24,7 +24,7 @@ namespace MediPal.Services
         {
             _context.Symptoms.Add(symptom);
             await _context.SaveChangesAsync();
-            return symptom; // SQLite returns symtom with ID automatically assigned
+            return symptom; // SQLite returns symptom with ID automatically assigned
         }
     }
 }

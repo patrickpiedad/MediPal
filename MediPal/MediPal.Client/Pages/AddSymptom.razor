@@ -63,16 +63,6 @@
 
 @code {
 
-    // Symptom symptom = new Symptom { SymptomID = 0, SymptomName = "", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 0, Activity = "" };
-
-    // Symptom symptom = new Symptom { SymptomID = 0, SymptomName = "", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 0, Activity = "" };
-
-
-    // void AddNewSymptom(string symptomName, DateOnly date, int painLevel, string activity)
-    // {
-    //     var newSymptom = new Symptom { SymptomName = symptomName, Date = date, PainLevel = painLevel, Activity = activity };
-    //     SymptomService.AddSymptom(newSymptom);
-    // }
     // [Parameter]
     // public int? SymptomID { get; set; }
     // public int? SymptomName { get; set; }
@@ -81,11 +71,6 @@
 
     [SupplyParameterFromForm]
     Symptom symptom { get; set; } = new Symptom();
-
-    // private void Submit()
-    // {
-    //     SymptomService.AddSymptom("ID = {ID}", symptom?.SymptomName);
-    // }
 
     bool success;
     MudForm form;

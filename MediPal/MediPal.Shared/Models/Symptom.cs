@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MediPal.Models
+namespace MediPal.Shared.Models
 {
     public class Symptom
     {

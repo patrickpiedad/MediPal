@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MediPal.Models;
+using MediPal.Shared.Models;
 
-namespace MediPal.Data
+namespace MediPal.Shared.Data
 {
     public class MediPalContext : DbContext
     {
@@ -14,6 +14,6 @@ namespace MediPal.Data
         {
         }
 
-        public DbSet<MediPal.Models.Symptom> Symptoms { get; set; } = default!;
+        public DbSet<MediPal.Shared.Models.Symptom> Symptoms { get; set; } = default!;
     }
 }

@@ -1,6 +1,6 @@
 ﻿@page "/symptomlist"
 @inject ISymptomService SymptomService
-@attribute [StreamRendering(true)]
+@attribute [StreamRendering]
 
 <h3>Symptom List</h3>
 
@@ -20,12 +20,12 @@ else
 {
     <MudNavLink Href="/addsymptom" Match="NavLinkMatch.Prefix">Add Symptom</MudNavLink>
 
-    <MudDataGrid T="Symptom" Items="@symptoms" EditMode="DataGridEditMode.Form" Bordered="true" Dense="true" EditTrigger="@DataGridEditTrigger.Manual">
+    <MudDataGrid T="Symptom" Items="@symptoms" ReadOnly="true" Bordered="true" Dense="true">
 
         <Columns>
 
-            <PropertyColumn Property="Symptom => Symptom.SymptomID" />
-            <PropertyColumn Property="Symptom => Symptom.SymptomName" />
+            <PropertyColumn Property="Symptom => Symptom.SymptomID" Title="Symptom ID" />
+            <PropertyColumn Property="Symptom => Symptom.SymptomName" Title="Symptom Name" />
             <PropertyColumn Property="Symptom => Symptom.Date" />
             <PropertyColumn Property="Symptom => Symptom.PainLevel" Title="Pain Level" />
             <PropertyColumn Property="Symptom => Symptom.Activity" />
@@ -62,6 +62,8 @@ else
 
 @code {
     List<Symptom> symptoms = null;
+
+    private bool _editable;
 
     protected override async Task OnInitializedAsync()
     {

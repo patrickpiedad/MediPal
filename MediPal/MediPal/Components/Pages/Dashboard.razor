@@ -58,9 +58,7 @@
         <MudItem xs="12" sm="12" md="3">
             <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
                 <MudAvatar Size="Size.Large" Color="Color.Primary">M</MudAvatar>
-                <CardHeaderActions>
-                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
-                </CardHeaderActions>
+
                 <MudText>My Profile</MudText>
             </MudPaper>
         </MudItem>
@@ -75,9 +73,6 @@
                 <MudCardHeader>
                     <CardHeaderContent>
                         <MudText Typo="Typo.h6">Symptom Tracker</MudText>
-
-                        @* <SymptomTracker /> *@
-
 
                         @if (symptoms == null)
                         {
@@ -94,14 +89,8 @@
                             <MudDataGrid T="Symptom" Items="@symptoms" EditMode="DataGridEditMode.Form" Bordered="true" Dense="true" EditTrigger="@DataGridEditTrigger.Manual">
 
                                 <Columns>
-                                    <PropertyColumn Property="Symptom => Symptom.SymptomName" />
+                                    <PropertyColumn Property="Symptom => Symptom.SymptomName" Title="Symptom Name"/>
                                     <PropertyColumn Property="Symptom => Symptom.Date" />
-
-                                    <TemplateColumn CellClass="d-flex justify-end">
-                                        <CellTemplate>
-                                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" />
-                                        </CellTemplate>
-                                    </TemplateColumn>
                                 </Columns>
 
                             </MudDataGrid>
@@ -253,76 +242,3 @@
     }
 
 }
-
-@* Uncomment below for original Blazor Dashboard *@
-
-@*
-<div class="container-fluid">
-
-    @* start row 1 *@
-@* <div class="row" style="height: 45vh;">
-    <div class="col-md-4">
-        <div class="card border">
-            <div class="card-body" style="text-align: center;"> *@
-                @* need to detach this into a separate component and link to it here *@
-@*                 <h5 class="card-title">Patient Information</h5>
-                <p class="card-text">Name: Jane Doe</p>
-                <p class="card-text">Date of Birth: 31.12.1994</p>
-                <p class="card-text">Medical Diagnosis: Leukemia</p>
-                <a href="#" class="btn btn-primary">View Details</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card border">
-            <div class="card-body" style=" text-align: center;"> *@
-                @* need to detach this into a separate component and link to it here *@
-@*                 <h5 class="card-title">Treatment Timeline</h5>
-                <p class="card-text">Insert timeline here.</p>
-                <a href="#" class="btn btn-primary">View Details</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card border">
-            <div class="card-body" style=" text-align: center;"> *@
-                @* need to detach this into a separate component and link to it here *@
-   @*              <h5 class="card-title">My Profile</h5>
-                <p class="card-text">Insert profile picture and link to profile here.</p>
-                <a href="#" class="btn btn-primary">View Details</a>
-            </div>
-        </div>
-    </div>
-</div> *@
-
-    @* start row 2 *@
-@* <div class="row" style="height: 10vh;"> *@
-
-    @* start row 3 *@
-@*     <div class="row" style="height: 45vh;">
-        <div class="col-md-4">
-            <SymptomTracker />
-        </div>
-        <div class="col-md-4">
-            <div class="card border">
-                <div class="card-body" style=" text-align: center;">
-                    @* need to detach this into a separate component and link to it here *@
-@*                     <h5 class="card-title">Week Outlook</h5>
-                    <p class="card-text">Insert calendar of events for the week here.</p>
-                    <a href="#" class="btn btn-primary">View Details</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card border">
-                <div class="card-body" style=" text-align: center;"> *@
-                    @* need to detach this into a separate component and link to it here *@
-@*                     <h5 class="card-title">Your Medical Team</h5>
-                    <p class="card-text">Insert list of medical people here.</p>
-                    <a href="#" class="btn btn-primary">View Details</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> *@
-
