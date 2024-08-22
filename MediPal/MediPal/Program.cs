@@ -2,8 +2,6 @@ using MediPal.Client.Pages;
 using MediPal.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MudBlazor.Services;
-using MudBlazor;
 using System.Data.Common;
 using MediPal.Shared.Data;
 using MediPal.Shared.Services;
@@ -39,11 +37,6 @@ namespace MediPal
 
             //Adding ISymptomService dependency injection
             builder.Services.AddScoped<ISymptomService, SymptomService>();
-
-            // Add MudBlazor services
-            builder.Services.AddMudServices();
-
-
 
             var app = builder.Build();
 

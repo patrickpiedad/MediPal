@@ -12,36 +12,12 @@
 else if (symptoms.Count == 0)
 {
     <span>No symptoms found.</span>
-    <AddSymptomButton />
+    <@AddSymptomButton />
 
 }
+
 
 else
-{
-    <MudNavLink Href="/addsymptom" Match="NavLinkMatch.Prefix">Add Symptom</MudNavLink>
-
-    <MudDataGrid T="Symptom" Items="@symptoms" ReadOnly="true" Bordered="true" Dense="true">
-
-        <Columns>
-
-            <PropertyColumn Property="Symptom => Symptom.SymptomID" Title="Symptom ID" />
-            <PropertyColumn Property="Symptom => Symptom.SymptomName" Title="Symptom Name" />
-            <PropertyColumn Property="Symptom => Symptom.Date" />
-            <PropertyColumn Property="Symptom => Symptom.PainLevel" Title="Pain Level" />
-            <PropertyColumn Property="Symptom => Symptom.Activity" />
-
-            <TemplateColumn CellClass="d-flex justify-end">
-                <CellTemplate>
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" />
-                </CellTemplate>
-            </TemplateColumn>
-
-        </Columns>
-
-    </MudDataGrid>
-}
-
-@* else
 {
     <ul>
         @foreach (var symptom in symptoms)
@@ -53,10 +29,7 @@ else
             <li>@symptom.Activity</li>
         }
     </ul>
-} *@
-
-@* <MudButton OnClick="@DeleteSymptom" Color="@Color.Error" Class="remove-item-btn">Remove Symptom</MudButton> *@
-
+} 
 
 
 

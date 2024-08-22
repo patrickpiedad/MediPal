@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using MudBlazor.Services;
 using MediPal.Client.Pages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MudBlazor;
 using MediPal.Shared.Services;
 
 namespace MediPal.Client
@@ -23,7 +21,6 @@ namespace MediPal.Client
 
             await builder.Build().RunAsync();
 
-            builder.Services.AddMudServices();
         }
     }
 }

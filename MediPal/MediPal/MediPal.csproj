@@ -7,16 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Components\Pages\SymptomPages\**" />
     <Compile Remove="Components\Services\**" />
     <Compile Remove="wwwroot\bootstrap\**" />
-    <Content Remove="Components\Pages\SymptomPages\**" />
     <Content Remove="Components\Services\**" />
     <Content Remove="wwwroot\bootstrap\**" />
-    <EmbeddedResource Remove="Components\Pages\SymptomPages\**" />
     <EmbeddedResource Remove="Components\Services\**" />
     <EmbeddedResource Remove="wwwroot\bootstrap\**" />
-    <None Remove="Components\Pages\SymptomPages\**" />
     <None Remove="Components\Services\**" />
     <None Remove="wwwroot\bootstrap\**" />
   </ItemGroup>
@@ -33,7 +29,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
-    <PackageReference Include="MudBlazor" Version="7.6.0" />
   </ItemGroup>
 
 </Project>
