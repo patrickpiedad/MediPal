@@ -2,7 +2,7 @@
 
 
 <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
-<MudSwitch @bind-Value="_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool" Label="Light/Dark Mode" />
+
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -12,10 +12,14 @@
     <MudAppBar>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         MediPal
+
+
     </MudAppBar>
 
     <MudDrawer @bind-Open="@_drawerOpen">
         <NavMenu />
+
+        <MudSwitch @bind-Value="_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool" Label="Light/Dark Mode" />
     </MudDrawer>
 
     <MudPaper Class="px-10" Width="100%" Elevation="0">
@@ -25,6 +29,7 @@
         </MudMainContent>
     @* </MudContainer> *@
     </MudPaper>
+
 
 </MudLayout>
 

@@ -1,0 +1,70 @@
+﻿@page "/symptomlist"
+@inject ISymptomService SymptomService
+@attribute [StreamRendering(true)]
+
+<h3>Symptom List</h3>
+
+@if (symptoms == null)
+{
+    <span>Loading...</span>
+}
+
+else if (symptoms.Count == 0)
+{
+    <span>No symptoms found.</span>
+    <AddSymptomButton />
+
+}
+
+else
+{
+    <MudNavLink Href="/addsymptom" Match="NavLinkMatch.Prefix">Add Symptom</MudNavLink>
+
+    <MudDataGrid T="Symptom" Items="@symptoms" EditMode="DataGridEditMode.Form" Bordered="true" Dense="true" EditTrigger="@DataGridEditTrigger.Manual">
+
+        <Columns>
+
+            <PropertyColumn Property="Symptom => Symptom.SymptomID" />
+            <PropertyColumn Property="Symptom => Symptom.SymptomName" />
+            <PropertyColumn Property="Symptom => Symptom.Date" />
+            <PropertyColumn Property="Symptom => Symptom.PainLevel" Title="Pain Level" />
+            <PropertyColumn Property="Symptom => Symptom.Activity" />
+
+            <TemplateColumn CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" />
+                </CellTemplate>
+            </TemplateColumn>
+
+        </Columns>
+
+    </MudDataGrid>
+}
+
+@* else
+{
+    <ul>
+        @foreach (var symptom in symptoms)
+        {
+            <li>@symptom.SymptomID</li>
+            <li>@symptom.SymptomName</li>
+            <li>@symptom.Date</li>
+            <li>@symptom.PainLevel</li>
+            <li>@symptom.Activity</li>
+        }
+    </ul>
+} *@
+
+@* <MudButton OnClick="@DeleteSymptom" Color="@Color.Error" Class="remove-item-btn">Remove Symptom</MudButton> *@
+
+
+
+
+@code {
+    List<Symptom> symptoms = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        symptoms = await SymptomService.GetAllSymptoms();
+    }
+}

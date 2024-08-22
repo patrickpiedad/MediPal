@@ -14,17 +14,17 @@
 <p>
     <a href="symptoms/create">Create New</a>
 </p>
-
-@* <QuickGrid Class="table" Items="context.Symptom">
-    <PropertyColumn Property="Symptom => Symptom.SymptomName" />
-    <PropertyColumn Property="Symptom => Symptom.Date" />
-    <PropertyColumn Property="Symptom => Symptom.PainLevel" />
-    <PropertyColumn Property="Symptom => Symptom.Activity" />
+@* 
+<QuickGrid Class="table" Items="context.Symptom">
+    <PropertyColumn Property="symptom => symptom.SymptomName" />
+    <PropertyColumn Property="symptom => symptom.Date" />
+    <PropertyColumn Property="symptom => symptom.PainLevel" />
+    <PropertyColumn Property="symptom => symptom.Activity" />
 
     <TemplateColumn Context="symptom">
-        <a href="@($"symptoms/edit?symptomid={symptom.SymptomID}")">Edit</a> |
-        <a href="@($"symptoms/details?symptomid={symptom.SymptomID}")">Details</a> |
-        <a href="@($"symptoms/delete?symptomid={symptom.SymptomID}")">Delete</a>
+        <a href="@($"symptoms/edit?symptomid={Symptom.SymptomID}")">Edit</a> |
+        <a href="@($"symptoms/details?symptomid={Symptom.SymptomID}")">Details</a> |
+        <a href="@($"symptoms/delete?symptomid={Symptom.SymptomID}")">Delete</a>
     </TemplateColumn>
 </QuickGrid> *@
 

@@ -41,7 +41,7 @@ namespace MediPal.Migrations
 
                     b.HasKey("SymptomID");
 
-                    b.ToTable("Symptom");
+                    b.ToTable("Symptoms");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediPal", "MediPal\MediPal.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediPal.Client", "MediPal.Client\MediPal.Client.csproj", "{A5B41B76-1E68-4EF5-BE5D-583D5FA39E01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediPal.Shared", "MediPal.Shared\MediPal.Shared.csproj", "{250A8996-EFE5-48D5-8C23-70E555B07C23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A5B41B76-1E68-4EF5-BE5D-583D5FA39E01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5B41B76-1E68-4EF5-BE5D-583D5FA39E01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5B41B76-1E68-4EF5-BE5D-583D5FA39E01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{250A8996-EFE5-48D5-8C23-70E555B07C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{250A8996-EFE5-48D5-8C23-70E555B07C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{250A8996-EFE5-48D5-8C23-70E555B07C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{250A8996-EFE5-48D5-8C23-70E555B07C23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

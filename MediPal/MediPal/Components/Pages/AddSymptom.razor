@@ -1,0 +1,97 @@
+﻿@page "/addsymptom"
+@* @page "/addsymptom/{id:int}" *@
+@inject ISymptomService SymptomService
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+
+
+<h3>Add Symptom</h3>
+
+<EditForm Model="symptom" OnValidSubmit="OnValidSubmit" FormName="AddSymptomForm">
+    <DataAnnotationsValidator />
+
+    <MudGrid>
+
+        <MudItem xs="12" sm="7">
+            <MudPaper Class="pa-4">
+
+                <MudForm @ref="form" @bind-IsValid="@success">
+
+                    <MudTextField Label="Symptom Name"
+                                  Required="true"
+                                  RequiredError="Symptom name is required."
+                                  @bind-Value="symptom.SymptomName"
+                                  @For="@(() => symptom.SymptomName)" />
+
+                    <MudTextField Label="Date"
+                                  Required="true"
+                                  RequiredError="Date is required."
+                                  @bind-Value="symptom.Date"
+                                  @For="@(() => symptom.Date)" />
+
+                    <MudTextField Label="Pain Level"
+                                  RequiredError="Pain level is required."
+                                  HelperText="0 = no pain | 10 = unbearable pain"
+                                  @bind-Value="symptom.PainLevel"
+                                  @For="@(() => symptom.PainLevel)" />
+
+                    <MudTextField Label="Activity"
+                                  RequiredError="Activity is required."
+                                  HelperText="What activity were you doing when you experienced the symptom?"
+                                  @bind-Value="symptom.Activity"
+                                  @For="@(() => symptom.Activity)" />"
+
+                </MudForm>
+
+            </MudPaper>
+
+            <MudPaper Class="pa-4 mt-4">
+
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" DropShadow="false" OnClick="@(()=>form.Validate())">Submit</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" DropShadow="false" OnClick="@(()=>form.ResetAsync())" Class="mx-2">Reset</MudButton>
+                    <MudButton Variant="Variant.Filled" DropShadow="false" OnClick="@(()=>form.ResetValidation())">Reset Validation</MudButton>
+                </MudCardActions>
+
+            </MudPaper>
+
+        </MudItem>
+
+    </MudGrid>
+
+</EditForm>
+
+@code {
+
+    // Symptom symptom = new Symptom { SymptomID = 0, SymptomName = "", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 0, Activity = "" };
+
+    // Symptom symptom = new Symptom { SymptomID = 0, SymptomName = "", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 0, Activity = "" };
+
+
+    // void AddNewSymptom(string symptomName, DateOnly date, int painLevel, string activity)
+    // {
+    //     var newSymptom = new Symptom { SymptomName = symptomName, Date = date, PainLevel = painLevel, Activity = activity };
+    //     SymptomService.AddSymptom(newSymptom);
+    // }
+    // [Parameter]
+    // public int? SymptomID { get; set; }
+    // public int? SymptomName { get; set; }
+    // public int? PainLevel { get; set; }
+    // public int? Activity { get; set; }
+
+    [SupplyParameterFromForm]
+    Symptom symptom { get; set; } = new Symptom();
+
+    // private void Submit()
+    // {
+    //     SymptomService.AddSymptom("ID = {ID}", symptom?.SymptomName);
+    // }
+
+    bool success;
+    MudForm form;
+
+    async Task OnValidSubmit()
+    {
+        await SymptomService.AddSymptom(symptom);
+    }
+}

@@ -63,7 +63,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
-        Symptom ??= await context.Symptom.FirstOrDefaultAsync(m => m.SymptomID == SymptomID);
+        Symptom ??= await context.Symptoms.FirstOrDefaultAsync(m => m.SymptomID == SymptomID);
 
         if (Symptom is null)
         {
@@ -100,6 +100,6 @@ else
     bool SymptomExists(int symptomid)
     {
         using var context = DbFactory.CreateDbContext();
-        return context.Symptom.Any(e => e.SymptomID == symptomid);
+        return context.Symptoms.Any(e => e.SymptomID == symptomid);
     }
 }

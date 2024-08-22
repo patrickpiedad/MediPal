@@ -1,25 +1,26 @@
 ﻿@page "/symptomTracker"
 @rendermode InteractiveServer
 @using MediPal.Models
-@using MediPal.Data
+@* @using MediPal.Data *@
 @using Microsoft.EntityFrameworkCore
 
 
 <PageTitle>Symptom Tracker</PageTitle>
-@* <h3>Symptom Tracker</h3> *@
+<h3>Symptom Tracker</h3> 
 
 <MediPal.Components.Pages.SymptomPages.Index />
 
-@* <MudButton OnClick="@AddSymptom" Color="@Color.Success" Class="add-item-btn">Add Symptom</MudButton> *@
-@* <MudButton OnClick="@DeleteSymptom" Color="@Color.Error" Class="remove-item-btn">Remove Symptom</MudButton> *@
+@* <MudButton OnClick="@AddSymptom" Color="@Color.Success" Class="add-item-btn">Add Symptom</MudButton>
+<MudButton OnClick="@DeleteSymptom" Color="@Color.Error" Class="remove-item-btn">Remove Symptom</MudButton> *@
 
-@* <MudDataGrid T="Symptom" Items="@SymptomList" EditMode="DataGridEditMode.Form" Bordered="true" Dense="true" EditTrigger="@DataGridEditTrigger.Manual">
+@* <MudDataGrid T="Symptom" Items="@Symptom" EditMode="DataGridEditMode.Form" Bordered="true" Dense="true" EditTrigger="@DataGridEditTrigger.Manual">
 
     <Columns>
-        <PropertyColumn Property="SymptomList => SymptomList.SymptomName" />
-        <PropertyColumn Property="SymptomList => SymptomList.Date" />
-        <PropertyColumn Property="SymptomList => SymptomList.PainLevel" Title="Pain Level" />
-        <PropertyColumn Property="SymptomList => SymptomList.Activity" />
+        <PropertyColumn Property="Symptom => Symptom.SymptomID" />
+        <PropertyColumn Property="Symptom => Symptom.SymptomName" />
+        <PropertyColumn Property="Symptom => Symptom.Date" />
+        <PropertyColumn Property="Symptom => Symptom.PainLevel" Title="Pain Level" />
+        <PropertyColumn Property="Symptom => Symptom.Activity" />
 
         <TemplateColumn CellClass="d-flex justify-end">
             <CellTemplate>
@@ -33,28 +34,13 @@
 
 @code {
 
+    //Attempt at getting list to populate in dashboard with only symptomname and date
+    // private IEnumerable<Symptom> Symptom;
 
 
+    // public List<Symptom> Symptom;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // private IEnumerable<SymptomList> SymptomList;
-
-
-    // public List<SymptomList> SymptomList;
-
-    // private IList<Symptom> SymptomList = new List<Symptom>();
+    // private IList<Symptom> Symptom = new List<Symptom>();
     // private bool _isCellEditMode;
     // private List<string> _events = new();
     // private bool _editTriggerRowClick;
@@ -63,20 +49,20 @@
 
     // protected override void OnInitialized()
     // {
-    //     SymptomList = new List<Symptom>();
-    //     SymptomList.Add(new Symptom { SymptomID = 1, SymptomName = "Cough", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 3, Activity = "Work" });
-    //     SymptomList.Add(new Symptom { SymptomID = 2, SymptomName = "Headache", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Sleeping" });
-    //     SymptomList.Add(new Symptom { SymptomID = 3, SymptomName = "Chills", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Work" });
-    //     SymptomList.Add(new Symptom { SymptomID = 4, SymptomName = "Running nose", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Working out" });
-    //     SymptomList.Add(new Symptom { SymptomID = 5, SymptomName = "Body aches", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Work" });
-    //     SymptomList.Add(new Symptom { SymptomID = 6, SymptomName = "Headache", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Reading" });
+    //     Symptom = new List<Symptom>();
+    //     Symptom.Add(new Symptom { SymptomID = 1, SymptomName = "Cough", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 3, Activity = "Work" });
+    //     Symptom.Add(new Symptom { SymptomID = 2, SymptomName = "Headache", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Sleeping" });
+    //     Symptom.Add(new Symptom { SymptomID = 3, SymptomName = "Chills", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Work" });
+    //     Symptom.Add(new Symptom { SymptomID = 4, SymptomName = "Running nose", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Working out" });
+    //     Symptom.Add(new Symptom { SymptomID = 5, SymptomName = "Body aches", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Work" });
+    //     Symptom.Add(new Symptom { SymptomID = 6, SymptomName = "Headache", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 5, Activity = "Reading" });
 
     // }
 
 
     // void AddSymptom()
     // {
-    //     SymptomList.Add(new Symptom { SymptomID = SymptomList.Count +1 , SymptomName = "AddedSymptom", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 3, Activity = "Work" });
+    //     Symptom.Add(new Symptom { SymptomID = Symptom.Count +1 , SymptomName = "AddedSymptom", Date = DateOnly.FromDateTime(DateTime.Now), PainLevel = 3, Activity = "Work" });
     // }
 
     // void DeleteSymptom()
@@ -86,7 +72,7 @@
 
     // void EditSymptom(int id)
     // {
-    //     symptom = SymptomList.FirstOrDefault(SymptomList => SymptomList.SymptomID == id);
+    //     symptom = Symptom.FirstOrDefault(Symptom => Symptom.SymptomID == id);
     // }
 
 }

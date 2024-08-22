@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 using MudBlazor;
+using System.Data.Common;
 using MediPal.Data;
+using MediPal.Services;
 
 namespace MediPal
 {
@@ -13,26 +15,26 @@ namespace MediPal
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddDbContextFactory<MediPalContext>(options =>
-                options.UseSqlite(builder.Configuration.GetConnectionString("MediPalContext") ?? throw new InvalidOperationException("Connection string 'MediPalContext' not found.")));
-
-
-
-            // Uncomment below for database addition
-            //builder.Services.AddDbContextFactory<MediPalContext>(options =>
-            //    options.UseSqlite(builder.Configuration.GetConnectionString("MediPalContext") ?? throw new InvalidOperationException("Connection string 'MediPalContext' not found.")));
-
-            builder.Services.AddQuickGridEntityFrameworkAdapter();
-
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-
-            builder.Services.AddMudServices(); // Add MudBlazor services
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
+
+            // Add database context ans SQLite integration
+            builder.Services.AddDbContextFactory<MediPalContext>(options =>
+                options.UseSqlite(builder.Configuration.GetConnectionString("MediPalContext") ?? throw new InvalidOperationException("Connection string 'MediPalContext' not found.")));
+
+            //Add quick grid entity framework adapter
+            builder.Services.AddQuickGridEntityFrameworkAdapter();
+
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            //Adding ISymptomService dependency injection
+            builder.Services.AddScoped<ISymptomService, SymptomService>();
+
+            // Add MudBlazor services
+            builder.Services.AddMudServices();
 
 
 

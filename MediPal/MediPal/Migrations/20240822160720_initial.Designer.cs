@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediPal.Migrations
 {
     [DbContext(typeof(MediPalContext))]
-    [Migration("20240821235114_initial")]
+    [Migration("20240822160720_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -44,7 +44,7 @@ namespace MediPal.Migrations
 
                     b.HasKey("SymptomID");
 
-                    b.ToTable("Symptom");
+                    b.ToTable("Symptoms");
                 });
 #pragma warning restore 612, 618
         }

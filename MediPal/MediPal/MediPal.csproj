@@ -7,9 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Components\Pages\SymptomPages\**" />
+    <Compile Remove="Components\Services\**" />
     <Compile Remove="wwwroot\bootstrap\**" />
+    <Content Remove="Components\Pages\SymptomPages\**" />
+    <Content Remove="Components\Services\**" />
     <Content Remove="wwwroot\bootstrap\**" />
+    <EmbeddedResource Remove="Components\Pages\SymptomPages\**" />
+    <EmbeddedResource Remove="Components\Services\**" />
     <EmbeddedResource Remove="wwwroot\bootstrap\**" />
+    <None Remove="Components\Pages\SymptomPages\**" />
+    <None Remove="Components\Services\**" />
     <None Remove="wwwroot\bootstrap\**" />
   </ItemGroup>
 

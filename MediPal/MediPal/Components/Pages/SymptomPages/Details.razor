@@ -43,7 +43,7 @@
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
-        symptom = await context.Symptom.FirstOrDefaultAsync(m => m.SymptomID == SymptomID);
+        symptom = await context.Symptoms.FirstOrDefaultAsync(m => m.SymptomID == SymptomID);
 
         if (symptom is null)
         {

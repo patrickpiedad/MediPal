@@ -14,6 +14,6 @@ namespace MediPal.Data
         {
         }
 
-        public DbSet<MediPal.Models.Symptom> Symptom { get; set; } = default!;
+        public DbSet<MediPal.Models.Symptom> Symptoms { get; set; } = default!;
     }
 }

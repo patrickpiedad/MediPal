@@ -1,174 +1,218 @@
 ﻿@page "/"
 @using MediPal.Components
+@inject ISymptomService SymptomService
 @attribute [StreamRendering]
 
 <MudPaper Width="100%">
-@*     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.Large"> *@
+    @*     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.Large"> *@
 
-        <MudGrid>
+    <MudGrid>
 
-            @*Patient Information*@
-            <MudItem xs="12" sm="6" md="3">
+        @*Patient Information*@
+        <MudItem xs="12" sm="6" md="3">
 
-                <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
 
-                    <MudCard object-contain="contain">
+                <MudCard object-contain="contain">
 
-                        <MudCardHeader>
-                            <CardHeaderContent>
-                                <MudText Typo="Typo.h6">Patient Information</MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">Patient Information</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
 
-                        <MudCardContent>
-                            <MudText>Name: Jane Doe</MudText>
-                            <MudText>DOB: 31.12.1994</MudText>
-                            <MudText>Medical Diagnosis: Leukemia</MudText>
-                        </MudCardContent>
+                    <MudCardContent>
+                        <MudText>Name: Jane Doe</MudText>
+                        <MudText>DOB: 31.12.1994</MudText>
+                        <MudText>Medical Diagnosis: Leukemia</MudText>
+                    </MudCardContent>
 
-                    </MudCard>
+                </MudCard>
 
-                </MudPaper>
-
-            </MudItem>
-
-            @*Treatment Timeline*@
-            <MudItem xs="12" sm="6" md="6">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
-
-                    <MudCard>
-
-                        <MudCardHeader>
-                            <CardHeaderContent>
-                                <MudText Typo="Typo.h6">Treatment Timeline</MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
-
-                        <MudCardContent>
-                            <MudText>Insert timeline here</MudText>
-                        </MudCardContent>
-
-                    </MudCard>
-
-                </MudPaper>
-            </MudItem>
-
-            @*My Profile*@
-            <MudItem xs="12" sm="12" md="3">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
-                    <MudAvatar Size="Size.Large" Color="Color.Primary">M</MudAvatar>
-                    <CardHeaderActions>
-                        <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
-                    </CardHeaderActions>
-                    <MudText>My Profile</MudText>
-                </MudPaper>
-            </MudItem>
-
-            @* Force line break for grid items *@
-            <MudFlexBreak />
-
-            @*Symptom Tracker*@
-            <MudItem xs="12" sm="6" md="3">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
-                    <SymptomTracker />
             </MudPaper>
-            </MudItem>
 
-            @*Week Outlook*@
-            <MudItem xs="12" sm="6" md="6">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
+        </MudItem>
 
-                    <MudCard>
+        @*Treatment Timeline*@
+        <MudItem xs="12" sm="6" md="6">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
 
-                        <MudCardHeader>
-                            <CardHeaderContent>
-                                <MudText Typo="Typo.h6">Week Outlook</MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
+                <MudCard>
 
-                        <MudCardContent>
-                            <MudText>Monday: Chemo</MudText>
-                            <MudText>Tuesday: Recovery</MudText>
-                            <MudText>Wednesday: Recovery</MudText>
-                            <MudText>Thursday: Recovery</MudText>
-                            <MudText>Friday: Bone marrow puncture & release!</MudText>
-                            <MudText>Saturday: Break</MudText>
-                            <MudText>Sunday: Break</MudText>
-                        </MudCardContent>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">Treatment Timeline</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
 
-                    </MudCard>
+                    <MudCardContent>
+                        <MudText>Insert timeline here</MudText>
+                    </MudCardContent>
 
-                </MudPaper>
-            </MudItem>
+                </MudCard>
 
-            @*Your Medical Team*@
-            <MudItem xs="12" sm="12" md="3">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
+            </MudPaper>
+        </MudItem>
 
-                    <MudText>Your Medical Team</MudText>
+        @*My Profile*@
+        <MudItem xs="12" sm="12" md="3">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
+                <MudAvatar Size="Size.Large" Color="Color.Primary">M</MudAvatar>
+                <CardHeaderActions>
+                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                </CardHeaderActions>
+                <MudText>My Profile</MudText>
+            </MudPaper>
+        </MudItem>
 
-                    <MudList T="string">
-                        <MudListItem>
-                            <AvatarContent>
-                                <MudAvatar>
-                                    <MudAvatar Color="Color.Tertiary">A</MudAvatar>
-                                </MudAvatar>
-                            </AvatarContent>
-                            <ChildContent>
-                                Dr. Awesome
-                            </ChildContent>
-                        </MudListItem>
+        @* Force line break for grid items *@
+        <MudFlexBreak />
 
-                        <MudListItem>
-                            <AvatarContent>
-                                <MudAvatar>
-                                    <MudAvatar Color="Color.Tertiary">C</MudAvatar>
-                                </MudAvatar>
-                            </AvatarContent>
-                            <ChildContent>
-                                Dr. Cool
-                            </ChildContent>
-                        </MudListItem>
+        @*Symptom Tracker*@
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
 
-                        <MudListItem>
-                            <AvatarContent>
-                                <MudAvatar Color="Color.Tertiary">AC</MudAvatar>
-                            </AvatarContent>
-                            <ChildContent>
-                                Dr. Also Cool
-                            </ChildContent>
-                        </MudListItem>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Symptom Tracker</MudText>
 
-                        <MudListItem>
-                            <AvatarContent>
+                        @* <SymptomTracker /> *@
+
+
+                        @if (symptoms == null)
+                        {
+                            <span>Loading...</span>
+                        }
+
+                        else if (symptoms.Count == 0)
+                        {
+                            <span>No symptoms found.</span>
+                        }
+
+                        else
+                        {
+                            <MudDataGrid T="Symptom" Items="@symptoms" EditMode="DataGridEditMode.Form" Bordered="true" Dense="true" EditTrigger="@DataGridEditTrigger.Manual">
+
+                                <Columns>
+                                    <PropertyColumn Property="Symptom => Symptom.SymptomName" />
+                                    <PropertyColumn Property="Symptom => Symptom.Date" />
+
+                                    <TemplateColumn CellClass="d-flex justify-end">
+                                        <CellTemplate>
+                                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" />
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                </Columns>
+
+                            </MudDataGrid>
+                        }
+                    </CardHeaderContent>
+                </MudCardHeader>
+            </MudPaper>
+        </MudItem>
+
+        @*Week Outlook*@
+        <MudItem xs="12" sm="6" md="6">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
+
+                <MudCard>
+
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">Week Outlook</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+
+                    <MudCardContent>
+                        <MudText>Monday: Chemo</MudText>
+                        <MudText>Tuesday: Recovery</MudText>
+                        <MudText>Wednesday: Recovery</MudText>
+                        <MudText>Thursday: Recovery</MudText>
+                        <MudText>Friday: Bone marrow puncture & release!</MudText>
+                        <MudText>Saturday: Break</MudText>
+                        <MudText>Sunday: Break</MudText>
+                    </MudCardContent>
+
+                </MudCard>
+
+            </MudPaper>
+        </MudItem>
+
+        @*Your Medical Team*@
+        <MudItem xs="12" sm="12" md="3">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: fit-content;">
+
+                <MudText>Your Medical Team</MudText>
+
+                <MudList T="string">
+                    <MudListItem>
+                        <AvatarContent>
+                            <MudAvatar>
+                                <MudAvatar Color="Color.Tertiary">A</MudAvatar>
+                            </MudAvatar>
+                        </AvatarContent>
+                        <ChildContent>
+                            Dr. Awesome
+                        </ChildContent>
+                    </MudListItem>
+
+                    <MudListItem>
+                        <AvatarContent>
+                            <MudAvatar>
                                 <MudAvatar Color="Color.Tertiary">C</MudAvatar>
-                            </AvatarContent>
-                            <ChildContent>
-                                Dr. Chatty
-                            </ChildContent>
-                        </MudListItem>
+                            </MudAvatar>
+                        </AvatarContent>
+                        <ChildContent>
+                            Dr. Cool
+                        </ChildContent>
+                    </MudListItem>
 
-                        <MudListItem>
-                            <AvatarContent>
-                                <MudAvatar Color="Color.Tertiary">E</MudAvatar>
-                            </AvatarContent>
-                            <ChildContent>
-                                Dr. Empathy
-                            </ChildContent>
-                        </MudListItem>
+                    <MudListItem>
+                        <AvatarContent>
+                            <MudAvatar Color="Color.Tertiary">AC</MudAvatar>
+                        </AvatarContent>
+                        <ChildContent>
+                            Dr. Also Cool
+                        </ChildContent>
+                    </MudListItem>
 
-                    </MudList>
+                    <MudListItem>
+                        <AvatarContent>
+                            <MudAvatar Color="Color.Tertiary">C</MudAvatar>
+                        </AvatarContent>
+                        <ChildContent>
+                            Dr. Chatty
+                        </ChildContent>
+                    </MudListItem>
 
-                </MudPaper>
-            </MudItem>
+                    <MudListItem>
+                        <AvatarContent>
+                            <MudAvatar Color="Color.Tertiary">E</MudAvatar>
+                        </AvatarContent>
+                        <ChildContent>
+                            Dr. Empathy
+                        </ChildContent>
+                    </MudListItem>
 
-        </MudGrid>
+                </MudList>
+
+            </MudPaper>
+        </MudItem>
+
+    </MudGrid>
 
     @* </MudContainer> *@
 
 </MudPaper>
 
 @code {
+
+    List<Symptom> symptoms = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        symptoms = await SymptomService.GetAllSymptoms();
+    }
 
     int _papers = 7;
     int papers { get { return _papers; } set { UpdatePapers(value); } }

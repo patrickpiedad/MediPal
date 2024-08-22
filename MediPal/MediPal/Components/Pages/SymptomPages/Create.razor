@@ -54,7 +54,7 @@
     public async Task AddSymptom()
     {
         using var context = DbFactory.CreateDbContext();
-        context.Symptom.Add(Symptom);
+        context.Symptoms.Add(Symptom);
         await context.SaveChangesAsync();
         NavigationManager.NavigateTo("/symptoms");
     }

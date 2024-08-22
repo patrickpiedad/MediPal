@@ -12,7 +12,7 @@ namespace MediPal.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Symptom",
+                name: "Symptoms",
                 columns: table => new
                 {
                     SymptomID = table.Column<int>(type: "INTEGER", nullable: false)
@@ -24,7 +24,7 @@ namespace MediPal.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Symptom", x => x.SymptomID);
+                    table.PrimaryKey("PK_Symptoms", x => x.SymptomID);
                 });
         }
 
@@ -32,7 +32,7 @@ namespace MediPal.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Symptom");
+                name: "Symptoms");
         }
     }
 }

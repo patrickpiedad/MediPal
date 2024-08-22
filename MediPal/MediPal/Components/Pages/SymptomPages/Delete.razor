@@ -51,7 +51,7 @@
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
-        symptom = await context.Symptom.FirstOrDefaultAsync(m => m.SymptomID == SymptomID);
+        symptom = await context.Symptoms.FirstOrDefaultAsync(m => m.SymptomID == SymptomID);
 
         if (symptom is null)
         {
@@ -62,7 +62,7 @@
     public async Task DeleteSymptom()
     {
         using var context = DbFactory.CreateDbContext();
-        context.Symptom.Remove(symptom!);
+        context.Symptoms.Remove(symptom!);
         await context.SaveChangesAsync();
         NavigationManager.NavigateTo("/symptoms");
     }
