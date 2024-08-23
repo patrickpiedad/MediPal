@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace MediPal.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,6 +27,16 @@ namespace MediPal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Symptoms", x => x.SymptomID);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Symptoms",
+                columns: new[] { "SymptomID", "Activity", "Date", "PainLevel", "SymptomName" },
+                values: new object[,]
+                {
+                    { 1, "Post physical training session", new DateOnly(2024, 8, 23), 4, "Headache" },
+                    { 2, "Sleeping", new DateOnly(2024, 8, 23), 2, "Chills" },
+                    { 3, "Showering", new DateOnly(2024, 8, 23), 6, "Body aches" }
                 });
         }
 

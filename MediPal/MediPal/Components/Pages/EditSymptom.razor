@@ -1,0 +1,45 @@
+﻿@page "/editsymptom"
+@* @page "/editsymptom/{id:int}" *@
+@inject ISymptomService SymptomService
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+
+
+<h3>Add Symptom</h3>
+
+<EditForm Model="symptom" OnSubmit="HandleSubmit" FormName="AddSymptomForm">
+
+    <label class="form-label">SymptomID</label>
+    <InputText class="form-control" @bind-Value="symptom.SymptomName">@symptom.SymptomName</InputText>
+
+    <label class="form-label">Date</label>
+    <InputDate class="form-control" @bind-Value="symptom.Date">@symptom.Date</InputDate>
+
+    <label class="form-label">Pain Level</label>
+    <InputNumber class="form-control" @bind-Value="symptom.PainLevel">@symptom.PainLevel</InputNumber>
+
+    <label class="form-label">Activity</label>
+    <InputText class="form-control" @bind-Value="symptom.Activity">@symptom.Activity</InputText>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</EditForm>
+
+@code {
+
+    // [Parameter]
+    // public int? SymptomID { get; set; }
+    // public int? SymptomName { get; set; }
+    // public int? PainLevel { get; set; }
+    // public int? Activity { get; set; }
+
+    [SupplyParameterFromForm]
+    Symptom symptom { get; set; } = new Symptom();
+
+    async Task HandleSubmit()
+    {
+        await SymptomService.AddSymptomAsync(symptom);
+    }
+
+    public int id { get; set; }
+}

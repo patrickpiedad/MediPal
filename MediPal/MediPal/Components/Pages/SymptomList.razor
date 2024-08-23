@@ -1,45 +1,56 @@
 ﻿@page "/symptomlist"
 @inject ISymptomService SymptomService
-@attribute [StreamRendering]
+@inject NavigationManager NavigationManager
+@* @rendermode @(new InteractiveServerRenderMode(prerender: false)) *@
 
 <h3>Symptom List</h3>
 
 @if (symptoms == null)
 {
-    <span>Loading...</span>
+    <span>Loading symptoms...</span>
 }
-
 else if (symptoms.Count == 0)
 {
     <span>No symptoms found.</span>
-    <@AddSymptomButton />
-
+    <AddSymptomButton />
 }
-
-
 else
 {
-    <ul>
-        @foreach (var symptom in symptoms)
-        {
-            <li>@symptom.SymptomID</li>
-            <li>@symptom.SymptomName</li>
-            <li>@symptom.Date</li>
-            <li>@symptom.PainLevel</li>
-            <li>@symptom.Activity</li>
-        }
-    </ul>
-} 
-
-
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Symptom Name</th>
+                <th>Date</th>
+                <th>Pain Level</th>
+                <th>Activity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var symptom in symptoms)
+            {
+                <tr>
+                    <td>@symptom.SymptomName</td>
+                    <td>@symptom.Date</td>
+                    <td>@symptom.PainLevel</td>
+                    <td>@symptom.Activity</td>
+                    <td><AddSymptomButton /> <EditSymptomButton /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
-    List<Symptom> symptoms = null;
-
-    private bool _editable;
+    List<Symptom> symptoms = new List<Symptom>();
 
     protected override async Task OnInitializedAsync()
     {
-        symptoms = await SymptomService.GetAllSymptoms();
+        symptoms = await SymptomService.GetAllSymptomsAsync();
     }
+
+    //Code below if not using <AddSymptomButton> and just using normal link
+    // void AddSymptom()
+    // {
+    //     NavigationManager.NavigateTo("/addsymptom");
+    // }
 }
