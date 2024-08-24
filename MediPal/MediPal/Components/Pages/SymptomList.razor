@@ -1,7 +1,10 @@
 ﻿@page "/symptomlist"
+@using MediPal.Services
+@using MediPal.Models
 @inject ISymptomService SymptomService
 @inject NavigationManager NavigationManager
-@rendermode @(new InteractiveServerRenderMode(prerender: true))
+@inject IJSRuntime JSRuntime
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 <h3>Symptom List</h3>
 
@@ -13,7 +16,7 @@
 @if (symptoms.Count == 0)
 {
     <div>
-    <span>Loading symptoms...</span>
+        <span>Loading symptoms...</span>
     </div>
     <button @onclick="AddSymptom" class="btn btn-primary">Add Symptom</button>
 }
@@ -44,8 +47,11 @@ else
                 </tr>
             }
         </tbody>
-        <button @onclick="AddSymptom" class="btn btn-primary">Add Symptom</button>
     </table>
+
+    <div>
+        <button @onclick="AddSymptom" class="btn btn-primary">Add Symptom</button>
+    </div>
 }
 
 @code {
@@ -69,6 +75,7 @@ else
     async Task DeleteSymptom(int id)
     {
         await SymptomService.DeleteSymptomAsync(id);
+        await JSRuntime.InvokeVoidAsync("alert", "Symptom successfully deleted.");
         symptoms = await SymptomService.GetAllSymptomsAsync();
     }
 }

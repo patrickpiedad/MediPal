@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MediPal.Services
 {
-    public class SymptomService : ISymptomService
+    public class SymptomService : ISymptomService // SymptomService inherits from ISymptomService
     {
         private readonly MediPalContext _context;
 

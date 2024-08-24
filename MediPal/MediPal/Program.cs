@@ -16,7 +16,7 @@ namespace MediPal
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
-                .AddInteractiveServerComponents()
+                .AddInteractiveServerComponents() //enabling interactive server
                 .AddInteractiveWebAssemblyComponents();
 
 
@@ -53,7 +53,7 @@ namespace MediPal
             app.UseAntiforgery();
 
             app.MapRazorComponents<App>()
-                .AddInteractiveServerRenderMode()
+                .AddInteractiveServerRenderMode() // enabling interactive server render mode
                 .AddInteractiveWebAssemblyRenderMode()
                 .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
 

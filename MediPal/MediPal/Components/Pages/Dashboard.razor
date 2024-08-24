@@ -1,6 +1,6 @@
 ﻿@page "/"
 @using MediPal.Components
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 @inject ISymptomService SymptomService
 

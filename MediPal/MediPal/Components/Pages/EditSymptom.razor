@@ -7,42 +7,48 @@
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 
-if (Id is null)
+@if (Id is null)
 {
-<PageTitle>Edit Symptom</PageTitle>
-<h3>Edit Symptom</h3>
+    <PageTitle>Edit Symptom</PageTitle>
+    <h3>Loading form...</h3>
 }
 
 else
 {
-<PageTitle>Edit "@CurrentSymptom.SymptomName"</PageTitle>
-}
+    <PageTitle>Edit "@CurrentSymptom.SymptomName"</PageTitle>
+    <h3>Edit Symptom</h3>
 
 <EditForm Model="CurrentSymptom" OnSubmit="HandleSubmit">
-
-    <div>
-        <label for="symptomName">Symptom Name</label>"
+<DataAnnotationsValidator />
+        <div>
+        <label for="symptomName">Symptom Name</label>
         <InputText id="symptomName" class="form-control" @bind-Value="CurrentSymptom.SymptomName"></InputText>
+        <ValidationMessage For="@(() => CurrentSymptom.SymptomName)" />
     </div>
 
     <div>
-        <label for="date">Date</label>"
+        <label for="date">Date</label>
         <InputDate id="date" class="form-control" @bind-Value="CurrentSymptom.Date"></InputDate>
+        <ValidationMessage For="@(() => CurrentSymptom.Date)" />
     </div>
 
     <div>
-        <label for="painLevel">Pain Level</label>"
-        <InputNumber id="Pain Level" class="form-control" @bind-Value="CurrentSymptom.PainLevel"></InputNumber>
+        <label for="painLevel">Pain Level</label>
+        <InputNumber id="painLevel" class="form-control" @bind-Value="CurrentSymptom.PainLevel"></InputNumber>
+        <ValidationMessage For="@(() => CurrentSymptom.PainLevel)" />
     </div>
 
     <div>
-        <label for="activity">Activity</label>"
+        <label for="activity">Activity</label>
         <InputText id="activity" class="form-control" @bind-Value="CurrentSymptom.Activity"></InputText>
+        <ValidationMessage For="@(() => CurrentSymptom.Activity)" />
     </div>
 
     <button type="submit" class="btn btn-primary">Save</button>
 
 </EditForm>
+
+}
 
 @code {
     [Parameter]
