@@ -51,26 +51,39 @@
         <div class="col-md-4">
             <div class="card border">
                 <div class="card-body" style=" text-align: center;">
-                    @if (symptoms == null)
-                    {
-                        <span>Loading...</span>
-                    }
-                    else if (symptoms.Count == 0)
-                    {
-                        <h5>Symptom List</h5>
-                        <span>No symptoms found.</span>
-                    }
-                    else
-                    {
-                        <ul>
-                            <h5>Symptom List</h5>
+                    <table class="table">
+
+                        @if (symptoms == null)
+                        {
+                            <span>Symptom list not found.</span>
+                        }
+
+                        @if (symptoms.Count == 0)
+                        {
+                            <div>
+                                <span>Loading symptoms...</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <thead>
+                                <tr>
+                                    <th>Symptom Name</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                        }
+                        <tbody>
                             @foreach (var symptom in symptoms)
                             {
-                                <li>@symptom.SymptomName</li>
-                                <li>@symptom.Date</li>
+                                <tr>
+                                    <td>@symptom.SymptomName</td>
+                                    <td>@symptom.Date</td>
+                                </tr>
                             }
-                        </ul>
-                    }
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -99,14 +112,10 @@
 </div>
 
 @code {
-
-    List<Symptom> symptoms = null;
+    List<Symptom> symptoms = new List<Symptom>();
 
     protected override async Task OnInitializedAsync()
     {
         symptoms = await SymptomService.GetAllSymptomsAsync();
     }
-
-
-
-    }
+}

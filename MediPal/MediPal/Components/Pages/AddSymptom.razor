@@ -1,15 +1,17 @@
 ﻿@page "/addsymptom"
 @page "/addsymptom/{Id:int}"
 @inject ISymptomService SymptomService
+@inject NavigationManager NavigationManager
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 
 <h3>Add Symptom</h3>
 
 <EditForm Model="symptom" OnSubmit="HandleSubmit" FormName="AddSymptomForm">
 
-    <label class="form-label">SymptomID</label>
+    <label class="form-label">Symptom Name</label>
     <InputText class="form-control" @bind-Value="symptom.SymptomName">@symptom.SymptomName</InputText>
 
     <label class="form-label">Date</label>
@@ -21,17 +23,11 @@
     <label class="form-label">Activity</label>
     <InputText class="form-control" @bind-Value="symptom.Activity">@symptom.Activity</InputText>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button @onclick="ReturnToList" type="submit" class="btn btn-primary">Submit</button>
 
 </EditForm>
 
 @code {
-
-    // [Parameter]
-    // public int? SymptomID { get; set; }
-    // public int? SymptomName { get; set; }
-    // public int? PainLevel { get; set; }
-    // public int? Activity { get; set; }
 
     [SupplyParameterFromForm]
     Symptom symptom { get; set; } = new Symptom();
@@ -41,5 +37,11 @@
         await SymptomService.AddSymptomAsync(symptom);
     }
 
-    public int id { get; set; }
+    void ReturnToList()
+    {
+        NavigationManager.NavigateTo("/symptomlist");
+    }
+
+    [Parameter]
+    public int Id { get; set; }
 }

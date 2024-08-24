@@ -1,19 +1,23 @@
 ﻿@page "/symptomlist"
 @inject ISymptomService SymptomService
 @inject NavigationManager NavigationManager
-@* @rendermode @(new InteractiveServerRenderMode(prerender: false)) *@
+@rendermode @(new InteractiveServerRenderMode(prerender: true))
 
 <h3>Symptom List</h3>
 
 @if (symptoms == null)
 {
-    <span>Loading symptoms...</span>
+    <span>Symptom list not found.</span>
 }
-else if (symptoms.Count == 0)
+
+@if (symptoms.Count == 0)
 {
-    <span>No symptoms found.</span>
-    <AddSymptomButton />
+    <div>
+    <span>Loading symptoms...</span>
+    </div>
+    <button @onclick="AddSymptom" class="btn btn-primary">Add Symptom</button>
 }
+
 else
 {
     <table class="table">
@@ -23,6 +27,8 @@ else
                 <th>Date</th>
                 <th>Pain Level</th>
                 <th>Activity</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -33,10 +39,12 @@ else
                     <td>@symptom.Date</td>
                     <td>@symptom.PainLevel</td>
                     <td>@symptom.Activity</td>
-                    <td><AddSymptomButton /> <EditSymptomButton /></td>
+                    <td><button @onclick="@(() => EditSymptom(symptom.SymptomID))" class="btn btn-primary">Edit Symptom</button></td>
+                    <td><button @onclick="@(() => DeleteSymptom(symptom.SymptomID))" class="btn btn-danger">Delete Symptom</button></td>
                 </tr>
             }
         </tbody>
+        <button @onclick="AddSymptom" class="btn btn-primary">Add Symptom</button>
     </table>
 }
 
@@ -48,9 +56,19 @@ else
         symptoms = await SymptomService.GetAllSymptomsAsync();
     }
 
-    //Code below if not using <AddSymptomButton> and just using normal link
-    // void AddSymptom()
-    // {
-    //     NavigationManager.NavigateTo("/addsymptom");
-    // }
+    void AddSymptom()
+    {
+        NavigationManager.NavigateTo("/addsymptom");
+    }
+
+    void EditSymptom(int id)
+    {
+        NavigationManager.NavigateTo($"/editsymptom/{id}");
+    }
+
+    async Task DeleteSymptom(int id)
+    {
+        await SymptomService.DeleteSymptomAsync(id);
+        symptoms = await SymptomService.GetAllSymptomsAsync();
+    }
 }

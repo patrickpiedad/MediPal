@@ -1,11 +1,11 @@
 ﻿@inject NavigationManager NavigationManager
-
-<button @onclick="EditSymptom" class="btn btn-primary">Edit Symptom</button>"
+@* 
+<button @onclick="EditSymptom" class="btn btn-primary">Edit Symptom</button>" *@
 
 @code {
-    void EditSymptom()
+    void EditSymptom(int id)
     {
-        NavigationManager.NavigateTo("/editsymptom");
+        NavigationManager.NavigateTo($"/editsymptom/{id}");
     }
 }
 
