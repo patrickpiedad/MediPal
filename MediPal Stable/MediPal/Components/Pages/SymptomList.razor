@@ -6,20 +6,24 @@
 @inject IJSRuntime JSRuntime
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
+<PageTitle>Symptom List</PageTitle>
 <h3>Symptom List</h3>
 
-@if (symptoms == null)
+@if (symptoms == null || symptoms.Any() == false)
 {
-    <span>Symptom list not found.</span>
+    <div>
+    <span>No symptoms found.</span>
+    </div>
+    <button @onclick="AddSymptom" class="btn btn-primary">Add Symptom</button>
 }
 
-@if (symptoms.Count == 0)
+@* @if (symptoms.Count == 0)
 {
     <div>
         <span>Loading symptoms...</span>
     </div>
-    <button @onclick="AddSymptom" class="btn btn-primary">Add Symptom</button>
-}
+
+} *@
 
 else
 {
@@ -75,7 +79,8 @@ else
     async Task DeleteSymptom(int id)
     {
         await SymptomService.DeleteSymptomAsync(id);
-        await JSRuntime.InvokeVoidAsync("alert", "Symptom successfully deleted.");
         symptoms = await SymptomService.GetAllSymptomsAsync();
+        await JSRuntime.InvokeVoidAsync("alert", "Symptom successfully deleted.");
+
     }
 }

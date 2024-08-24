@@ -1,0 +1,86 @@
+﻿@page "/symptomlist"
+@using MediPal.Services
+@using MediPal.Models
+@inject ISymptomService SymptomService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<PageTitle>Symptom List</PageTitle>
+<h3>Symptom List</h3>
+
+@if (symptoms == null || symptoms.Any() == false)
+{
+    <div>
+    <span>No symptoms found.</span>
+    </div>
+    <button @onclick="AddSymptom" class="btn btn-primary">Add Symptom</button>
+}
+
+@* @if (symptoms.Count == 0)
+{
+    <div>
+        <span>Loading symptoms...</span>
+    </div>
+
+} *@
+
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Symptom Name</th>
+                <th>Date</th>
+                <th>Pain Level</th>
+                <th>Activity</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var symptom in symptoms)
+            {
+                <tr>
+                    <td>@symptom.SymptomName</td>
+                    <td>@symptom.Date</td>
+                    <td>@symptom.PainLevel</td>
+                    <td>@symptom.Activity</td>
+                    <td><button @onclick="@(() => EditSymptom(symptom.SymptomID))" class="btn btn-primary">Edit Symptom</button></td>
+                    <td><button @onclick="@(() => DeleteSymptom(symptom.SymptomID))" class="btn btn-danger">Delete Symptom</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <button @onclick="AddSymptom" class="btn btn-primary">Add Symptom</button>
+    </div>
+}
+
+@code {
+    List<Symptom> symptoms = new List<Symptom>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        symptoms = await SymptomService.GetAllSymptomsAsync();
+    }
+
+    void AddSymptom()
+    {
+        NavigationManager.NavigateTo("/addsymptom");
+    }
+
+    void EditSymptom(int id)
+    {
+        NavigationManager.NavigateTo($"/editsymptom/{id}");
+    }
+
+    async Task DeleteSymptom(int id)
+    {
+        await SymptomService.DeleteSymptomAsync(id);
+        symptoms = await SymptomService.GetAllSymptomsAsync();
+        await JSRuntime.InvokeVoidAsync("alert", "Symptom successfully deleted.");
+
+    }
+}

@@ -1,0 +1,186 @@
+﻿@page "/"
+@using MediPal.Components
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inject ISymptomService SymptomService
+
+<PageTitle>Dashboard</PageTitle>
+
+<div class="container-fluid">
+
+    @* start row 1 *@
+    <div class="row">
+
+        @*Patient Information*@
+        <div class="col-md-4">
+            <div class="card border">
+                <div class="card-body" style="text-align: center;">
+                    @* need to detach this into a separate component and link to it here *@
+                    <h5 class="card-title">Patient Information</h5>
+                    <p class="card-text">Name: Jane Doe</p>
+                    <p class="card-text">Date of Birth: 31.12.1994</p>
+                    <p class="card-text">Medical Diagnosis: Leukemia</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+
+        @*Treatment Timeline*@
+        <div class="col-md-4">
+            <div class="card border">
+                <div class="card-body" style=" text-align: center;">
+                    @* need to detach this into a separate component and link to it here *@
+                    <h5 class="card-title">Treatment Timeline</h5>
+                    <p class="card-text">Insert timeline here.</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+
+        @*My Profile*@
+        <div class="col-md-4">
+            <div class="card border">
+                <div class="card-body" style=" text-align: center;">
+                    @* need to detach this into a separate component and link to it here *@
+                    <h5 class="card-title">My Profile</h5>
+                    <p class="card-text">Jane Doe</p>
+                    <a href="#" class="btn btn-primary">Settings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* start row 2 *@
+    <div class="row">
+
+        @*Symptom Tracker*@
+        <div class="col-md-4">
+            <div class="card border">
+                <div class="card-body" style=" text-align: center;">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card border">
+                    <div class="card-body" style=" text-align: center;">
+                        <h4>Symptom Tracker</h4>
+                        <table class="table">
+
+                            @if (symptoms == null)
+                            {
+                                <span>Symptom list not found.</span>
+                            }
+
+                            @if (symptoms.Count == 0)
+                            {
+                                <div>
+                                    <span>Loading symptoms...</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <thead>
+                                    <tr>
+                                        <th>Symptom Name</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                            }
+                            <tbody>
+                                @foreach (var symptom in symptoms)
+                                {
+                                    <tr>
+                                        <td>@symptom.SymptomName</td>
+                                        <td>@symptom.Date</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            @*Week Outlook*@
+            <div class="col-md-4">
+                <div class="card border">
+                    <div class="card-body" style=" text-align: left;">
+                        @* need to detach this into a separate component and link to it here *@
+                        <h5 class="card-title" style="text-align: center;">Week Outlook</h5>
+                        <div style="padding: 3% 10%;">
+                            <p class="card-text">Monday: Chemotherapy</p>
+                            <p class="card-text">Tuesday: Recovery</p>
+                            <p class="card-text">Wednesday: Recovery</p>
+                            <p class="card-text">Thursday: Recovery</p>
+                            <p class="card-text">Friday: Bone marrow puncture & release</p>
+                            <p class="card-text">Saturday: Break</p>
+                            <p class="card-text">Sunday: Break</p>
+                            <div style="text-align: center;">
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*Your Medical Team*@
+                <div class="col-md-4">
+                    <div class="card border">
+                        <div class="card-body" style="text-align: left;">
+                            @* need to detach this into a separate component and link to it here *@
+                            <h5 class="card-title" style="text-align: center">Your Medical Team</h5>
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Role</th>
+                                            <th>Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Chief Medical Officer</td>
+                                            <td>M.D. Kathy Awesome</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lead Doctor</td>
+                                            <td>M.D. Richard Cool</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Assistant Doctor</td>
+                                            <td>M.D. Arnie Neat</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lead Nurse</td>
+                                            <td>R.N. Cori Chatty </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nurse</td>
+                                            <td>R.N. Elena Empathy </td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                            <div style="text-align: center;">
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    List<Symptom> symptoms = new List<Symptom>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        symptoms = await SymptomService.GetAllSymptomsAsync();
+    }
+}

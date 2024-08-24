@@ -22,13 +22,15 @@ namespace MediPal.Models
         public string? MedicalDiagnosis { get; set; }
 
         public int? Age { get; set; }
-    
+
+        public List<Symptom>? Symptoms { get; set; }
+
         //public int? CalculateAge(DateOnly DateOfBirth)
         //{
         //    Age = DateOnly.FromDateTime(DateTime.Now) - DateOfBirth;
         //    return Age;
         //}
 
-    
+
     }
 }

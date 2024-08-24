@@ -1,0 +1,12 @@
+﻿@inject NavigationManager NavigationManager
+
+<button @onclick="AddSymptom" class="btn btn-primary">Add Symptom</button>"
+
+@code {
+    void AddSymptom()
+    {
+        NavigationManager.NavigateTo("/addsymptom");
+    }
+}
+
+
