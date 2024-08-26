@@ -23,7 +23,7 @@ namespace MediPal.Data
         }
 
         //Add Dbset for each model
-        public DbSet<MediPal.Models.Symptom> Symptoms { get; set; } = default!;
+        public DbSet<MediPal.Models.Symptom> Symptoms { get; set; } = default!; // Creating the table for symptoms to be added when using context to code-first migration
 
     }
 
