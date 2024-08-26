@@ -9,34 +9,35 @@
 
 <h3>Add Symptom</h3>
 
-<EditForm Model="symptom" OnSubmit="HandleSubmit" FormName="AddSymptomForm">
+<EditForm Model="symptom" OnValidSubmit="HandleSubmit" FormName="AddSymptomForm">
     <DataAnnotationsValidator />
+    <ValidationSummary />
 
     <label class="form-label">Symptom Name</label>
     <InputText class="form-control" @bind-Value="symptom.SymptomName">
         @symptom.SymptomName
     </InputText>
-    <ValidationMessage For="@(() => symptom.SymptomName)" />
+    @* <ValidationMessage For="@(() => symptom.SymptomName)" /> *@
 
     <label class="form-label">Date</label>
     <InputDate class="form-control" @bind-Value="symptom.Date">
         @symptom.Date
     </InputDate>
-    <ValidationMessage For="@(() => symptom.Date)" />
+    @* <ValidationMessage For="@(() => symptom.Date)" /> *@
 
     <label class="form-label">Pain Level</label>
     <InputNumber class="form-control" @bind-Value="symptom.PainLevel">
         @symptom.PainLevel
     </InputNumber>
-    <ValidationMessage For="@(() => symptom.PainLevel)" />
+    @* <ValidationMessage For="@(() => symptom.PainLevel)" /> *@
 
     <label class="form-label">Activity</label>
     <InputText class="form-control" @bind-Value="symptom.Activity">
         @symptom.Activity
     </InputText>
-    <ValidationMessage For="@(() => symptom.Activity)" />
+    @* <ValidationMessage For="@(() => symptom.Activity)" /> *@
 
-    <button @onclick="ReturnToList" type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
 
 </EditForm>
 
@@ -44,14 +45,9 @@
     [SupplyParameterFromForm] // connects the form input for each parameter to the creation of the new symptom
     Symptom symptom { get; set; } = new Symptom();
 
-
     async Task HandleSubmit()
     {
         await SymptomService.AddSymptomAsync(symptom);
-    }
-
-    void ReturnToList()
-    {
         NavigationManager.NavigateTo("/symptomlist");
     }
 
