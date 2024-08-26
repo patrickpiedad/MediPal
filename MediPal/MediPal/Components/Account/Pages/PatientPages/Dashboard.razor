@@ -1,9 +1,14 @@
 ﻿@page "/"
 @using MediPal.Components
 @using MediPal.Models
+@using Microsoft.AspNetCore.Authorization @*Add authorization to this page*@
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
+@* @rendermode InteractiveAuto *@
 @inject ISymptomService SymptomService
 
+@attribute [Authorize(Roles = "Patient, Doctor")]
+
+<AuthorizeView>
 <PageTitle>Dashboard</PageTitle>
 
 <div class="container-fluid">
@@ -160,6 +165,8 @@
     </div>
 
 </div>
+
+</AuthorizeView>
 
 
 @code {

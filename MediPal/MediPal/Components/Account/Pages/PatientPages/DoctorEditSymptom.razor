@@ -1,0 +1,113 @@
+﻿@page "/doctoreditsymptom"
+@page "/doctoreditsymptom/{Id:int}"
+@inject ISymptomService SymptomService
+@inject NavigationManager NavigationManager
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization @*Add authorization to this page*@
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@attribute [Authorize(Roles = "Doctor")]
+
+@if (Id is null)
+{
+    <PageTitle>Edit Symptom</PageTitle>
+    <h3>Loading form...</h3>
+}
+
+else
+{
+    <PageTitle>Edit "@CurrentSymptom.SymptomName"</PageTitle>
+    <div class="container-fluid">
+
+        <h3>Edit Symptom</h3>
+
+        <div class="row">
+
+            <div class="col-lg-7">
+
+
+
+                <EditForm Model="CurrentSymptom" OnValidSubmit="HandleSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="text-danger" />
+
+                    <div>
+                        <label for="symptomName">Symptom Name</label>
+                        <InputText id="symptomName" class="form-control" @bind-Value="CurrentSymptom.SymptomName"></InputText>
+                        @* <ValidationMessage For="@(() => CurrentSymptom.SymptomName)" /> *@
+                    </div>
+
+                    <div>
+                        <label for="date">Date</label>
+                        <InputDate id="date" class="form-control" @bind-Value="CurrentSymptom.Date"></InputDate>
+                        @* <ValidationMessage For="@(() => CurrentSymptom.Date)" /> *@
+                    </div>
+
+                    <div>
+                        <label for="painLevel">Pain Level</label>
+                        <InputNumber id="painLevel" class="form-control" @bind-Value="CurrentSymptom.PainLevel"></InputNumber>
+                        @* <ValidationMessage For="@(() => CurrentSymptom.PainLevel)" /> *@
+                    </div>
+
+                    <div>
+                        <label for="activity">Activity</label>
+                        <InputText id="activity" class="form-control" @bind-Value="CurrentSymptom.Activity"></InputText>
+                        @* <ValidationMessage For="@(() => CurrentSymptom.Activity)" /> *@
+                    </div>
+
+                    <div>
+                        <label for="doctorsNote">Doctor's Note</label>
+                        <InputTextArea id="doctorsNote" class="form-control" @bind-Value="CurrentSymptom.DoctorsNote"></InputTextArea>
+                        @* <ValidationMessage For="@(() => CurrentSymptom.Activity)" /> *@
+                    </div>
+
+                    <br />
+
+                    <button type="submit" class="btn btn-primary">Save</button>
+
+                </EditForm>
+            </div>
+
+            <div class="col-lg-5" style="align-content: center;">
+                <h4 style="text-align: center;">Pain Scale</h4>
+                <img src="/pain-scale.jpg" class="img-fluid" alt="pain scale from 0 to 10 with 0 being the no pain and 10 being unimaginable pain" />
+            </div>
+
+        </div>
+    </div>
+
+}
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    public Symptom CurrentSymptom { get; set; } = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id is not null)
+        {
+            var symptom = await SymptomService.GetSymptomByIdAsync((int)Id);
+            if (symptom is not null)
+            {
+                CurrentSymptom = symptom;
+            }
+        }
+    }
+
+    async Task HandleSubmit()
+    {
+        if (Id is not null)
+        {
+            await SymptomService.UpdateSymptomAsync(CurrentSymptom, (int)Id);
+            NavigationManager.NavigateTo("symptomlist");
+        }
+        else
+        {
+            await SymptomService.AddSymptomAsync(CurrentSymptom);
+            NavigationManager.NavigateTo("/symptomlist");
+        }
+    }
+}

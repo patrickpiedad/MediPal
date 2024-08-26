@@ -49,6 +49,7 @@ namespace MediPal.Services
                 dbSymptom.Date = symptom.Date;
                 dbSymptom.PainLevel = symptom.PainLevel;
                 dbSymptom.Activity = symptom.Activity;
+                dbSymptom.DoctorsNote = symptom.DoctorsNote;
                 await _context.SaveChangesAsync();
             }
         }

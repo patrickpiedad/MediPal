@@ -103,6 +103,9 @@ namespace MediPal.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
+                    b.Property<string>("DoctorsNote")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("PainLevel")
                         .HasColumnType("int");
 

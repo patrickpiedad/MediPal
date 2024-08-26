@@ -61,7 +61,8 @@ namespace MediPal.Migrations
                     SymptomName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
                     PainLevel = table.Column<int>(type: "int", nullable: false),
-                    Activity = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Activity = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DoctorsNote = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -176,12 +177,12 @@ namespace MediPal.Migrations
 
             migrationBuilder.InsertData(
                 table: "Symptoms",
-                columns: new[] { "SymptomID", "Activity", "Date", "PainLevel", "SymptomName" },
+                columns: new[] { "SymptomID", "Activity", "Date", "DoctorsNote", "PainLevel", "SymptomName" },
                 values: new object[,]
                 {
-                    { 1, "Post physical training session", new DateOnly(2024, 8, 24), 4, "Headache" },
-                    { 2, "Sleeping", new DateOnly(2024, 8, 24), 2, "Chills" },
-                    { 3, "Showering", new DateOnly(2024, 8, 24), 6, "Body aches" }
+                    { 1, "Post physical training session", new DateOnly(2024, 8, 26), null, 4, "Headache" },
+                    { 2, "Sleeping", new DateOnly(2024, 8, 26), null, 2, "Chills" },
+                    { 3, "Showering", new DateOnly(2024, 8, 26), null, 6, "Body aches" }
                 });
 
             migrationBuilder.CreateIndex(

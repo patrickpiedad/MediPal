@@ -1,10 +1,13 @@
 ﻿@page "/symptomlist"
 @using MediPal.Services
 @using MediPal.Models
+@using Microsoft.AspNetCore.Authorization
 @inject ISymptomService SymptomService
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@attribute [Authorize(Roles = "Patient, Doctor")]
 
 <PageTitle>Symptom List</PageTitle>
 <h3>Symptom List</h3>
@@ -34,6 +37,7 @@ else
                 <th>Date</th>
                 <th>Pain Level</th>
                 <th>Activity</th>
+                <th>Doctor's Note</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -46,8 +50,12 @@ else
                     <td>@symptom.Date</td>
                     <td>@symptom.PainLevel</td>
                     <td>@symptom.Activity</td>
+                    <td>@symptom.DoctorsNote</td>
                     <td><button @onclick="@(() => EditSymptom(symptom.SymptomID))" class="btn btn-primary">Edit Symptom</button></td>
                     <td><button @onclick="@(() => DeleteSymptom(symptom.SymptomID))" class="btn btn-danger">Delete Symptom</button></td>
+                    <AuthorizeView Roles="Doctor">
+                    <td><button @onclick="@(() => DoctorEditSymptom(symptom.SymptomID))" class="btn btn-primary">Edit Symptom</button></td>
+                    </AuthorizeView>
                 </tr>
             }
         </tbody>
@@ -74,6 +82,11 @@ else
     void EditSymptom(int id)
     {
         NavigationManager.NavigateTo($"/editsymptom/{id}");
+    }
+
+    void DoctorEditSymptom(int id)
+    {
+        NavigationManager.NavigateTo($"/doctoreditsymptom/{id}");
     }
 
     async Task DeleteSymptom(int id)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediPal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240824215109_Initial")]
+    [Migration("20240826203229_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -106,6 +106,9 @@ namespace MediPal.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
+                    b.Property<string>("DoctorsNote")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("PainLevel")
                         .HasColumnType("int");
 
@@ -123,7 +126,7 @@ namespace MediPal.Migrations
                         {
                             SymptomID = 1,
                             Activity = "Post physical training session",
-                            Date = new DateOnly(2024, 8, 24),
+                            Date = new DateOnly(2024, 8, 26),
                             PainLevel = 4,
                             SymptomName = "Headache"
                         },
@@ -131,7 +134,7 @@ namespace MediPal.Migrations
                         {
                             SymptomID = 2,
                             Activity = "Sleeping",
-                            Date = new DateOnly(2024, 8, 24),
+                            Date = new DateOnly(2024, 8, 26),
                             PainLevel = 2,
                             SymptomName = "Chills"
                         },
@@ -139,7 +142,7 @@ namespace MediPal.Migrations
                         {
                             SymptomID = 3,
                             Activity = "Showering",
-                            Date = new DateOnly(2024, 8, 24),
+                            Date = new DateOnly(2024, 8, 26),
                             PainLevel = 6,
                             SymptomName = "Body aches"
                         });

@@ -22,5 +22,7 @@ namespace MediPal.Models
         [Required]
         [StringLength(100, ErrorMessage = "Activity description cannot exceed 100 characters.")]
         public string? Activity { get; set; }
+
+        public string? DoctorsNote { get; set; }
     }
 }
