@@ -2,18 +2,71 @@
 
 <PageTitle>Description</PageTitle>
 
-<h1>Welcome to MediPal!</h1>
+<h1 style="text-align: center;">Welcome to MediPal!</h1>
 
 <br />
 
-<h2>MediPal is open source medical software that gives users true access to their holistic health picture. This application is meant to simplify getting the important information to the person, in way they are able to understand.</h2>
+<h2 style="text-align: center;">MediPal is open source medical software that gives users true access to their holistic health picture. This application is meant to simplify getting the important information to the person, in way they are able to understand.</h2>
 
 <br />
-
-<h4>This page will serve as the initial load of the application. This will divert to the landing page upon landing page load, which is shown in the picture below.</h4>
-
+<hr />
 <br />
 
-<div>
-    <img src="/landingPage.png" height="800"/>
+<h3>Current Implemented Features</h3>
+<ul>
+    <li>Model containing properties with backing fields and constructor</li>
+    <li>List collection to hold symptoms (accessed through interface) </li>
+    <li>Interfaces to access model with inherited interface</li>
+    <li>CRUD functionality for symptoms with live syncing with SQL Express database</li>
+    <li>Button interactivity to validate properties with model and allow/not allow for form submit as appropriate</li>
+    <li>Logic to execute specific actions if collections do not show, async functionality, JavaScript interaction when deleting symptoms for user-feedback.</li>
+    <li>List collection to hold doctors (hard coded)</li>
+    <li>SQL Express integration to hold symptoms</li>
+    <li>
+        MVVM-ish architecture, as Blazor uses databinding and code blocks in each razor component so slightly different.
+        <ul>
+            <li>Model (Database)</li>
+            <li>Model (Code blocks in razor files, commands, and services interfaces)</li>
+            <li>View (razor components and HTML templates</li>
+        </ul>
+    </li>
+    <li>Account creation with authorization page to show functionality (boiler plate)</li>
+</ul>
+
+<br />
+<hr />
+<br />
+
+<h3>Phase 1 (Mini-Project) Backlog</h3>
+<ul>
+    <li>Add doctor's notes to symptom, rebuild database based off of this</li>
+    <li>Complete authentication and authorization of user accounts</li>
+    <li>Create user objects for each user account, then migrate symptoms functionality to each user account, as opposed to being fully accessible by full application</li>
+    <li>Populate user dashboard items with user account information</li>
+    <li>Add doctor role</li>
+    <li>Link 1x doctor role account with multiple patient accounts, allowing doctor to edit the "doctor's notes" part of the assigned patient's symptom list</li>
+    <li>Create calendar appointment functionality and display appointments based off of calendar on week outlook</li>
+</ul>
+
+<br />
+<hr />
+<br />
+
+<h3>Phase 2 Backlog</h3>
+<ul>
+    <li>File upload</li>
+    <li>Timeline display based off of larger calendar</li>
+    <li>Possible UI library addition, such as Radzen</li>
+    <li>Chat functionality</li>
+    <li>Additional role implementation with other views, such as Doctor, Nurse, Social Worker, etc...</li>
+    <li>Azure Search API integration</li>
+    <li>Open AI API integration</li>
+</ul>
+
+<br />
+<hr />
+<br />
+
+<div style="text-align:center;">
+    <img src="/landingPage.png" height="800" />
 </div>
