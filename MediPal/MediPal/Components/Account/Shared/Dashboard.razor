@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using MediPal.Components
+@using MediPal.Models
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @inject ISymptomService SymptomService
 
@@ -56,131 +57,121 @@
         <div class="col-md-4">
             <div class="card border">
                 <div class="card-body" style=" text-align: center;">
+                    <h4>Symptom Tracker</h4>
+                    <table class="table">
+
+                        @if (symptoms == null)
+                        {
+                            <span>Symptom list not found.</span>
+                        }
+
+                        @if (symptoms.Count == 0)
+                        {
+                            <div>
+                                <span>Loading symptoms...</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <thead>
+                                <tr>
+                                    <th>Symptom Name</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                        }
+                        <tbody>
+                            @foreach (var symptom in symptoms)
+                            {
+                                <tr>
+                                    <td>@symptom.SymptomName</td>
+                                    <td>@symptom.Date</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card border">
-                    <div class="card-body" style=" text-align: center;">
-                        <h4>Symptom Tracker</h4>
-                        <table class="table">
-
-                            @if (symptoms == null)
-                            {
-                                <span>Symptom list not found.</span>
-                            }
-
-                            @if (symptoms.Count == 0)
-                            {
-                                <div>
-                                    <span>Loading symptoms...</span>
-                                </div>
-                            }
-                            else
-                            {
-                                <thead>
-                                    <tr>
-                                        <th>Symptom Name</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                            }
-                            <tbody>
-                                @foreach (var symptom in symptoms)
-                                {
-                                    <tr>
-                                        <td>@symptom.SymptomName</td>
-                                        <td>@symptom.Date</td>
-                                    </tr>
-                                }
-
-                            </tbody>
-                        </table>
+        @*Week Outlook*@
+        <div class="col-md-4">
+            <div class="card border">
+                <div class="card-body" style=" text-align: left;">
+                    @* need to detach this into a separate component and link to it here *@
+                    <h5 class="card-title" style="text-align: center;">Week Outlook</h5>
+                    <div style="padding: 3% 10%;">
+                        <p class="card-text">Monday: Chemotherapy</p>
+                        <p class="card-text">Tuesday: Recovery</p>
+                        <p class="card-text">Wednesday: Recovery</p>
+                        <p class="card-text">Thursday: Recovery</p>
+                        <p class="card-text">Friday: Bone marrow puncture & release</p>
+                        <p class="card-text">Saturday: Break</p>
+                        <p class="card-text">Sunday: Break</p>
+                        <div style="text-align: center;">
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            @*Week Outlook*@
-            <div class="col-md-4">
-                <div class="card border">
-                    <div class="card-body" style=" text-align: left;">
-                        @* need to detach this into a separate component and link to it here *@
-                        <h5 class="card-title" style="text-align: center;">Week Outlook</h5>
-                        <div style="padding: 3% 10%;">
-                            <p class="card-text">Monday: Chemotherapy</p>
-                            <p class="card-text">Tuesday: Recovery</p>
-                            <p class="card-text">Wednesday: Recovery</p>
-                            <p class="card-text">Thursday: Recovery</p>
-                            <p class="card-text">Friday: Bone marrow puncture & release</p>
-                            <p class="card-text">Saturday: Break</p>
-                            <p class="card-text">Sunday: Break</p>
-                            <div style="text-align: center;">
-                                <a href="#" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
+        @*Your Medical Team*@
+        <div class="col-md-4">
+            <div class="card border">
+                <div class="card-body" style="text-align: left;">
+                    @* need to detach this into a separate component and link to it here *@
+                    <h5 class="card-title" style="text-align: center">Your Medical Team</h5>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var doctor in doctors)
+                            {
+                                <tr>
+                                    <td>@doctor.Title</td>
+                                    <td>@doctor.FirstName</td>
+                                    <td>@doctor.LastName</td>
+                                    <td>@doctor.Role</td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+                    <div style="text-align: center;">
+                        <a href="#" class="btn btn-primary">View Details</a>
                     </div>
-                </div>
 
-                @*Your Medical Team*@
-                <div class="col-md-4">
-                    <div class="card border">
-                        <div class="card-body" style="text-align: left;">
-                            @* need to detach this into a separate component and link to it here *@
-                            <h5 class="card-title" style="text-align: center">Your Medical Team</h5>
-                            <div>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Role</th>
-                                            <th>Name</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Chief Medical Officer</td>
-                                            <td>M.D. Kathy Awesome</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lead Doctor</td>
-                                            <td>M.D. Richard Cool</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Assistant Doctor</td>
-                                            <td>M.D. Arnie Neat</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lead Nurse</td>
-                                            <td>R.N. Cori Chatty </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nurse</td>
-                                            <td>R.N. Elena Empathy </td>
-                                        </tr>
-
-                                    </tbody>
-
-                                </table>
-                            </div>
-
-                            <div style="text-align: center;">
-                                <a href="#" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 
 @code {
     List<Symptom> symptoms = new List<Symptom>();
+    List<Doctor> doctors = new List<Doctor>();
 
     protected override async Task OnInitializedAsync()
     {
+        // get all symptoms from database, using symptomservice interface
         symptoms = await SymptomService.GetAllSymptomsAsync();
+
+        // Need to add doctors in OnInitializedAsync to have them load on program load, this is not connected to the database, need to add later
+        doctors.Add(new Doctor("Kathy", "Awesome", DateOnly.Parse("October 21, 1985"), "M.D.", "Chief Medical Officer"));
+        doctors.Add(new Doctor("Richard", "Cool", DateOnly.Parse("May 4, 1989"), "M.D.", "Lead Doctor"));
+        doctors.Add(new Doctor("Arnie", "Neat", DateOnly.Parse("October 21, 1993"), "M.D.", "Assistant Doctor"));
     }
+
 }

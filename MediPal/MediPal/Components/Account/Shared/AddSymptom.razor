@@ -11,7 +11,7 @@
 
 <EditForm Model="symptom" OnValidSubmit="HandleSubmit" FormName="AddSymptomForm">
     <DataAnnotationsValidator />
-    <ValidationSummary />
+    <ValidationSummary class="text-danger" />
 
     <label class="form-label">Symptom Name</label>
     <InputText class="form-control" @bind-Value="symptom.SymptomName">
@@ -42,7 +42,7 @@
 </EditForm>
 
 @code {
-    [SupplyParameterFromForm] // connects the form input for each parameter to the creation of the new symptom
+    [SupplyParameterFromForm] // connects the form input for each parameter above and passes it to the creation of the new symptom
     Symptom symptom { get; set; } = new Symptom();
 
     async Task HandleSubmit()
