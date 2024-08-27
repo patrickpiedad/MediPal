@@ -57,7 +57,8 @@ else
                         @* <ValidationMessage For="@(() => CurrentSymptom.Activity)" /> *@
                     </div>
 
-                    <AuthorizeView Roles="Doctor">
+                    @*Need to declare another name for "Context" due to its default being the same context default as EditForm and conflicting*@
+                    <AuthorizeView Roles="Doctor" Context="authContext">
                     <div>
                         <label for="doctorsNote">Doctor's Note</label>
                         <InputTextArea id="doctorsNote" class="form-control" @bind-Value="CurrentSymptom.DoctorsNote"></InputTextArea>
