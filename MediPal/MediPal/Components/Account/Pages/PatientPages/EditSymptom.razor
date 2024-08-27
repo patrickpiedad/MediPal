@@ -1,9 +1,12 @@
 ﻿@page "/editsymptom"
 @page "/editsymptom/{Id:int}"
+
 @inject ISymptomService SymptomService
 @inject NavigationManager NavigationManager
+
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 
@@ -54,9 +57,17 @@ else
                         @* <ValidationMessage For="@(() => CurrentSymptom.Activity)" /> *@
                     </div>
 
+                    <AuthorizeView Roles="Doctor">
+                    <div>
+                        <label for="doctorsNote">Doctor's Note</label>
+                        <InputTextArea id="doctorsNote" class="form-control" @bind-Value="CurrentSymptom.DoctorsNote"></InputTextArea>
+                        @* <ValidationMessage For="@(() => CurrentSymptom.Activity)" /> *@
+                    </div>
+                    </AuthorizeView>
+
                     <br />
 
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary me-3">Save</button>
 
                 </EditForm>
             </div>
@@ -101,5 +112,10 @@ else
             await SymptomService.AddSymptomAsync(CurrentSymptom);
             NavigationManager.NavigateTo("/symptomlist");
         }
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("/symptomlist");
     }
 }

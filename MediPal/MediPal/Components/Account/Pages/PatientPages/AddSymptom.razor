@@ -43,9 +43,9 @@
 
                 <br />
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary me-3">Submit</button>
+                <button type="button" class="btn btn-danger" @onclick="Cancel">Cancel</button>
 
-            </EditForm>
         </div>
 
         <div class="col-lg-5" style="align-content: center;">
@@ -63,6 +63,11 @@
     async Task HandleSubmit()
     {
         await SymptomService.AddSymptomAsync(symptom);
+        NavigationManager.NavigateTo("/symptomlist");
+    }
+
+    void Cancel()
+    {
         NavigationManager.NavigateTo("/symptomlist");
     }
 
