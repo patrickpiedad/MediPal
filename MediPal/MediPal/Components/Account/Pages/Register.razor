@@ -7,6 +7,7 @@
 @using Microsoft.AspNetCore.WebUtilities
 @using MediPal.Data
 @using Microsoft.AspNetCore.Authorization
+@using MediPal.Components.Services
 
 @inject UserManager<ApplicationUser> UserManager
 @inject IUserStore<ApplicationUser> UserStore
@@ -15,9 +16,11 @@
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject ISymptomService SymptomService
+@inject IPatientService PatientService
 
 
-@attribute [Authorize(Roles = "Doctor")]
+@* @attribute [Authorize(Roles = "Doctor")] *@
 
 <PageTitle>Register</PageTitle>
 
@@ -62,16 +65,16 @@
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
     </div>
-</div>
 
-<div class="col-md-6 col-md-offset-2">
-    <section>
-        <h3>Use another service to register.</h3>
-        <hr />
-        <ExternalLoginPicker />
-    </section>
-</div>
 
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h3>Use another service to register.</h3>
+            <hr />
+            <ExternalLoginPicker />
+        </section>
+    </div>
+</div>
 
 @code {
     private IEnumerable<IdentityError>? identityErrors;
@@ -90,6 +93,9 @@
     {
         var user = CreateUser();
 
+
+
+
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -104,6 +110,8 @@
             identityErrors = result.Errors;
             return;
         }
+
+
 
         Logger.LogInformation("User created a new account with password.");
 
@@ -171,4 +179,4 @@
         [Display(Name = "Role")]
         public string Role { get; set; } = "";
     }
-    }
+}

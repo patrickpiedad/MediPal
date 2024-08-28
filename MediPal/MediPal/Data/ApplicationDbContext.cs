@@ -2,53 +2,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Humanizer;
 using MediPal.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace MediPal.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser, IdentityRole, string>(options)
     {
+
+        //Add Dbset for each model
+        public DbSet<Patient> Patients { get; set; } //Creating the table for patients to be added when using context to code-first migration
+        public DbSet<Symptom> Symptoms { get; set; } // Creating the table for symptoms to be added when using context to code-first migration
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Symptom>().HasData(
-                new Symptom { SymptomID = 1, SymptomName = "Headache", PainLevel = 4, Date = DateOnly.FromDateTime(DateTime.Now), Activity = "Post physical training session" },
-                new Symptom { SymptomID = 2, SymptomName = "Chills", PainLevel = 2, Date = DateOnly.FromDateTime(DateTime.Now), Activity = "Sleeping" },
-                new Symptom { SymptomID = 3, SymptomName = "Body aches", PainLevel = 6, Date = DateOnly.FromDateTime(DateTime.Now), Activity = "Showering" }
-                );
+            //modelBuilder.Entity<ApplicationUser>().ToTable("Users");
+            //modelBuilder.Entity<IdentityRole>().ToTable("Roles");
+            //modelBuilder.Entity<Patient>().ToTable("Patients");
+            //modelBuilder.Entity<Symptom>().ToTable("Symptoms");
+
+            //modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
+            //modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims");
+            //modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins");
+            //modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
+            //modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
+
+
         }
 
-        //Add Dbset for each model
-        public DbSet<MediPal.Models.Symptom> Symptoms { get; set; } = default!; // Creating the table for symptoms to be added when using context to code-first migration
 
     }
-
-    //public class MediPalContext : DbContext
-    //{
-    //    public MediPalContext(DbContextOptions<MediPalContext> options)
-    //        : base(options)
-    //    {
-
-    //    }
-
-    //    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    //    {
-    //        base.OnModelCreating(modelBuilder);
-
-    //        modelBuilder.Entity<Symptom>().HasData(
-    //            new Symptom { SymptomID = 1, SymptomName = "Headache", PainLevel = 4, Date = DateOnly.FromDateTime(DateTime.Now), Activity = "Post physical training session" },
-    //            new Symptom { SymptomID = 2, SymptomName = "Chills", PainLevel = 2, Date = DateOnly.FromDateTime(DateTime.Now), Activity = "Sleeping" },
-    //            new Symptom { SymptomID = 3, SymptomName = "Body aches", PainLevel = 6, Date = DateOnly.FromDateTime(DateTime.Now), Activity = "Showering" }
-    //            );
-    //    }
-
-    //    //Add Dbset for each model
-    //    public DbSet<MediPal.Models.Symptom> Symptoms { get; set; } = default!;
-
-
-    //}
 }
+

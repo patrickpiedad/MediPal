@@ -1,9 +1,13 @@
 ﻿@page "/addsymptom"
 @page "/addsymptom/{Id:int}"
-@inject ISymptomService SymptomService
-@inject NavigationManager NavigationManager
+
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
+@using MediPal.Components.Services
+
+@inject ISymptomService SymptomService
+@inject NavigationManager NavigationManager
+
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 <div class="container-fluid">

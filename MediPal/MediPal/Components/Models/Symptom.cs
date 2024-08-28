@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MediPal.Models
 {
@@ -24,5 +25,7 @@ namespace MediPal.Models
         public string? Activity { get; set; }
 
         public string? DoctorsNote { get; set; }
+
+        public int PatientID { get; set; } //Adding a foreign key to the patient table?
     }
 }

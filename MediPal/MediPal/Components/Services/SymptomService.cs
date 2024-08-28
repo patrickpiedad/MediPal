@@ -2,7 +2,7 @@
 using MediPal.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace MediPal.Services
+namespace MediPal.Components.Services
 {
     public class SymptomService : ISymptomService // SymptomService inherits from ISymptomService
     {

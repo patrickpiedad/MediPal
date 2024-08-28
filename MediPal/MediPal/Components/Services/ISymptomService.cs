@@ -1,6 +1,6 @@
 ﻿using MediPal.Models;
 
-namespace MediPal.Services
+namespace MediPal.Components.Services
 {
     public interface ISymptomService
     {

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediPal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240826203229_Initial")]
-    partial class Initial
+    [Migration("20240828145443_RemovePatientsFromUser")]
+    partial class RemovePatientsFromUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,6 +90,87 @@ namespace MediPal.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MediPal.Models.Patient", b =>
+                {
+                    b.Property<int>("PatientID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatientID"));
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("MedicalDiagnosis")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PatientID");
+
+                    b.ToTable("Patients");
+                });
+
             modelBuilder.Entity("MediPal.Models.Symptom", b =>
                 {
                     b.Property<int>("SymptomID")
@@ -112,6 +193,9 @@ namespace MediPal.Migrations
                     b.Property<int>("PainLevel")
                         .HasColumnType("int");
 
+                    b.Property<int>("PatientID")
+                        .HasColumnType("int");
+
                     b.Property<string>("SymptomName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -119,33 +203,9 @@ namespace MediPal.Migrations
 
                     b.HasKey("SymptomID");
 
-                    b.ToTable("Symptoms");
+                    b.HasIndex("PatientID");
 
-                    b.HasData(
-                        new
-                        {
-                            SymptomID = 1,
-                            Activity = "Post physical training session",
-                            Date = new DateOnly(2024, 8, 26),
-                            PainLevel = 4,
-                            SymptomName = "Headache"
-                        },
-                        new
-                        {
-                            SymptomID = 2,
-                            Activity = "Sleeping",
-                            Date = new DateOnly(2024, 8, 26),
-                            PainLevel = 2,
-                            SymptomName = "Chills"
-                        },
-                        new
-                        {
-                            SymptomID = 3,
-                            Activity = "Showering",
-                            Date = new DateOnly(2024, 8, 26),
-                            PainLevel = 6,
-                            SymptomName = "Body aches"
-                        });
+                    b.ToTable("Symptoms");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -281,6 +341,15 @@ namespace MediPal.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MediPal.Models.Symptom", b =>
+                {
+                    b.HasOne("MediPal.Models.Patient", null)
+                        .WithMany("Symptoms")
+                        .HasForeignKey("PatientID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -330,6 +399,11 @@ namespace MediPal.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MediPal.Models.Patient", b =>
+                {
+                    b.Navigation("Symptoms");
                 });
 #pragma warning restore 612, 618
         }

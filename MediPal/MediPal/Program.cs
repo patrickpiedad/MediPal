@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data.Common;
-using MediPal.Services;
+using MediPal.Components.Services;
 
 
 namespace MediPal
@@ -30,6 +30,7 @@ namespace MediPal
 
             //Adding ISymptomService dependency injection
             builder.Services.AddScoped<ISymptomService, SymptomService>();
+            builder.Services.AddScoped<IPatientService, PatientService>();
 
             builder.Services.AddCascadingAuthenticationState();
             builder.Services.AddScoped<IdentityUserAccessor>();

@@ -1,7 +1,10 @@
 ﻿@page "/"
+
 @using MediPal.Components
 @using MediPal.Models
-@using Microsoft.AspNetCore.Authorization @*Add authorization to this page*@
+@using Microsoft.AspNetCore.Authorization
+@using MediPal.Components.Services
+
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @* @rendermode InteractiveAuto *@
 @inject ISymptomService SymptomService
