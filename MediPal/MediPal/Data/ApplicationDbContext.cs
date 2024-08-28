@@ -23,6 +23,8 @@ namespace MediPal.Data
         {
             base.OnModelCreating(modelBuilder);
 
+
+
             //modelBuilder.Entity<ApplicationUser>().ToTable("Users");
             //modelBuilder.Entity<IdentityRole>().ToTable("Roles");
             //modelBuilder.Entity<Patient>().ToTable("Patients");
