@@ -26,6 +26,6 @@ namespace MediPal.Models
 
         public string? DoctorsNote { get; set; }
 
-        public int PatientID { get; set; } //Adding a foreign key to the patient table?
+        //public int PatientID { get; set; } //Adding a foreign key to the patient table?
     }
 }

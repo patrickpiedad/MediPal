@@ -7,7 +7,7 @@ using MediPal.Components.Services;
 
 namespace MediPal.Models
 {
-    public class Patient : IdentityUser
+    public class Patient
     {
         [Key]
         public int PatientID { get; set; }
@@ -30,7 +30,7 @@ namespace MediPal.Models
 
         public int? Age { get; set; }
 
-        public ICollection<Symptom>? Symptoms { get; set; } //Adding a collection of symptoms to the patient table?
+        //public ICollection<Symptom>? Symptoms { get; set; } //Adding a collection of symptoms to the patient table?
 
 
 

@@ -8,13 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data.Common;
 using MediPal.Components.Services;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace MediPal
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -49,11 +50,16 @@ namespace MediPal
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //RequireConfirmedAccount changed to FALSE for a development environment, need to change after email service is implemented and in production environment
+            builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddSignInManager()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+
+                //Adding UserManager service to enable creation of account upon app start if it does not exist
+                .AddUserManager<UserManager<ApplicationUser>>();
+
 
             builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
@@ -84,6 +90,52 @@ namespace MediPal
 
             // Add additional endpoints required by the Identity /Account Razor components.
             app.MapAdditionalIdentityEndpoints();
+
+            //Create the "Admin", "Patient", and "Doctor" roles if they do not exist when app starts and is connected to a database
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                var roles = new[] { "Admin", "Patient", "Doctor" };
+
+                foreach (var role in roles)
+                {
+                    if (!await roleManager.RoleExistsAsync(role))
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+
+            //Create an Admin account if it does not exist when app starts and is connected to a database
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                string email = "admin@medipal.com";
+                string password = "Admin#1";
+                string firstname = "admin";
+                string lastname = "admin";
+                string gender = "male";
+                DateOnly dateOfBirth = DateOnly.FromDateTime(DateTime.Now);
+                string MedicalDiagnosis = "none";
+
+
+                if (await userManager.FindByEmailAsync(email) == null)
+                {
+                    var user = new ApplicationUser();
+                    user.UserName = email;
+                    user.Email = email;
+                    user.FirstName = firstname;
+                    user.LastName = lastname;
+                    user.Gender = gender;
+                    user.DateOfBirth = dateOfBirth;
+                    user.MedicalDiagnosis = MedicalDiagnosis;
+
+                    await userManager.CreateAsync(user, password);
+
+                    await userManager.AddToRoleAsync(user, "Admin");
+                }
+
+            }
 
             app.Run();
         }

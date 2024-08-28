@@ -52,7 +52,7 @@ namespace MediPal.Components.Services
                 dbPatient.DateOfBirth = patient.DateOfBirth;
                 dbPatient.MedicalDiagnosis = patient.MedicalDiagnosis;
                 dbPatient.Age = patient.Age;
-                dbPatient.Symptoms = patient.Symptoms;
+                //dbPatient.Symptoms = patient.Symptoms;
                 await _context.SaveChangesAsync();
             }
         }

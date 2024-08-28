@@ -12,7 +12,7 @@
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
-@attribute [Authorize(Roles = "Doctor")]
+@attribute [Authorize(Roles = "Admin, Doctor")]
 
 @if (Id is null)
 {

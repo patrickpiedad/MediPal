@@ -4,170 +4,170 @@
 @using MediPal.Models
 @using Microsoft.AspNetCore.Authorization
 @using MediPal.Components.Services
+@using System.Security.Claims
+
+
+@inject ISymptomService SymptomService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
-@* @rendermode InteractiveAuto *@
-@inject ISymptomService SymptomService
 
-@attribute [Authorize(Roles = "Patient, Doctor")]
+@attribute [Authorize(Roles = "Admin, Patient, Doctor")]
 
 <AuthorizeView>
-<PageTitle>Dashboard</PageTitle>
+    <PageTitle>Dashboard</PageTitle>
 
-<div class="container-fluid">
+    <div class="container-fluid">
 
-    @* start row 1 *@
-    <div class="row">
+        @* start row 1 *@
+        <div class="row">
 
-        @*Patient Information*@
-        <div class="col-lg-4">
-            <div class="card border">
-                <div class="card-body" style="text-align: center;">
-                    @* need to detach this into a separate component and link to it here *@
-                    <h5 class="card-title">Patient Information</h5>
-                    <p class="card-text">Name: Jane Doe</p>
-                    <p class="card-text">Date of Birth: 31.12.1994</p>
-                    <p class="card-text">Medical Diagnosis: Leukemia</p>
-                    <a href="#" class="btn btn-primary">View Details</a>
+            @*Patient Information*@
+            <div class="col-lg-4">
+                <div class="card border">
+                    <div class="card-body" style="text-align: center;">
+                        @* need to detach this into a separate component and link to it here *@
+                        <h5 class="card-title">Patient Information</h5>
+                        <p class="card-text">@user.Identity.Name</p>
+                        <p class="card-text">Name: Jane Doe</p>
+                        <p class="card-text">Date of Birth: 31.12.1994</p>
+                        <p class="card-text">Medical Diagnosis: Leukemia</p>
+                        <a href="#" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            @*Treatment Timeline*@
+            <div class="col-lg-4">
+                <div class="card border">
+                    <div class="card-body" style=" text-align: center;">
+                        @* need to detach this into a separate component and link to it here *@
+                        <h5 class="card-title">Treatment Timeline</h5>
+                        <p class="card-text">Insert timeline here.</p>
+                        <a href="#" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            @*My Profile*@
+            <div class="col-lg-4">
+                <div class="card border">
+                    <div class="card-body" style=" text-align: center;">
+                        @* need to detach this into a separate component and link to it here *@
+                        <h5 class="card-title">My Profile</h5>
+                        <p class="card-text">Jane Doe</p>
+                        <a href="#" class="btn btn-primary">Settings</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        @*Treatment Timeline*@
-        <div class="col-lg-4">
-            <div class="card border">
-                <div class="card-body" style=" text-align: center;">
-                    @* need to detach this into a separate component and link to it here *@
-                    <h5 class="card-title">Treatment Timeline</h5>
-                    <p class="card-text">Insert timeline here.</p>
-                    <a href="#" class="btn btn-primary">View Details</a>
-                </div>
-            </div>
-        </div>
+        <br />
+        <br />
 
-        @*My Profile*@
-        <div class="col-lg-4">
-            <div class="card border">
-                <div class="card-body" style=" text-align: center;">
-                    @* need to detach this into a separate component and link to it here *@
-                    <h5 class="card-title">My Profile</h5>
-                    <p class="card-text">Jane Doe</p>
-                    <a href="#" class="btn btn-primary">Settings</a>
-                </div>
-            </div>
-        </div>
-    </div>
+        @* start row 2 *@
+        <div class="row">
 
-<br />
-<br />
+            @*Symptom Tracker*@
+            <div class="col-lg-4">
+                <div class="card border">
+                    <div class="card-body" style=" text-align: center;">
+                        <h5>Symptom Tracker</h5>
+                        <table class="table table-striped">
 
-    @* start row 2 *@
-    <div class="row">
-
-        @*Symptom Tracker*@
-        <div class="col-lg-4">
-            <div class="card border">
-                <div class="card-body" style=" text-align: center;">
-                    <h5>Symptom Tracker</h5>
-                    <table class="table table-striped">
-
-                        @if (symptoms == null)
-                        {
-                            <span>Symptom list not found.</span>
-                        }
-
-                        @if (symptoms.Count == 0)
-                        {
+                            @if (symptoms == null || symptoms.Any() == false)
+                            {
                             <div>
-                                <span>Loading symptoms...</span>
+                                <span>No symptoms found.</span>
                             </div>
-                        }
-                        else
-                        {
+                            }
+
+                            else
+                            {
                             <thead>
                                 <tr>
                                     <th>Symptom Name</th>
                                     <th>Date</th>
                                 </tr>
                             </thead>
-                        }
-                        <tbody>
-                            @foreach (var symptom in symptoms)
-                            {
-                                <tr>
-                                    <td>@symptom.SymptomName</td>
-                                    <td>@symptom.Date</td>
-                                </tr>
                             }
+                            <tbody>
+                                @foreach (var symptom in symptoms)
+                                {
+                                    <tr>
+                                        <td>@symptom.SymptomName</td>
+                                        <td>@symptom.Date</td>
+                                    </tr>
+                                }
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        @*Week Outlook*@
-        <div class="col-lg-4">
-            <div class="card border">
-                <div class="card-body" style=" text-align: left;">
-                    @* need to detach this into a separate component and link to it here *@
-                    <h5 class="card-title" style="text-align: center;">Week Outlook</h5>
-                    <div style="padding: 3% 10%;">
-                        <p class="card-text">Monday: Chemotherapy</p>
-                        <p class="card-text">Tuesday: Recovery</p>
-                        <p class="card-text">Wednesday: Recovery</p>
-                        <p class="card-text">Thursday: Recovery</p>
-                        <p class="card-text">Friday: Bone marrow puncture & release</p>
-                        <p class="card-text">Saturday: Break</p>
-                        <p class="card-text">Sunday: Break</p>
-                        <div style="text-align: center;">
-                            <a href="#" class="btn btn-primary">View Details</a>
+            @*Week Outlook*@
+            <div class="col-lg-4">
+                <div class="card border">
+                    <div class="card-body" style=" text-align: left;">
+                        @* need to detach this into a separate component and link to it here *@
+                        <h5 class="card-title" style="text-align: center;">Week Outlook</h5>
+                        <div style="padding: 3% 10%;">
+                            <p class="card-text">Monday: Chemotherapy</p>
+                            <p class="card-text">Tuesday: Recovery</p>
+                            <p class="card-text">Wednesday: Recovery</p>
+                            <p class="card-text">Thursday: Recovery</p>
+                            <p class="card-text">Friday: Bone marrow puncture & release</p>
+                            <p class="card-text">Saturday: Break</p>
+                            <p class="card-text">Sunday: Break</p>
+                            <div style="text-align: center;">
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        @*Your Medical Team*@
-        <div class="col-lg-4">
-            <div class="card border">
-                <div class="card-body" style="text-align: left;">
-                    @* need to detach this into a separate component and link to it here *@
-                    <h5 class="card-title" style="text-align: center">Your Medical Team</h5>
+            @*Your Medical Team*@
+            <div class="col-lg-4">
+                <div class="card border">
+                    <div class="card-body" style="text-align: left;">
+                        @* need to detach this into a separate component and link to it here *@
+                        <h5 class="card-title" style="text-align: center">Your Medical Team</h5>
 
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Role</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var doctor in doctors)
-                            {
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>@doctor.Title</td>
-                                    <td>@doctor.FirstName</td>
-                                    <td>@doctor.LastName</td>
-                                    <td>@doctor.Role</td>
+                                    <th>Title</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Role</th>
                                 </tr>
-                            }
-                        </tbody>
+                            </thead>
+                            <tbody>
+                                @foreach (var doctor in doctors)
+                                {
+                                    <tr>
+                                        <td>@doctor.Title</td>
+                                        <td>@doctor.FirstName</td>
+                                        <td>@doctor.LastName</td>
+                                        <td>@doctor.Role</td>
+                                    </tr>
+                                }
+                            </tbody>
 
-                    </table>
+                        </table>
 
-                    <div style="text-align: center;">
-                        <a href="#" class="btn btn-primary">View Details</a>
+                        <div style="text-align: center;">
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
+
                     </div>
-
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>
 
 </AuthorizeView>
 
@@ -176,8 +176,16 @@
     List<Symptom> symptoms = new List<Symptom>();
     List<Doctor> doctors = new List<Doctor>();
 
+    private ClaimsPrincipal? user;
+
+
     protected override async Task OnInitializedAsync()
     {
+        //get current user
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = state.User;
+
+
         // get all symptoms from database, using symptomservice interface
         symptoms = await SymptomService.GetAllSymptomsAsync();
 
@@ -186,5 +194,7 @@
         doctors.Add(new Doctor("Richard", "Cool", DateOnly.Parse("May 4, 1989"), "M.D.", "Lead Doctor"));
         doctors.Add(new Doctor("Arnie", "Neat", DateOnly.Parse("October 21, 1993"), "M.D.", "Assistant Doctor"));
     }
+
+    
 
 }
