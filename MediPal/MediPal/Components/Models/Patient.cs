@@ -24,9 +24,9 @@ namespace MediPal.Models
         [Required]
         public DateOnly DateOfBirth { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
-        [Required]
-        [StringLength(100, ErrorMessage = "Medical diagnosis cannot exceed 100 characters.")]
-        public string? MedicalDiagnosis { get; set; }
+        //[Required]
+        //[StringLength(100, ErrorMessage = "Medical diagnosis cannot exceed 100 characters.")]
+        //public string? MedicalDiagnosis { get; set; }
 
         public int? Age { get; set; }
 

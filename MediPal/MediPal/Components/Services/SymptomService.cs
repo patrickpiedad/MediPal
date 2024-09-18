@@ -18,6 +18,17 @@ namespace MediPal.Components.Services
             var symptoms = await _context.Symptoms.ToListAsync();
             return symptoms;
         }
+
+        // This is the method that gets all symptoms belonging to the specific userId
+        public async Task<List<Symptom>> GetSymptomsByUserIdAsync(string userId)
+        {
+            await Task.Delay(1000);
+            return await _context.Symptoms
+                .Where(s => s.User.Id == userId)
+                .ToListAsync();
+        }
+
+
         public async Task<Symptom> GetSymptomByIdAsync(int id)
         {
             var symptom = await _context.Symptoms.FindAsync(id);

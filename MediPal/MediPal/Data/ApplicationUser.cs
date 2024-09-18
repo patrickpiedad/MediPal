@@ -17,7 +17,9 @@ namespace MediPal.Data
 
         public DateOnly DateOfBirth { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
-        public string? MedicalDiagnosis { get; set; }
+        public virtual ICollection<Symptom>? Symptoms { get; set; }
+
+        //public string? MedicalDiagnosis { get; set; }
     }
 
 }
