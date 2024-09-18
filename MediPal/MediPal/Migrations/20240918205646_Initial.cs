@@ -34,7 +34,6 @@ namespace MediPal.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
-                    MedicalDiagnosis = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -53,41 +52,6 @@ namespace MediPal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Patients",
-                columns: table => new
-                {
-                    PatientID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
-                    MedicalDiagnosis = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Age = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Patients", x => x.PatientID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Symptoms",
-                columns: table => new
-                {
-                    SymptomID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SymptomName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    PainLevel = table.Column<int>(type: "int", nullable: false),
-                    Activity = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    DoctorsNote = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Symptoms", x => x.SymptomID);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,6 +160,30 @@ namespace MediPal.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Symptoms",
+                columns: table => new
+                {
+                    SymptomID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SymptomName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    PainLevel = table.Column<int>(type: "int", nullable: false),
+                    Activity = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DoctorsNote = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Symptoms", x => x.SymptomID);
+                    table.ForeignKey(
+                        name: "FK_Symptoms_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -234,6 +222,11 @@ namespace MediPal.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Symptoms_Id",
+                table: "Symptoms",
+                column: "Id");
         }
 
         /// <inheritdoc />
@@ -253,9 +246,6 @@ namespace MediPal.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "Patients");
 
             migrationBuilder.DropTable(
                 name: "Symptoms");

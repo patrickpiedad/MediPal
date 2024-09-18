@@ -19,7 +19,6 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 @inject ISymptomService SymptomService
-@inject IPatientService PatientService
 
 
 @* @attribute [Authorize(Roles = "Doctor")] *@
@@ -64,10 +63,10 @@
             </div>
 
             
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.MedicalDiagnosis" class="form-control" autocomplete="medicaldiagnosis" aria-required="true" placeholder="Medical Diagnosis" />
-                <label for="medicaldiagnosis">Medical Diagnosis</label>
-            </div>
+@*              <div class="form-floating mb-3">
+                 <InputText @bind-Value="Input.MedicalDiagnosis" class="form-control" autocomplete="medicaldiagnosis" aria-required="true" placeholder="Medical Diagnosis" />
+                 <label for="medicaldiagnosis">Medical Diagnosis</label>
+             </div> *@
 
 
             <div class="form-floating mb-3">
@@ -142,7 +141,7 @@
         user.LastName = Input.LastName;
         user.Gender = Input.Gender;
         user.DateOfBirth = Input.DateOfBirth;
-        user.MedicalDiagnosis = Input.MedicalDiagnosis;
+        // user.MedicalDiagnosis = Input.MedicalDiagnosis;
 
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
@@ -221,9 +220,9 @@
         [Display(Name = "Date of Birth")]
         public DateOnly DateOfBirth { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
-        [Required]
-        [Display(Name = "Medical Diagnosis")]
-        public string MedicalDiagnosis { get; set; } = "";
+        // [Required]
+        // [Display(Name = "Medical Diagnosis")]
+        // public string MedicalDiagnosis { get; set; } = "";
 
         [Required]
         [EmailAddress]
@@ -235,8 +234,8 @@
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; } = "";
-
         [DataType(DataType.Password)]
+
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = "";

@@ -1,12 +1,20 @@
 ﻿@page "/addsymptom"
 @page "/addsymptom/{Id:int}"
 
+@attribute [Authorize]
+
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 @using MediPal.Components.Services
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
 
 @inject ISymptomService SymptomService
 @inject NavigationManager NavigationManager
+@inject UserManager<ApplicationUser> UserManager
+@inject ApplicationDbContext DbContext
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
@@ -64,8 +72,31 @@
     [SupplyParameterFromForm] // connects the form input for each parameter above and passes it to the creation of the new symptom
     Symptom symptom { get; set; } = new Symptom();
 
+    private string UserId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        }
+
+        else
+        {
+            NavigationManager.NavigateTo("/Account/Login");
+        }
+
+
+    }
+
     async Task HandleSubmit()
     {
+        // This is adding the current authenticated userId (found as only Id in the ASPNETUsers table) as the foreign key in the new symptom
+        symptom.Id = UserId;
+
         await SymptomService.AddSymptomAsync(symptom);
         NavigationManager.NavigateTo("/symptomlist");
     }

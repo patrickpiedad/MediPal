@@ -31,7 +31,7 @@ namespace MediPal
 
             //Adding ISymptomService dependency injection
             builder.Services.AddScoped<ISymptomService, SymptomService>();
-            builder.Services.AddScoped<IPatientService, PatientService>();
+            //builder.Services.AddScoped<IPatientService, PatientService>();
 
             builder.Services.AddCascadingAuthenticationState();
             builder.Services.AddScoped<IdentityUserAccessor>();
@@ -128,7 +128,7 @@ namespace MediPal
                     user.LastName = lastname;
                     user.Gender = gender;
                     user.DateOfBirth = dateOfBirth;
-                    user.MedicalDiagnosis = MedicalDiagnosis;
+                    //user.MedicalDiagnosis = MedicalDiagnosis;
 
                     await userManager.CreateAsync(user, password);
 

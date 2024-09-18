@@ -16,27 +16,21 @@ namespace MediPal.Data
     {
 
         //Add Dbset for each model
-        //public DbSet<Patient> Patients { get; set; } //Creating the table for patients to be added when using context to code-first migration
+
         public DbSet<Symptom> Symptoms { get; set; } // Creating the table for symptoms to be added when using context to code-first migration
+
+        //public DbSet<
+        //> Patients { get; set; } //Creating the table for patients to be added when using context to code-first migration
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-
-
-            //modelBuilder.Entity<ApplicationUser>().ToTable("Users");
-            //modelBuilder.Entity<IdentityRole>().ToTable("Roles");
-            //modelBuilder.Entity<Patient>().ToTable("Patients");
-            //modelBuilder.Entity<Symptom>().ToTable("Symptoms");
-
-            //modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
-            //modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims");
-            //modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins");
-            //modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
-            //modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
-
-
+            modelBuilder.Entity<Symptom>()
+                .HasOne(s => s.User)
+                .WithMany(u => u.Symptoms)
+                .HasForeignKey(s => s.Id)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
 
