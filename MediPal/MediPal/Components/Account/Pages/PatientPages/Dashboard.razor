@@ -61,10 +61,10 @@
             </div>
         </div>
 
-@* 
-                        <NavLink class="nav-link" href="Account/Manage">
-                    <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
-                </NavLink> *@
+        @*
+        <NavLink class="nav-link" href="Account/Manage">
+        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
+        </NavLink> *@
 
         <br />
         <br />
@@ -81,19 +81,19 @@
 
                             @if (symptoms == null || symptoms.Any() == false)
                             {
-                            <div>
-                                <span>No symptoms found.</span>
-                            </div>
+                                <div>
+                                    <span>No symptoms found.</span>
+                                </div>
                             }
 
                             else
                             {
-                            <thead>
-                                <tr>
-                                    <th>Symptom Name</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
+                                <thead>
+                                    <tr>
+                                        <th>Symptom Name</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
                             }
                             <tbody>
                                 @foreach (var symptom in symptoms)
@@ -186,19 +186,25 @@
     protected override async Task OnInitializedAsync()
     {
         //get current user
-        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        user = state.User;
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
 
 
-        // get all symptoms from database, using symptomservice interface
-        symptoms = await SymptomService.GetAllSymptomsAsync();
+        // get all symptoms from database, using symptomservice interface SPECIFIC to the user logged in
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            symptoms = await SymptomService.GetSymptomsByUserIdAsync(userId);
+        }
+
+        else
+        {
+            symptoms = new List<Symptom>();
+        }
 
         // Need to add doctors in OnInitializedAsync to have them load on program load, this is not connected to the database, need to add later
         doctors.Add(new Doctor("Kathy", "Awesome", DateOnly.Parse("October 21, 1985"), "M.D.", "Chief Medical Officer"));
         doctors.Add(new Doctor("Richard", "Cool", DateOnly.Parse("May 4, 1989"), "M.D.", "Lead Doctor"));
         doctors.Add(new Doctor("Arnie", "Neat", DateOnly.Parse("October 21, 1993"), "M.D.", "Assistant Doctor"));
     }
-
-    
-
 }
