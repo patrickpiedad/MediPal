@@ -1,14 +1,10 @@
-using MediPal.Client.Pages;
 using MediPal.Components;
 using MediPal.Components.Account;
+using MediPal.Components.Services;
 using MediPal.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System.Data.Common;
-using MediPal.Components.Services;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace MediPal
@@ -116,7 +112,7 @@ namespace MediPal
                 string lastname = "admin";
                 string gender = "male";
                 DateOnly dateOfBirth = DateOnly.FromDateTime(DateTime.Now);
-                string MedicalDiagnosis = "none";
+                //string MedicalDiagnosis = "none";
 
 
                 if (await userManager.FindByEmailAsync(email) == null)

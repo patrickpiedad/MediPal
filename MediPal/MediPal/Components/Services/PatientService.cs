@@ -1,8 +1,4 @@
-﻿using MediPal.Data;
-using MediPal.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace MediPal.Components.Services
+﻿namespace MediPal.Components.Services
 {
     //public class PatientService : IPatientService // PatientService inherits from IPatientService
     //{

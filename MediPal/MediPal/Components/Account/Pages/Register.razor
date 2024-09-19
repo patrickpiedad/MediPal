@@ -63,7 +63,7 @@
             </div>
 
             
-@*              <div class="form-floating mb-3">
+@*           <div class="form-floating mb-3">
                  <InputText @bind-Value="Input.MedicalDiagnosis" class="form-control" autocomplete="medicaldiagnosis" aria-required="true" placeholder="Medical Diagnosis" />
                  <label for="medicaldiagnosis">Medical Diagnosis</label>
              </div> *@
@@ -123,7 +123,7 @@
 @code {
     private IEnumerable<IdentityError>? identityErrors;
 
-    private List<string> Roles = new List<string> { "Admin", "Patient", "Doctor" };
+    private List<string> Roles = new List<string> { "Patient", "Doctor", "Admin" };
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
