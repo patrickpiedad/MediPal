@@ -1,11 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using MediPal.Data;
-using Microsoft.AspNetCore.Identity;
-using MediPal.Components.Services;
 
-namespace MediPal.Models
+namespace MediPal.Components.Models
 {
     public class Patient
     {

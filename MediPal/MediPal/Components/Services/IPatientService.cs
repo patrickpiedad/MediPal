@@ -1,4 +1,4 @@
-﻿using MediPal.Models;
+﻿using MediPal.Components.Models;
 
 namespace MediPal.Components.Services
 {

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MediPal.Models
 {
@@ -26,14 +25,14 @@ namespace MediPal.Models
 
         public int? Age { get; set; }
 
-        public Doctor ()
+        public Doctor()
         {
             FirstName = "";
             LastName = "";
             DateOfBirth = DateOnly.FromDateTime(DateTime.Now);
             Role = "";
         }
-        public Doctor (string FirstName, string LastName, DateOnly DateOfBirth, string Title, string Role)
+        public Doctor(string FirstName, string LastName, DateOnly DateOfBirth, string Title, string Role)
         {
             this.FirstName = FirstName;
             this.LastName = LastName;
