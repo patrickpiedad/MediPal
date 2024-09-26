@@ -41,7 +41,7 @@ namespace MediPal.Components.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteSymptomAsync(int id)
+        public async Task DeleteSymptomAsync(int id, string userId)
         {
             var symptom = await _context.Symptoms.FindAsync(id);
             if (symptom != null)

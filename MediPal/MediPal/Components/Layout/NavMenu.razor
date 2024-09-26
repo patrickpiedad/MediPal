@@ -30,7 +30,16 @@
             </div>
         </AuthorizeView>
 
-        @* Symptom List *@
+        @* Note List *@
+        <AuthorizeView Roles="Admin, Patient, Doctor">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="notelist">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Note List
+                </NavLink>
+            </div>
+        </AuthorizeView>
+
+        @* Week Outlook *@
         <AuthorizeView Roles="Admin, Patient, Doctor">
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="weekoutlook">
@@ -39,7 +48,7 @@
             </div>
         </AuthorizeView>
 
-        @* Symptom List *@
+        @* Timeline *@
         <AuthorizeView Roles="Admin, Patient, Doctor">
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="timeline">

@@ -9,6 +9,7 @@
 
 
 @inject ISymptomService SymptomService
+@inject INoteService NoteService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UserManager<ApplicationUser> UserManager
 
@@ -183,6 +184,53 @@
             </div>
         </div>
 
+        <br />
+        <br />
+
+        @* start row 3 *@
+        <div class="row">
+
+            @*Note Tracker*@
+            <div class="col-lg-12">
+                <div class="card border">
+                    <div class="card-body" style=" text-align: center;">
+                        <h5>Note Tracker</h5>
+                        <table class="table table-striped">
+
+                            @if (notes == null || notes.Any() == false)
+                            {
+                                <div>
+                                    <span>No notes found.</span>
+                                </div>
+                            }
+
+                            else
+                            {
+                                <thead>
+                                    <tr>
+                                        <th>Note Title</th>
+                                        <th>Note Description</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                            }
+                            <tbody>
+                                @foreach (var note in notes)
+                                {
+                                    <tr>
+                                        <td>@note.NoteTitle</td>
+                                        <td>@note.Date</td>
+                                        <td>@note.NoteDescription</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </AuthorizeView>
@@ -190,6 +238,7 @@
 
 @code {
     List<Symptom> symptoms = new List<Symptom>();
+    List<Note> notes = new List<Note>();
     List<Doctor> doctors = new List<Doctor>();
 
     private ClaimsPrincipal? user;
@@ -204,11 +253,12 @@
 
 
 
-        // get all symptoms from database, using symptomservice interface SPECIFIC to the user logged in
+        // get all symptoms and notes from database, using symptomservice and noteservice interface SPECIFIC to the user logged in
         if (user.Identity.IsAuthenticated)
         {
             var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             symptoms = await SymptomService.GetSymptomsByUserIdAsync(userId);
+            notes = await NoteService.GetNotesByUserIdAsync(userId);
 
             // Get current user details
             currentUser = await UserManager.FindByIdAsync(userId);
@@ -217,6 +267,7 @@
         else
         {
             symptoms = new List<Symptom>();
+            notes = new List<Note>();
         }
 
         // Need to add doctors in OnInitializedAsync to have them load on program load, this is not connected to the database, need to add later

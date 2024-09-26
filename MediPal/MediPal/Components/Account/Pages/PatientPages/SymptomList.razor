@@ -107,9 +107,15 @@ else
 
     async Task DeleteSymptom(int id)
     {
-        await SymptomService.DeleteSymptomAsync(id);
-        symptoms = await SymptomService.GetAllSymptomsAsync();
-        await JSRuntime.InvokeVoidAsync("alert", "Symptom successfully deleted.");
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
 
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            await SymptomService.DeleteSymptomAsync(id, userId);
+            symptoms = await SymptomService.GetSymptomsByUserIdAsync(userId);
+            await JSRuntime.InvokeVoidAsync("alert", "Symptom successfully deleted.");
+        }
     }
 }

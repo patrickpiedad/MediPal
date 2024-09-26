@@ -1,0 +1,113 @@
+﻿@page "/notelist"
+
+@using MediPal.Components.Services
+@using MediPal.Models
+@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+
+@inject INoteService NoteService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ApplicationDbContext DbContext
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@attribute [Authorize(Roles = "Admin, Patient, Doctor")]
+
+<PageTitle>Note List</PageTitle>
+<h3>Note List</h3>
+
+@if (notes == null || notes.Any() == false)
+{
+    <div>
+    <span>No notes found.</span>
+    </div>
+    <button @onclick="AddNote" class="btn btn-primary">Add Note</button>
+}
+
+@* @if (symptoms.Count == 0)
+{
+    <div>
+        <span>Loading symptoms...</span>
+    </div>
+
+} *@
+
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Description</th>
+                @* Adding extra column headers for to extend table for buttons *@
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var note in notes)
+            {
+                <tr>
+                    <td>@note.NoteTitle</td>
+                    <td>@note.Date</td>
+                    <td>@note.NoteDescription</td>
+                    <td><button @onclick="@(() => EditNote(note.NoteID))" class="btn btn-primary">Edit Note</button></td>
+                    <td><button @onclick="@(() => DeleteNote(note.NoteID))" class="btn btn-danger">Delete Note</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <button @onclick="AddNote" class="btn btn-primary">Add Note</button>
+    </div>
+}
+
+@code {
+    List<Note> notes = new List<Note>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            notes = await NoteService.GetNotesByUserIdAsync(userId);
+        }
+
+        else
+        {
+            notes = new List<Note>();
+        }
+
+    }
+
+    void AddNote()
+    {
+        NavigationManager.NavigateTo("/addnote");
+    }
+
+    void EditNote(int id)
+    {
+        NavigationManager.NavigateTo($"/editnote/{id}");
+    }
+
+    async Task DeleteNote(int id)
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            await NoteService.DeleteNoteAsync(id, userId);
+            notes = await NoteService.GetNotesByUserIdAsync(userId);
+            await JSRuntime.InvokeVoidAsync("alert", "Symptom successfully deleted.");
+        }
+    }
+}

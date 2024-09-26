@@ -15,7 +15,6 @@ namespace MediPal.Models
 
         [Required]
         public DateOnly Date { get; set; } = DateOnly.FromDateTime(DateTime.Now);
-        //public DateTime Date { get; set; } = DateTime.Today;
 
         [Required]
         [Range(0, 10, ErrorMessage = "Pain level must be between 0 and 10.")]
@@ -30,6 +29,5 @@ namespace MediPal.Models
         public string Id { get; set; }
         public virtual ApplicationUser User { get; set; }
 
-        //public int PatientID { get; set; } //Adding a foreign key to the patient table?
     }
 }

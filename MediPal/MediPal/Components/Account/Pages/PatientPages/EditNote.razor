@@ -1,0 +1,100 @@
+﻿@page "/editnote"
+@page "/editnote/{Id:int}"
+
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization
+@using MediPal.Components.Services
+
+@inject INoteService NoteService
+@inject NavigationManager NavigationManager
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+
+@if (Id is null)
+{
+    <PageTitle>Edit Note</PageTitle>
+    <h3>Loading form...</h3>
+}
+
+else
+{
+    <PageTitle>Edit "@CurrentNote.NoteTitle"</PageTitle>
+    <div class="container-fluid">
+
+        <h3>Edit Note</h3>
+
+        <div class="row">
+
+            <div class="col-lg-7">
+
+
+
+                <EditForm Model="CurrentNote" OnValidSubmit="HandleSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="text-danger" />
+
+                    <div>
+                        <label for="noteTitle">Title</label>
+                        <InputText id="noteTitle" class="form-control" @bind-Value="CurrentNote.NoteTitle"></InputText>
+                    </div>
+
+                    <div>
+                        <label for="date">Date</label>
+                        <InputDate id="date" class="form-control" @bind-Value="CurrentNote.Date"></InputDate>
+                    </div>
+
+                    <div>
+                        <label for="noteDescription">Description</label>
+                        <InputNumber id="noteDescription" class="form-control" @bind-Value="CurrentNote.NoteDescription"></InputNumber>
+                    </div>
+
+                    <br />
+
+                    <button type="submit" class="btn btn-primary me-3">Save</button>
+
+                </EditForm>
+            </div>
+        </div>
+    </div>
+
+}
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    public Note CurrentNote { get; set; } = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id is not null)
+        {
+            var note = await NoteService.GetNoteByIdAsync((int)Id);
+            if (note is not null)
+            {
+                CurrentNote = note;
+            }
+        }
+    }
+
+    async Task HandleSubmit()
+    {
+        if (Id is not null)
+        {
+            await NoteService.UpdateNoteAsync(CurrentNote, (int)Id);
+            NavigationManager.NavigateTo("notelist");
+        }
+        else
+        {
+            await NoteService.AddNoteAsync(CurrentNote);
+            NavigationManager.NavigateTo("/notelist");
+        }
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("/notelist");
+    }
+}

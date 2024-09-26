@@ -15,7 +15,7 @@ namespace MediPal.Data
 
         public virtual ICollection<Symptom>? Symptoms { get; set; }
 
-        //public string? MedicalDiagnosis { get; set; }
+        public virtual ICollection<Note>? Notes { get; set; }
     }
 
 }
