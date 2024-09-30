@@ -5,6 +5,7 @@ using MediPal.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Blazor;
 
 
 namespace MediPal
@@ -22,6 +23,9 @@ namespace MediPal
 
             //Add quick grid entity framework adapter
             builder.Services.AddQuickGridEntityFrameworkAdapter();
+
+            //Add SyncFusion Blazor components
+            builder.Services.AddSyncfusionBlazor();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
