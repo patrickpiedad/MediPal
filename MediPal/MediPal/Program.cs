@@ -21,9 +21,6 @@ namespace MediPal
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
 
-            //Add quick grid entity framework adapter
-            builder.Services.AddQuickGridEntityFrameworkAdapter();
-
             //Add SyncFusion Blazor components
             builder.Services.AddSyncfusionBlazor();
 
@@ -66,10 +63,10 @@ namespace MediPal
             //Add SyncFusion Blazor Licensing
 
             //7 Day Trial
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF5cWWtCf1NpQnxbf1x0ZFRHal1ZTnZZUiweQnxTdEFjUHxecXVUTmBaUEF1Xw==");
+            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF5cWWtCf1NpQnxbf1x0ZFRHal1ZTnZZUiweQnxTdEFjUHxecXVUTmBaUEF1Xw==");
 
             //30 Day Trial
-            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("@32372e302e30Ceo8C68485I/nSECWJP7MFuWdt4iLEajmhaZpojzI9o=");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("@32372e302e30Ceo8C68485I/nSECWJP7MFuWdt4iLEajmhaZpojzI9o=");
 
 
             var app = builder.Build();

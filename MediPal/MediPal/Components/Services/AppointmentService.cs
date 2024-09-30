@@ -14,7 +14,7 @@ namespace MediPal.Components.Services
         }
         public async Task<List<Appointment>> GetAllAppointmentsAsync()
         {
-            await Task.Delay(500);
+            //await Task.Delay(500);
             var appointments = await _context.Appointments.ToListAsync();
             return appointments;
         }
@@ -22,7 +22,7 @@ namespace MediPal.Components.Services
         // This is the method that gets all notes belonging to the specific userId
         public async Task<List<Appointment>> GetAppointmentsByUserIdAsync (string userId)
         {
-            await Task.Delay(500);
+            //await Task.Delay(500);
             return await _context.Appointments
                 .Where(a => a.User.Id == userId)
                 .ToListAsync();
@@ -37,6 +37,21 @@ namespace MediPal.Components.Services
 
         public async Task AddAppointmentAsync(Appointment appointment)
         {
+            //var app = new Appointment();
+            //app.Subject = appointment.Subject;
+            //app.StartTime = appointment.StartTime;
+            //app.EndTime = appointment.EndTime;
+            //app.StartTimezone = appointment.StartTimezone;
+            //app.EndTimezone = appointment.EndTimezone;
+            //app.Location = appointment.Location;
+            //app.Description = appointment.Description;
+            //app.IsReadOnly = appointment.IsReadOnly;
+            //app.IsAllDay = appointment.IsAllDay;
+            //app.RecurrenceId = appointment.RecurrenceId;
+            //app.RecurrenceRule = appointment.RecurrenceRule;
+            //app.RecurrenceException = appointment.RecurrenceException;
+            //app.IsBlock = appointment.IsBlock;
+
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
         }
@@ -53,19 +68,23 @@ namespace MediPal.Components.Services
 
         public async Task UpdateAppointmentAsync(Appointment appointment, int id)
         {
-            var dbAppointment = await _context.Appointments.FindAsync(id);
-            if (dbAppointment != null)
+            var app = await _context.Appointments.FindAsync(id);
+            if (app != null)
             {
-                dbAppointment.Subject = appointment.Subject;
-                dbAppointment.Description = appointment.Description;
-                dbAppointment.StartTime = appointment.StartTime;
-                dbAppointment.EndTime = appointment.EndTime;
-                dbAppointment.Location = appointment.Location;
-                dbAppointment.IsAllDay = appointment.IsAllDay;
-                dbAppointment.RecurrenceRule = appointment.RecurrenceRule;
-                dbAppointment.RecurrenceException = appointment.RecurrenceException;
-                dbAppointment.RecurrenceId = appointment.RecurrenceId;
+                app.StartTime = appointment.StartTime;
+                app.EndTime = appointment.EndTime;
+                app.StartTimezone = appointment.StartTimezone;
+                app.EndTimezone = appointment.EndTimezone;
+                app.Location = appointment.Location;
+                app.Description = appointment.Description;
+                app.IsReadOnly = appointment.IsReadOnly;
+                app.IsAllDay = appointment.IsAllDay;
+                app.RecurrenceId = appointment.RecurrenceId;
+                app.RecurrenceRule = appointment.RecurrenceRule;
+                app.RecurrenceException = appointment.RecurrenceException;
+                app.IsBlock = appointment.IsBlock;
 
+                //_context.Appointments.Update(app);
                 await _context.SaveChangesAsync();
             }
         }

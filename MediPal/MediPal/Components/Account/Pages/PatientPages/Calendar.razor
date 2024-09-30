@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using System.Security.Claims
 @using Syncfusion.Blazor.Schedule
+@using Syncfusion.Blazor.Data
 
 @inject IAppointmentService AppointmentService
 @inject NavigationManager NavigationManager
@@ -18,142 +19,84 @@
 
 <PageTitle>Week Outlook</PageTitle>
 
-<h1 style="text-align: center;">Week Outlook</h1>
+<h1 style="text-align: center;">Calendar</h1>
 
 <br />
 
-<div class="row">
+<div class="col-lg-12 control-section">
 
-<SfSchedule TValue="Appointment" CurrentView="View.Month">
-    <ScheduleEventSettings DataSource="@appointments"></ScheduleEventSettings>
-    <ScheduleViews>
-        <ScheduleView Option="View.Day"></ScheduleView>
-        <ScheduleView Option="View.Week"></ScheduleView>
-        <ScheduleView Option="View.WorkWeek"></ScheduleView>
-        <ScheduleView Option="View.Month"></ScheduleView>
-        <ScheduleView Option="View.Agenda"></ScheduleView>
-    </ScheduleViews>
-</SfSchedule>
+    <SfSchedule TValue="AppointmentData">
+        <ScheduleViews>
+            <ScheduleView Option="View.Day"></ScheduleView>
+            <ScheduleView Option="View.Week"></ScheduleView>
+            <ScheduleView Option="View.Month"></ScheduleView>
+            <ScheduleView Option="View.Agenda"></ScheduleView>
+        </ScheduleViews>
+    </SfSchedule>
 
 </div>
 
-<div class="row">
-
-    <div class="col-lg-3">
-        <div class="card border">
-            <div class="card-body" style=" text-align: left;">
-                <h5 class="card-title" style="text-align: center;">Monday</h5>
-                <p class="card-text" style="text-align: center;">Chemotherapy</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-3">
-        <div class="card border">
-            <div class="card-body" style=" text-align: left;">
-                <h5 class="card-title" style="text-align: center;">Tuesday</h5>
-                <p class="card-text" style="text-align: center;">Recovery</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-3">
-        <div class="card border">
-            <div class="card-body" style=" text-align: left;">
-                <h5 class="card-title" style="text-align: center;">Wednesday</h5>
-                <p class="card-text" style="text-align: center;">Recovery</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-3">
-        <div class="card border">
-            <div class="card-body" style=" text-align: left;">
-                <h5 class="card-title" style="text-align: center;">Thursday</h5>
-                <p class="card-text" style="text-align: center;">Recovery</p>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<br />
-<br />
-
-<div class="row">
-
-    <div class="col-lg-4">
-        <div class="card border">
-            <div class="card-body" style=" text-align: left;">
-                <h5 class="card-title" style="text-align: center;">Friday</h5>
-                <p class="card-text" style="text-align: center;">Bone Marrow Puncture</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-4">
-        <div class="card border">
-            <div class="card-body" style=" text-align: left;">
-                <h5 class="card-title" style="text-align: center;">Saturday</h5>
-                <p class="card-text" style="text-align: center;">Break</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-4">
-        <div class="card border">
-            <div class="card-body" style=" text-align: left;">
-                <h5 class="card-title" style="text-align: center;">Sunday</h5>
-                <p class="card-text" style="text-align: center;">Break</p>
-            </div>
-        </div>
-    </div>
-
-</div>
 
 @code {
+
+    public class AppointmentData
+    {
+        public int Id { get; set; }
+        public string Subject { get; set; }
+        public string Location { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public string Description { get; set; }
+        public bool IsAllDay { get; set; }
+        public string RecurrenceRule { get; set; }
+        public string RecurrenceException { get; set; }
+        public Nullable<int> RecurrenceID { get; set; }
+    }
+
     List<Appointment> appointments = new List<Appointment>();
+
+    //create variable appointment to support CRUD operation in page
+    Appointment appointment { get; set; } = new Appointment();
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
+    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    var user = authState.User;
 
-        if (user.Identity.IsAuthenticated)
-        {
-            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            appointments = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
-        }
 
-        else
-        {
-            appointments = new List<Appointment>();
-        }
-
+    if (user.Identity.IsAuthenticated)
+    {
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        appointments = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+    }
+    else
+    {
+        appointments = new List<Appointment>();
+    }
     }
 
-    void AddAppointment()
+    async Task HandleAddAppointment()
     {
-        NavigationManager.NavigateTo("/addnote");
+    await AppointmentService.AddAppointmentAsync(appointment);
     }
 
-    void EditAppointment(int id)
+    async Task HandleEditAppointment(int id)
     {
-        NavigationManager.NavigateTo($"/editnote/{id}");
+    await AppointmentService.UpdateAppointmentAsync(appointment, id);
     }
 
     async Task DeleteAppointment(int id)
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
+    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    var user = authState.User;
 
-        if (user.Identity.IsAuthenticated)
-        {
-            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            await AppointmentService.DeleteAppointmentAsync(id, userId);
-            appointments = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
-            await JSRuntime.InvokeVoidAsync("alert", "Appointment successfully deleted.");
-        }
+    if (user.Identity.IsAuthenticated)
+    {
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        await AppointmentService.DeleteAppointmentAsync(id, userId);
+        appointments = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+        await JSRuntime.InvokeVoidAsync("alert", "Appointment successfully deleted.");
+    }
     }
 }
 
