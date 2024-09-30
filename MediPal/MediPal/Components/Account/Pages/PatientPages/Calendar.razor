@@ -6,9 +6,11 @@
 @using System.Security.Claims
 @using Syncfusion.Blazor.Schedule
 
+@inject IAppointmentService AppointmentService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ApplicationDbContext DbContext
+@inject IJSRuntime JSRuntime
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
@@ -22,7 +24,8 @@
 
 <div class="row">
 
-<SfSchedule TValue="AppointmentData" CurrentView="View.Month" StartHour="04:00" EndHour="22:00">
+<SfSchedule TValue="Appointment" CurrentView="View.Month">
+    <ScheduleEventSettings DataSource="@appointments"></ScheduleEventSettings>
     <ScheduleViews>
         <ScheduleView Option="View.Day"></ScheduleView>
         <ScheduleView Option="View.Week"></ScheduleView>
@@ -109,19 +112,48 @@
 </div>
 
 @code {
-    public class AppointmentData
+    List<Appointment> appointments = new List<Appointment>();
+
+    protected override async Task OnInitializedAsync()
     {
-        public int Id { get; set; }
-        public string Subject { get; set; }
-        public string Location { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public string Description { get; set; }
-        public bool IsAllDay { get; set; }
-        public string RecurrenceRule { get; set; }
-        public string RecurrenceException { get; set; }
-        public Nullable<int> RecurrenceID { get; set; }
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            appointments = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+        }
+
+        else
+        {
+            appointments = new List<Appointment>();
+        }
+
     }
 
+    void AddAppointment()
+    {
+        NavigationManager.NavigateTo("/addnote");
+    }
+
+    void EditAppointment(int id)
+    {
+        NavigationManager.NavigateTo($"/editnote/{id}");
+    }
+
+    async Task DeleteAppointment(int id)
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            await AppointmentService.DeleteAppointmentAsync(id, userId);
+            appointments = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+            await JSRuntime.InvokeVoidAsync("alert", "Appointment successfully deleted.");
+        }
+    }
 }
 

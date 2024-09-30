@@ -107,7 +107,7 @@ else
             var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             await NoteService.DeleteNoteAsync(id, userId);
             notes = await NoteService.GetNotesByUserIdAsync(userId);
-            await JSRuntime.InvokeVoidAsync("alert", "Symptom successfully deleted.");
+            await JSRuntime.InvokeVoidAsync("alert", "Note successfully deleted.");
         }
     }
 }
