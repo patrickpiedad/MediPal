@@ -5,6 +5,7 @@ using MediPal.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Blazor;
 
 
 namespace MediPal
@@ -22,6 +23,9 @@ namespace MediPal
 
             //Add quick grid entity framework adapter
             builder.Services.AddQuickGridEntityFrameworkAdapter();
+
+            //Add SyncFusion Blazor components
+            builder.Services.AddSyncfusionBlazor();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -59,7 +63,19 @@ namespace MediPal
 
             builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
+            //Add SyncFusion Blazor Licensing
+
+            //7 Day Trial
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF5cWWtCf1NpQnxbf1x0ZFRHal1ZTnZZUiweQnxTdEFjUHxecXVUTmBaUEF1Xw==");
+
+            //30 Day Trial
+            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("@32372e302e30Ceo8C68485I/nSECWJP7MFuWdt4iLEajmhaZpojzI9o=");
+
+
             var app = builder.Build();
+
+
+ 
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
