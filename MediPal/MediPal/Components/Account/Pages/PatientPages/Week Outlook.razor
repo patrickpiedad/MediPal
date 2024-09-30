@@ -1,6 +1,18 @@
 ﻿@page "/weekoutlook"
 
+@using MediPal.Components.Services
+@using MediPal.Models
+@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
 @using Syncfusion.Blazor.Schedule
+
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ApplicationDbContext DbContext
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@attribute [Authorize(Roles = "Admin, Patient, Doctor")]
 
 <PageTitle>Week Outlook</PageTitle>
 
@@ -10,7 +22,7 @@
 
 <div class="row">
 
-<SfSchedule TValue=AppointmentData>
+<SfSchedule TValue="AppointmentData" CurrentView="View.Month" StartHour="04:00" EndHour="22:00">
     <ScheduleViews>
         <ScheduleView Option="View.Day"></ScheduleView>
         <ScheduleView Option="View.Week"></ScheduleView>
