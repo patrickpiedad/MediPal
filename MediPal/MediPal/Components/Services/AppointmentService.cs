@@ -37,54 +37,62 @@ namespace MediPal.Components.Services
 
         public async Task AddAppointmentAsync(Appointment appointment)
         {
-            //var app = new Appointment();
-            //app.Subject = appointment.Subject;
-            //app.StartTime = appointment.StartTime;
-            //app.EndTime = appointment.EndTime;
-            //app.StartTimezone = appointment.StartTimezone;
-            //app.EndTimezone = appointment.EndTimezone;
-            //app.Location = appointment.Location;
-            //app.Description = appointment.Description;
-            //app.IsReadOnly = appointment.IsReadOnly;
-            //app.IsAllDay = appointment.IsAllDay;
-            //app.RecurrenceId = appointment.RecurrenceId;
-            //app.RecurrenceRule = appointment.RecurrenceRule;
-            //app.RecurrenceException = appointment.RecurrenceException;
-            //app.IsBlock = appointment.IsBlock;
+            //check this and determine where to build appointment based on the syncfusion schedule requirements
+            var app = new Appointment();
+            app.UserId = appointment.UserId;
+            app.Subject = appointment.Subject;
+            app.StartTime = appointment.StartTime;
+            app.EndTime = appointment.EndTime;
+            app.StartTimezone = appointment.StartTimezone;
+            app.EndTimezone = appointment.EndTimezone;
+            app.Location = appointment.Location;
+            app.Description = appointment.Description;
+            app.IsAllDay = appointment.IsAllDay;
+            app.RecurrenceId = appointment.RecurrenceId;
+            app.RecurrenceRule = appointment.RecurrenceRule;
+            app.RecurrenceException = appointment.RecurrenceException;
 
-            _context.Appointments.Add(appointment);
+            app.IsReadOnly = appointment.IsReadOnly;
+            app.IsBlock = appointment.IsBlock;
+
+            await _context.Appointments.AddAsync(app);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAppointmentAsync(int id, string userId)
+        public async Task DeleteAppointmentAsync(Appointment appointment)
         {
-            var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment != null)
+            var app = await _context.Appointments.FirstAsync(a => a.UserId == appointment.UserId);
+
+            if (app != null)
             {
-                _context.Appointments.Remove(appointment);
+                _context.Appointments?.Remove(app);
                 await _context.SaveChangesAsync();
             }
         }
 
-        public async Task UpdateAppointmentAsync(Appointment appointment, int id)
+        public async Task UpdateAppointmentAsync(Appointment appointment)
         {
-            var app = await _context.Appointments.FindAsync(id);
+            var app = await _context.Appointments.FirstAsync(c => c.AppointmentId == appointment.AppointmentId);
+
             if (app != null)
             {
+                app.UserId = appointment.UserId;
+                app.Subject = appointment.Subject;
                 app.StartTime = appointment.StartTime;
                 app.EndTime = appointment.EndTime;
                 app.StartTimezone = appointment.StartTimezone;
                 app.EndTimezone = appointment.EndTimezone;
                 app.Location = appointment.Location;
                 app.Description = appointment.Description;
-                app.IsReadOnly = appointment.IsReadOnly;
                 app.IsAllDay = appointment.IsAllDay;
                 app.RecurrenceId = appointment.RecurrenceId;
                 app.RecurrenceRule = appointment.RecurrenceRule;
                 app.RecurrenceException = appointment.RecurrenceException;
+                
+                app.IsReadOnly = appointment.IsReadOnly;
                 app.IsBlock = appointment.IsBlock;
 
-                //_context.Appointments.Update(app);
+                _context.Appointments?.Update(app);
                 await _context.SaveChangesAsync();
             }
         }
