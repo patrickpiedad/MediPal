@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.Blazor;
+using Syncfusion.Licensing;
 
 
 namespace MediPal
@@ -21,9 +22,6 @@ namespace MediPal
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
 
-            //Add quick grid entity framework adapter
-            builder.Services.AddQuickGridEntityFrameworkAdapter();
-
             //Add SyncFusion Blazor components
             builder.Services.AddSyncfusionBlazor();
 
@@ -32,6 +30,7 @@ namespace MediPal
             //Adding ISymptomService dependency injection
             builder.Services.AddScoped<ISymptomService, SymptomService>();
             builder.Services.AddScoped<INoteService, NoteService>();
+            builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
             builder.Services.AddCascadingAuthenticationState();
             builder.Services.AddScoped<IdentityUserAccessor>();
@@ -66,10 +65,13 @@ namespace MediPal
             //Add SyncFusion Blazor Licensing
 
             //7 Day Trial
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF5cWWtCf1NpQnxbf1x0ZFRHal1ZTnZZUiweQnxTdEFjUHxecXVUTmBaUEF1Xw==");
+            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF5cWWtCf1NpQnxbf1x0ZFRHal1ZTnZZUiweQnxTdEFjUHxecXVUTmBaUEF1Xw==");
 
             //30 Day Trial
             //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("@32372e302e30Ceo8C68485I/nSECWJP7MFuWdt4iLEajmhaZpojzI9o=");
+
+            //Community License
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzUwNzA2NEAzMjM3MmUzMDJlMzBJRzZscUdmbnJITWRIY3ZHdXVsOG41ZE1sc1NQMzUyU3lKNmhyMk41d1dRPQ==");
 
 
             var app = builder.Build();

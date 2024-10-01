@@ -83,7 +83,7 @@
     async Task HandleSubmit()
     {
         // This is adding the current authenticated userId (found as only Id in the ASPNETUsers table) as the foreign key in the new symptom
-        note.Id = UserId;
+        note.UserId = UserId;
 
         await NoteService.AddNoteAsync(note);
         NavigationManager.NavigateTo("/notelist");

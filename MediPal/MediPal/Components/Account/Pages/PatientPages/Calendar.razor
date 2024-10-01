@@ -1,0 +1,83 @@
+﻿@page "/calendar"
+
+@using MediPal.Components.Services
+@using MediPal.Models
+@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Schedule
+
+@inject IAppointmentService AppointmentService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ApplicationDbContext DbContext
+
+@rendermode InteractiveAuto
+
+@attribute [Authorize(Roles = "Admin, Patient, Doctor")]
+
+<PageTitle>Calendar</PageTitle>
+<h3>Calendar</h3>
+
+<SfSchedule TValue="Appointment" CurrentView="View.Month">
+
+    <ScheduleEventSettings DataSource="@appointmentList">
+    </ScheduleEventSettings>
+
+    <ScheduleViews>
+        <ScheduleView Option="View.Day"></ScheduleView>
+        <ScheduleView Option="View.Week"></ScheduleView>
+        <ScheduleView Option="View.Month"></ScheduleView>
+        <ScheduleView Option="View.Agenda"></ScheduleView>
+    </ScheduleViews>
+</SfSchedule>
+
+@code {
+    List<Appointment> appointmentList = new List<Appointment>();
+
+    //create variable appointment to support CRUD operation in page
+    Appointment appointment { get; set; } = new Appointment();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            appointmentList = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+        }
+
+        else
+        {
+            appointmentList = new List<Appointment>();
+        }
+
+    }
+
+    async Task HandleAddAppointment()
+    {
+        await AppointmentService.AddAppointmentAsync(appointment);
+    }
+
+    async Task HandleEditAppointment(int id)
+    {
+        await AppointmentService.UpdateAppointmentAsync(appointment, id);
+    }
+
+    async Task DeleteAppointment(int id)
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            await AppointmentService.DeleteAppointmentAsync(id, userId);
+            appointmentList = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+            await JSRuntime.InvokeVoidAsync("alert", "Appointment successfully deleted.");
+        }
+    }
+}

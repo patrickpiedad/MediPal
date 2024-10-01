@@ -99,6 +99,66 @@ namespace MediPal.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MediPal.Models.Appointment", b =>
+                {
+                    b.Property<int>("AppointmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointmentId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EndTimezone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAllDay")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsBlock")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecurrenceException")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RecurrenceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RecurrenceRule")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StartTimezone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AppointmentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Appointments");
+                });
+
             modelBuilder.Entity("MediPal.Models.Note", b =>
                 {
                     b.Property<int>("NoteID")
@@ -110,9 +170,6 @@ namespace MediPal.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("NoteDescription")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -122,9 +179,13 @@ namespace MediPal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("NoteID");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notes");
                 });
@@ -148,9 +209,6 @@ namespace MediPal.Migrations
                     b.Property<string>("DoctorsNote")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("PainLevel")
                         .HasColumnType("int");
 
@@ -159,9 +217,13 @@ namespace MediPal.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("SymptomID");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Symptoms");
                 });
@@ -299,12 +361,24 @@ namespace MediPal.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MediPal.Models.Appointment", b =>
+                {
+                    b.HasOne("MediPal.Data.ApplicationUser", "User")
+                        .WithMany("Appointments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MediPal.Models.Note", b =>
                 {
                     b.HasOne("MediPal.Data.ApplicationUser", "User")
                         .WithMany("Notes")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -313,8 +387,9 @@ namespace MediPal.Migrations
                 {
                     b.HasOne("MediPal.Data.ApplicationUser", "User")
                         .WithMany("Symptoms")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -372,6 +447,8 @@ namespace MediPal.Migrations
 
             modelBuilder.Entity("MediPal.Data.ApplicationUser", b =>
                 {
+                    b.Navigation("Appointments");
+
                     b.Navigation("Notes");
 
                     b.Navigation("Symptoms");
