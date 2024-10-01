@@ -38,61 +38,60 @@ namespace MediPal.Components.Services
         public async Task AddAppointmentAsync(Appointment appointment)
         {
             //check this and determine where to build appointment based on the syncfusion schedule requirements
-            var app = new Appointment();
-            app.UserId = appointment.UserId;
-            app.Subject = appointment.Subject;
-            app.StartTime = appointment.StartTime;
-            app.EndTime = appointment.EndTime;
-            app.StartTimezone = appointment.StartTimezone;
-            app.EndTimezone = appointment.EndTimezone;
-            app.Location = appointment.Location;
-            app.Description = appointment.Description;
-            app.IsAllDay = appointment.IsAllDay;
-            app.RecurrenceId = appointment.RecurrenceId;
-            app.RecurrenceRule = appointment.RecurrenceRule;
-            app.RecurrenceException = appointment.RecurrenceException;
+            //var app = new Appointment();
+            //app.UserId = appointment.UserId;
+            //app.Subject = appointment.Subject;
+            //app.StartTime = appointment.StartTime;
+            //app.EndTime = appointment.EndTime;
+            //app.StartTimezone = appointment.StartTimezone;
+            //app.EndTimezone = appointment.EndTimezone;
+            //app.Location = appointment.Location;
+            //app.Description = appointment.Description;
+            //app.IsAllDay = appointment.IsAllDay;
+            //app.RecurrenceId = appointment.RecurrenceId;
+            //app.RecurrenceRule = appointment.RecurrenceRule;
+            //app.RecurrenceException = appointment.RecurrenceException;
 
-            app.IsReadOnly = appointment.IsReadOnly;
-            app.IsBlock = appointment.IsBlock;
+            //app.IsReadOnly = appointment.IsReadOnly;
+            //app.IsBlock = appointment.IsBlock;
 
-            await _context.Appointments.AddAsync(app);
+            await _context.Appointments.AddAsync(appointment);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAppointmentAsync(Appointment appointment)
+        public async Task DeleteAppointmentAsync(int id, string userId)
         {
-            var app = await _context.Appointments.FirstAsync(a => a.UserId == appointment.UserId);
+            var appointment = await _context.Appointments.FindAsync(id);
 
-            if (app != null)
+            if (appointment != null)
             {
-                _context.Appointments?.Remove(app);
+                _context.Appointments.Remove(appointment);
                 await _context.SaveChangesAsync();
             }
         }
 
-        public async Task UpdateAppointmentAsync(Appointment appointment)
+        public async Task UpdateAppointmentAsync(Appointment appointment, int id)
         {
-            var app = await _context.Appointments.FirstAsync(c => c.AppointmentId == appointment.AppointmentId);
+            var dbAppointment = await _context.Appointments.FirstAsync(c => c.AppointmentId == appointment.AppointmentId);
 
-            if (app != null)
+            if (appointment != null)
             {
-                app.UserId = appointment.UserId;
-                app.Subject = appointment.Subject;
-                app.StartTime = appointment.StartTime;
-                app.EndTime = appointment.EndTime;
-                app.StartTimezone = appointment.StartTimezone;
-                app.EndTimezone = appointment.EndTimezone;
-                app.Location = appointment.Location;
-                app.Description = appointment.Description;
-                app.IsAllDay = appointment.IsAllDay;
-                app.RecurrenceId = appointment.RecurrenceId;
-                app.RecurrenceRule = appointment.RecurrenceRule;
-                app.RecurrenceException = appointment.RecurrenceException;
-                
-                app.IsReadOnly = appointment.IsReadOnly;
-                app.IsBlock = appointment.IsBlock;
+                dbAppointment.UserId = appointment.UserId;
+                dbAppointment.Subject = appointment.Subject;
+                dbAppointment.StartTime = appointment.StartTime;
+                dbAppointment.EndTime = appointment.EndTime;
+                dbAppointment.StartTimezone = appointment.StartTimezone;
+                dbAppointment.EndTimezone = appointment.EndTimezone;
+                dbAppointment.Location = appointment.Location;
+                dbAppointment.Description = appointment.Description;
+                dbAppointment.IsAllDay = appointment.IsAllDay;
+                dbAppointment.RecurrenceId = appointment.RecurrenceId;
+                dbAppointment.RecurrenceRule = appointment.RecurrenceRule;
+                dbAppointment.RecurrenceException = appointment.RecurrenceException;
 
-                _context.Appointments?.Update(app);
+                dbAppointment.IsReadOnly = appointment.IsReadOnly;
+                dbAppointment.IsBlock = appointment.IsBlock;
+
                 await _context.SaveChangesAsync();
             }
         }

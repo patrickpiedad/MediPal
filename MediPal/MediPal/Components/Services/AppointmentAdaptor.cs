@@ -10,6 +10,8 @@ namespace MediPal.Components.Services
     public class AppointmentAdaptor : DataAdaptor
     {
         private readonly IAppointmentService _appService;
+        private readonly string _userId;
+
         public AppointmentAdaptor(IAppointmentService appService)
         {
             _appService = appService;
@@ -44,7 +46,6 @@ namespace MediPal.Components.Services
 
         public async override Task<object> BatchUpdateAsync(DataManager dataManager, object changedRecords, object addedRecords, object deletedRecords, string keyField, string key, int? dropIndex)
         {
-            await Task.Delay(100); //To mimic asynchronous operation, we delayed this operation using Task.Delay
             object records = deletedRecords;
             List<Appointment>? deleteData = deletedRecords as List<Appointment>;
             if (deleteData != null)

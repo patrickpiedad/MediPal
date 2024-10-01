@@ -1,6 +1,7 @@
 using MediPal.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Blazor.Schedule.Internal;
 
 
 namespace MediPal.Data
@@ -37,8 +38,7 @@ namespace MediPal.Data
                 .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
-
-
     }
+
 }
 

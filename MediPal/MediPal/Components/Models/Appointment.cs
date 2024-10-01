@@ -22,7 +22,6 @@ namespace MediPal.Models
 
         public string? Location { get; set; }
 
-        [Required]
         public string? Description { get; set; }
 
         public bool IsAllDay { get; set; }

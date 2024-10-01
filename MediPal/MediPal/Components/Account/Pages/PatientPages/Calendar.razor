@@ -6,6 +6,7 @@
 @using System.Security.Claims
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Schedule
+@using Syncfusion.Blazor.Buttons
 
 @inject IAppointmentService AppointmentService
 @inject NavigationManager NavigationManager
@@ -19,9 +20,12 @@
 
 <PageTitle>Calendar</PageTitle>
 <h3>Calendar</h3>
-<SfSchedule @ref="AvailabilityScheduleRef" TValue="Appointment" Width="100%" Height="600px" @bind-SelectedDate="@SelectedDate">
 
-    <ScheduleEventSettings TValue="Appointment">
+@* <SfButton Content="ADD" OnClick="OnClick"></SfButton> *@
+
+<SfSchedule TValue="Appointment" Width="100%" CurrentView="View.Month">
+
+    <ScheduleEventSettings DataSource="@testList">
 
         <ScheduleField Id="AppointmentId">
             <FieldSubject Name="Subject"></FieldSubject>
@@ -33,9 +37,6 @@
             <FieldStartTimezone Name="StartTimezone"></FieldStartTimezone>
             <FieldEndTimezone Name="EndTimezone"></FieldEndTimezone>
         </ScheduleField>
-
-        <SfDataManager AdaptorInstance="@typeof(AppointmentAdaptor)" Adaptor="Adaptors.CustomAdaptor">
-        </SfDataManager>
 
     </ScheduleEventSettings>
 
@@ -49,13 +50,7 @@
 
 @code {
 
-    SfSchedule<Appointment>? AvailabilityScheduleRef;
-    DateTime SelectedDate { get; set; } = new DateTime(2022, 5, 17);
-
-
-
-
-
+    List<Appointment> testList = new List<Appointment>();
     List<Appointment> appointmentList = new List<Appointment>();
 
     //create variable appointment to support CRUD operation in page
@@ -76,30 +71,29 @@
         {
             appointmentList = new List<Appointment>();
         }
-
     }
 
-    // async Task HandleAddAppointment()
-    // {
-    //     await AppointmentService.AddAppointmentAsync(appointment);
-    // }
+    async Task HandleAddAppointment()
+    {
+        await AppointmentService.AddAppointmentAsync(appointment);
+    }
 
-    // async Task HandleEditAppointment(int id)
-    // {
-    //     await AppointmentService.UpdateAppointmentAsync(appointment, id);
-    // }
+    async Task HandleEditAppointment(int id)
+    {
+        await AppointmentService.UpdateAppointmentAsync(appointment, id);
+    }
 
-    // async Task DeleteAppointment(int id)
-    // {
-    //     var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-    //     var user = authState.User;
+    async Task DeleteAppointment(int id)
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
 
-    //     if (user.Identity.IsAuthenticated)
-    //     {
-    //         var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    //         await AppointmentService.DeleteAppointmentAsync(id, userId);
-    //         appointmentList = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
-    //         await JSRuntime.InvokeVoidAsync("alert", "Appointment successfully deleted.");
-    //     }
-    // }
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            await AppointmentService.DeleteAppointmentAsync(id, userId);
+            appointmentList = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+            await JSRuntime.InvokeVoidAsync("alert", "Appointment successfully deleted.");
+        }
+    }
 }
