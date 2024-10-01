@@ -14,7 +14,7 @@ namespace MediPal.Components.Services
         }
         public async Task<List<Note>> GetAllNotesAsync()
         {
-            await Task.Delay(500);
+            //await Task.Delay(500);
             var notes = await _context.Notes.ToListAsync();
             return notes;
         }
@@ -22,7 +22,7 @@ namespace MediPal.Components.Services
         // This is the method that gets all notes belonging to the specific userId
         public async Task<List<Note>> GetNotesByUserIdAsync(string userId)
         {
-            await Task.Delay(500);
+            //await Task.Delay(500);
             return await _context.Notes
                 .Where(n => n.User.Id == userId)
                 .ToListAsync();

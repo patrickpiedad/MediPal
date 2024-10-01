@@ -1,40 +1,44 @@
-﻿@page "/calendar"
+﻿@page "/deletemeCalendar"
 
 @using MediPal.Components.Services
 @using MediPal.Models
 @using Microsoft.AspNetCore.Authorization
 @using System.Security.Claims
-@using Syncfusion.Blazor
 @using Syncfusion.Blazor.Schedule
+@using Syncfusion.Blazor.Data
 
 @inject IAppointmentService AppointmentService
 @inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ApplicationDbContext DbContext
+@inject IJSRuntime JSRuntime
 
-@rendermode InteractiveAuto
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 @attribute [Authorize(Roles = "Admin, Patient, Doctor")]
 
-<PageTitle>Calendar</PageTitle>
-<h3>Calendar</h3>
+<PageTitle>Week Outlook</PageTitle>
 
-<SfSchedule TValue="Appointment" CurrentView="View.Month">
+<h1 style="text-align: center;">Calendar</h1>
 
-    <ScheduleEventSettings DataSource="@appointmentList">
-    </ScheduleEventSettings>
+<br />
 
-    <ScheduleViews>
-        <ScheduleView Option="View.Day"></ScheduleView>
-        <ScheduleView Option="View.Week"></ScheduleView>
-        <ScheduleView Option="View.Month"></ScheduleView>
-        <ScheduleView Option="View.Agenda"></ScheduleView>
-    </ScheduleViews>
-</SfSchedule>
+<div class="col-lg-12 control-section">
+
+    <SfSchedule TValue="Appointment">
+        <ScheduleViews>
+            <ScheduleView Option="View.Day"></ScheduleView>
+            <ScheduleView Option="View.Week"></ScheduleView>
+            <ScheduleView Option="View.Month"></ScheduleView>
+            <ScheduleView Option="View.Agenda"></ScheduleView>
+        </ScheduleViews>
+    </SfSchedule>
+
+</div>
+
 
 @code {
-    List<Appointment> appointmentList = new List<Appointment>();
+    List<Appointment> appointments = new List<Appointment>();
 
     //create variable appointment to support CRUD operation in page
     Appointment appointment { get; set; } = new Appointment();
@@ -44,17 +48,16 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
+
         if (user.Identity.IsAuthenticated)
         {
             var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            appointmentList = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+            appointments = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
         }
-
         else
         {
-            appointmentList = new List<Appointment>();
+            appointments = new List<Appointment>();
         }
-
     }
 
     async Task HandleAddAppointment()
@@ -76,8 +79,9 @@
         {
             var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             await AppointmentService.DeleteAppointmentAsync(id, userId);
-            appointmentList = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+            appointments = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
             await JSRuntime.InvokeVoidAsync("alert", "Appointment successfully deleted.");
         }
     }
 }
+

@@ -117,10 +117,6 @@ namespace MediPal.Migrations
                     b.Property<string>("EndTimezone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("IsAllDay")
                         .HasColumnType("bit");
 
@@ -152,9 +148,13 @@ namespace MediPal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("AppointmentId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Appointments");
                 });
@@ -170,9 +170,6 @@ namespace MediPal.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("NoteDescription")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -182,9 +179,13 @@ namespace MediPal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("NoteID");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notes");
                 });
@@ -208,9 +209,6 @@ namespace MediPal.Migrations
                     b.Property<string>("DoctorsNote")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("PainLevel")
                         .HasColumnType("int");
 
@@ -219,9 +217,13 @@ namespace MediPal.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("SymptomID");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Symptoms");
                 });
@@ -363,7 +365,7 @@ namespace MediPal.Migrations
                 {
                     b.HasOne("MediPal.Data.ApplicationUser", "User")
                         .WithMany("Appointments")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -374,8 +376,9 @@ namespace MediPal.Migrations
                 {
                     b.HasOne("MediPal.Data.ApplicationUser", "User")
                         .WithMany("Notes")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -384,8 +387,9 @@ namespace MediPal.Migrations
                 {
                     b.HasOne("MediPal.Data.ApplicationUser", "User")
                         .WithMany("Symptoms")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

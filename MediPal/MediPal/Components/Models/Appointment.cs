@@ -25,8 +25,6 @@ namespace MediPal.Models
         [Required]
         public string? Description { get; set; }
 
-        public bool? IsReadOnly { get; set; }
-
         public bool IsAllDay { get; set; }
 
         public Nullable<int> RecurrenceId { get; set; }
@@ -35,9 +33,13 @@ namespace MediPal.Models
 
         public string? RecurrenceException { get; set; }
 
+        public bool? IsReadOnly { get; set; }
+
         public bool? IsBlock { get; set; }
 
-        public string Id { get; set; }
+
+        // Link to user class for foreign keys
+        public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
     }

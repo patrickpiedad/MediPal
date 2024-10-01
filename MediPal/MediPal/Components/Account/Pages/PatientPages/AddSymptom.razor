@@ -95,7 +95,7 @@
     async Task HandleSubmit()
     {
         // This is adding the current authenticated userId (found as only Id in the ASPNETUsers table) as the foreign key in the new symptom
-        symptom.Id = UserId;
+        symptom.UserId = UserId;
 
         await SymptomService.AddSymptomAsync(symptom);
         NavigationManager.NavigateTo("/symptomlist");

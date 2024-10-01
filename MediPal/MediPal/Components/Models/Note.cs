@@ -19,7 +19,7 @@ namespace MediPal.Models
         [Required]
         public DateOnly Date { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
-        public string Id { get; set; }
+        public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
     }
 }
