@@ -4,6 +4,8 @@
 @using MediPal.Models
 @using Microsoft.AspNetCore.Authorization
 @using System.Security.Claims
+@using System.Collections.ObjectModel
+@using System.ComponentModel
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Schedule
 @using Syncfusion.Blazor.Buttons
@@ -21,11 +23,13 @@
 <PageTitle>Calendar</PageTitle>
 <h3>Calendar</h3>
 
-@* <SfButton Content="ADD" OnClick="OnClick"></SfButton> *@
+<SfButton @onclick="HandleAddAppointment">Add Appointment</SfButton>
+<SfButton @onclick="HandleUpdateAppointment" Disabled="ObservableAppointments.Count == 0">Update Appointment</SfButton>
+<SfButton @onclick="HandleDeleteAppointment" Disabled="ObservableAppointments.Count == 0">Delete Appointment</SfButton>
 
-<SfSchedule TValue="Appointment" Width="100%" CurrentView="View.Month">
+<SfSchedule TValue="Appointment" @bind-SelectedDate="@CurrentDate" Width="100%" CurrentView="View.Month">
 
-    <ScheduleEventSettings DataSource="@testList">
+    <ScheduleEventSettings DataSource="@ObservableAppointments">
 
         <ScheduleField Id="AppointmentId">
             <FieldSubject Name="Subject"></FieldSubject>
@@ -50,8 +54,11 @@
 
 @code {
 
-    List<Appointment> testList = new List<Appointment>();
-    List<Appointment> appointmentList = new List<Appointment>();
+    public ObservableCollection<Appointment> ObservableAppointments { get; set; }
+    List<Appointment> AppointmentsCollection = new List<Appointment>();
+    int uniqueid = 1;
+
+    DateTime CurrentDate = new DateTime(2024, 10, 2);
 
     //create variable appointment to support CRUD operation in page
     Appointment appointment { get; set; } = new Appointment();
@@ -61,39 +68,74 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
+        // Set ObservableAppointments equal to new collection plus AppointmentsCollection
+        // AppointmentsCollection = Enumerable.Range(1, 4).Select(x => new Appointment()
+        //     {
+        //         AppointmentId = x,
+        //         Subject = (new string[] { "Chemotherpay Discussion", "Bone Marrow Puncture", "Doctor Meeting", "Lead Medical Team Meeting", "Release" })[new Random().Next(5)],
+        //         StartTime = new DateTime(2024, 10, 8 + x, 9, 0, 0),
+        //         EndTime = new DateTime(2024, 10, 8 + x, 11, 0, 0)
+        //     }).ToList();
+
+        ObservableAppointments = new ObservableCollection<Appointment>(AppointmentsCollection);
+
         if (user.Identity.IsAuthenticated)
         {
             var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            appointmentList = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+            // ObservableAppointments = new ObservableCollection<Appointment>(AppointmentsCollection);
+
         }
 
         else
         {
-            appointmentList = new List<Appointment>();
+            // ObservableAppointments = new ObservableCollection<Appointment>(AppointmentsCollection);
         }
     }
 
-    async Task HandleAddAppointment()
+    public void HandleAddAppointment()
     {
-        await AppointmentService.AddAppointmentAsync(appointment);
+        uniqueid++;
+        ObservableAppointments.Add(new Appointment() { AppointmentId = uniqueid, Subject = "Meeting", EndTime = new DateTime(2024, 10, 2, 9, 0, 0) });
     }
 
-    async Task HandleEditAppointment(int id)
+    public void HandleDeleteAppointment()
     {
-        await AppointmentService.UpdateAppointmentAsync(appointment, id);
-    }
-
-    async Task DeleteAppointment(int id)
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
+        if (ObservableAppointments.Count != 0)
         {
-            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            await AppointmentService.DeleteAppointmentAsync(id, userId);
-            appointmentList = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
-            await JSRuntime.InvokeVoidAsync("alert", "Appointment successfully deleted.");
+            ObservableAppointments.Remove(ObservableAppointments.First());
         }
     }
+
+    public void HandleUpdateAppointment()
+    {
+        if (ObservableAppointments.Count != 0)
+        {
+            var data = ObservableAppointments.First();
+            data.Subject = "Appointment Updated";
+        }
+    }
+
+    // async Task HandleAddAppointment()
+    // {
+    //     await AppointmentService.AddAppointmentAsync(appointment);
+    // }
+
+    // async Task HandleEditAppointment(int id)
+    // {
+    //     await AppointmentService.UpdateAppointmentAsync(appointment, id);
+    // }
+
+    // async Task DeleteAppointment(int id)
+    // {
+    //     var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    //     var user = authState.User;
+
+    //     if (user.Identity.IsAuthenticated)
+    //     {
+    //         var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    //         await AppointmentService.DeleteAppointmentAsync(id, userId);
+    //         appointmentList = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+    //         await JSRuntime.InvokeVoidAsync("alert", "Appointment successfully deleted.");
+    //     }
+    // }
 }
