@@ -27,10 +27,11 @@ namespace MediPal
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            //Adding ISymptomService dependency injection
+            //Adding custom services and adaptors
             builder.Services.AddScoped<ISymptomService, SymptomService>();
             builder.Services.AddScoped<INoteService, NoteService>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+            //builder.Services.AddScoped<AppointmentAdaptor>();
 
             builder.Services.AddCascadingAuthenticationState();
             builder.Services.AddScoped<IdentityUserAccessor>();

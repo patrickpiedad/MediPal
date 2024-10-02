@@ -6,6 +6,7 @@
 @using System.Security.Claims
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Schedule
+@using Syncfusion.Blazor.Buttons
 
 @inject IAppointmentService AppointmentService
 @inject NavigationManager NavigationManager
@@ -20,9 +21,23 @@
 <PageTitle>Calendar</PageTitle>
 <h3>Calendar</h3>
 
-<SfSchedule TValue="Appointment" CurrentView="View.Month">
+@* <SfButton Content="ADD" OnClick="OnClick"></SfButton> *@
 
-    <ScheduleEventSettings DataSource="@appointmentList">
+<SfSchedule TValue="Appointment" Width="100%" CurrentView="View.Month">
+
+    <ScheduleEventSettings DataSource="@testList">
+
+        <ScheduleField Id="AppointmentId">
+            <FieldSubject Name="Subject"></FieldSubject>
+            <FieldLocation Name="Location"></FieldLocation>
+            <FieldDescription Name="Description"></FieldDescription>
+            <FieldIsAllDay Name="IsAllDay"></FieldIsAllDay>
+            <FieldStartTime Name="StartTime"></FieldStartTime>
+            <FieldEndTime Name="EndTime"></FieldEndTime>
+            <FieldStartTimezone Name="StartTimezone"></FieldStartTimezone>
+            <FieldEndTimezone Name="EndTimezone"></FieldEndTimezone>
+        </ScheduleField>
+
     </ScheduleEventSettings>
 
     <ScheduleViews>
@@ -34,6 +49,8 @@
 </SfSchedule>
 
 @code {
+
+    List<Appointment> testList = new List<Appointment>();
     List<Appointment> appointmentList = new List<Appointment>();
 
     //create variable appointment to support CRUD operation in page
@@ -54,7 +71,6 @@
         {
             appointmentList = new List<Appointment>();
         }
-
     }
 
     async Task HandleAddAppointment()
