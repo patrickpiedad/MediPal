@@ -38,24 +38,6 @@ namespace MediPal.Components.Services
 
         public async Task AddAppointmentAsync(Appointment appointment)
         {
-            //check this and determine where to build appointment based on the syncfusion schedule requirements
-            //var app = new Appointment();
-            //app.UserId = appointment.UserId;
-            //app.Subject = appointment.Subject;
-            //app.StartTime = appointment.StartTime;
-            //app.EndTime = appointment.EndTime;
-            //app.StartTimezone = appointment.StartTimezone;
-            //app.EndTimezone = appointment.EndTimezone;
-            //app.Location = appointment.Location;
-            //app.Description = appointment.Description;
-            //app.IsAllDay = appointment.IsAllDay;
-            //app.RecurrenceId = appointment.RecurrenceId;
-            //app.RecurrenceRule = appointment.RecurrenceRule;
-            //app.RecurrenceException = appointment.RecurrenceException;
-
-            //app.IsReadOnly = appointment.IsReadOnly;
-            //app.IsBlock = appointment.IsBlock;
-
             await _context.Appointments.AddAsync(appointment);
             await _context.SaveChangesAsync();
         }
