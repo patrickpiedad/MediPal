@@ -55,11 +55,11 @@ namespace MediPal.Components.Services
 
         public async Task UpdateAppointmentAsync(Appointment appointment, int id)
         {
-            var dbAppointment = await _context.Appointments.FirstAsync(c => c.AppointmentId == appointment.AppointmentId);
+            var dbAppointment = await _context.Appointments.FindAsync(appointment.AppointmentId);
 
             if (appointment != null)
             {
-                dbAppointment.UserId = appointment.UserId;
+
                 dbAppointment.Subject = appointment.Subject;
                 dbAppointment.StartTime = appointment.StartTime;
                 dbAppointment.EndTime = appointment.EndTime;
@@ -74,6 +74,8 @@ namespace MediPal.Components.Services
 
                 dbAppointment.IsReadOnly = appointment.IsReadOnly;
                 dbAppointment.IsBlock = appointment.IsBlock;
+
+                dbAppointment.UserId = appointment.UserId;
 
                 await _context.SaveChangesAsync();
             }
