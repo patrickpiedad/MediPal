@@ -44,11 +44,11 @@ namespace MediPal.Components.Services
 
         public async Task DeleteAppointmentAsync(int id, string userId)
         {
-            var appointment = await _context.Appointments.FindAsync(id);
+            var dbAppointment = await _context.Appointments.FindAsync(id);
 
-            if (appointment != null)
+            if (dbAppointment != null)
             {
-                _context.Appointments.Remove(appointment);
+                _context.Appointments.Remove(dbAppointment);
                 await _context.SaveChangesAsync();
             }
         }
