@@ -155,7 +155,7 @@ namespace MediPal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("MediPal.Models.Note", b =>
@@ -186,7 +186,7 @@ namespace MediPal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("MediPal.Models.Symptom", b =>
@@ -224,7 +224,7 @@ namespace MediPal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Symptoms");
+                    b.ToTable("Symptoms", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

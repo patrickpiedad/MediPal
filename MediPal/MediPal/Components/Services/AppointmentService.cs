@@ -1,6 +1,8 @@
 ﻿using MediPal.Data;
 using MediPal.Models;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Blazor.Schedule;
+using System.Collections.ObjectModel;
 
 namespace MediPal.Components.Services
 {
@@ -15,19 +17,18 @@ namespace MediPal.Components.Services
         public async Task<List<Appointment>> GetAllAppointmentsAsync()
         {
             //await Task.Delay(500);
-            var appointments = await _context.Appointments.ToListAsync();
+            List<Appointment> appointments = await _context.Appointments.ToListAsync();
             return appointments;
         }
 
         // This is the method that gets all notes belonging to the specific userId
-        public async Task<List<Appointment>> GetAppointmentsByUserIdAsync (string userId)
+        public async Task<List<Appointment>> GetAppointmentsByUserIdAsync(string userId)
         {
             //await Task.Delay(500);
             return await _context.Appointments
                 .Where(a => a.User.Id == userId)
                 .ToListAsync();
         }
-
 
         public async Task<Appointment> GetAppointmentByIdAsync(int id)
         {

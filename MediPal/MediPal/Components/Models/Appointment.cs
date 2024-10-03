@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MediPal.Models
 {
-    public class Appointment : INotifyPropertyChanged
+    public class Appointment
     {
         [Key]
         public int AppointmentId { get; set; }
@@ -36,18 +36,6 @@ namespace MediPal.Models
         public bool? IsReadOnly { get; set; }
 
         public bool? IsBlock { get; set; }
-
-        // INotifyProperty Interface Implementation
-        public event PropertyChangedEventHandler? PropertyChanged;
-        
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
 
         // Link to user class for foreign keys
         public string UserId { get; set; }
