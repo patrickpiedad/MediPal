@@ -16,7 +16,10 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ApplicationDbContext DbContext
 
-@rendermode InteractiveAuto
+@* Blazor WASM *@
+@* @rendermode InteractiveAuto *@
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 @attribute [Authorize(Roles = "Admin, Patient, Doctor")]
 
@@ -28,7 +31,7 @@
 <SfButton @onclick="HandleDeleteAppointment" Disabled="ObservableAppointments.Count == 0">Delete Appointment</SfButton> *@
 
 <SfSchedule TValue="Appointment" @bind-SelectedDate="@CurrentDate" Width="100%" CurrentView="View.Month">
-    
+    <ScheduleEvents TValue="Appointment" OnPopupClose="OnPopupClose" ActionCompleted="ActionCompleted" OnActionFailure="OnActionFailure"></ScheduleEvents>
     <ScheduleEventSettings DataSource="@AppointmentsCollection">
 
         <ScheduleField Id="AppointmentId">
@@ -61,7 +64,7 @@
     //create variable appointment to support CRUD operation in page
     Appointment appointment { get; set; } = new Appointment();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
@@ -73,49 +76,7 @@
         }
     }
 
-    private async Task OnActionComplete(ActionEventArgs<Appointment> args)
-    {
-
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
-        {
-            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            AppointmentsCollection = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
-
-
-            if (args.ActionType == ActionType.EventCreate)
-            {
-                await AppointmentService.AddAppointmentAsync(args.AddedRecords.FirstOrDefault());
-            }
-
-            // if (args.ActionType == ActionType.EventChange)
-            // {
-            //     await AppointmentService.UpdateAppointmentAsync(args.ChangedRecords.FirstOrDefault());
-            // }
-
-            // if (args.ActionType == ActionType.EventRemove)
-            // {
-            //     await AppointmentService.AddAppointmentAsync(args.DeletedRecords.FirstOrDefault());
-            // }
-
-            AppointmentsCollection = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
-        }
-
-    }
-
-    // async Task HandleAddAppointment()
-    // {
-    //     await AppointmentService.AddAppointmentAsync(appointment);
-    // }
-
-    // async Task HandleEditAppointment(int id)
-    // {
-    //     await AppointmentService.UpdateAppointmentAsync(appointment, id);
-    // }
-
-    // async Task DeleteAppointment(int id)
+    // private async Task OnActionBegin(ActionEventArgs<Appointment> args)
     // {
     //     var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
     //     var user = authState.User;
@@ -123,9 +84,150 @@
     //     if (user.Identity.IsAuthenticated)
     //     {
     //         var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    //         await AppointmentService.DeleteAppointmentAsync(id, userId);
-    //         appointmentList = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
-    //         await JSRuntime.InvokeVoidAsync("alert", "Appointment successfully deleted.");
+
+    //         if (args.ActionType == ActionType.EventCreate)
+    //         {
+    //             var existingAppointments = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+
+    //             if (existingAppointments.Any(a => a.StartTime == args.AddedRecords.FirstOrDefault(a).StartTime
+    //             && a.EndTime == args.AddedRecords.FirstOrDefault(a).EndTime
+    //             && a.Subject == args.AddedRecords.FirstOrDefault(a).Subject
+    //             && a.UserId == args.AddedRecords.FirstOrDefault(a).UserId
+    //             && a.Description == args.AddedRecords.FirstOrDefault(a).Description))
+    //             {
+    //                 args.Cancel = true;
+    //                 Console.WriteLine("An appointment already exists for this time.");
+    //             }
+    //         }
     //     }
     // }
+
+    private async Task ActionCompleted(ActionEventArgs<Appointment> args)
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            try
+            {
+                if (args.ActionType == ActionType.EventRemove)
+                {
+                    await AppointmentService.DeleteAppointmentAsync(args.DeletedRecords.FirstOrDefault().AppointmentId, userId);
+                    // appointment = args.AddedRecords.FirstOrDefault<Appointment>(appointment);
+                    // appointment.Subject = args.AddedRecords.FirstOrDefault().Subject;
+                    // appointment.StartTime = args.AddedRecords.FirstOrDefault().StartTime;
+                    // appointment.EndTime = args.AddedRecords.FirstOrDefault().EndTime;
+                    // appointment.StartTimezone = args.AddedRecords.FirstOrDefault().StartTimezone;
+                    // appointment.EndTimezone = args.AddedRecords.FirstOrDefault().EndTimezone;
+                    // appointment.Location = args.AddedRecords.FirstOrDefault().Location;
+                    // appointment.Description = args.AddedRecords.FirstOrDefault().Description;
+                    // appointment.IsAllDay = args.AddedRecords.FirstOrDefault().IsAllDay;
+                    // appointment.RecurrenceId = args.AddedRecords.FirstOrDefault().RecurrenceId;
+                    // appointment.RecurrenceRule = args.AddedRecords.FirstOrDefault().RecurrenceRule;
+                    // appointment.RecurrenceException = args.AddedRecords.FirstOrDefault().RecurrenceException;
+                    // appointment.IsReadOnly = args.AddedRecords.FirstOrDefault().IsReadOnly;
+                    // appointment.IsBlock = args.AddedRecords.FirstOrDefault().IsBlock;
+
+                    // appointment.UserId = userId;
+
+                }
+                StateHasChanged();
+            }
+            catch
+            {
+                AppointmentsCollection = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+            }
+            appointment = new Appointment();
+        }
+    }
+
+
+
+    private async Task OnPopupClose(PopupCloseEventArgs<Appointment> args)
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+
+            try
+            {
+                if (args.Type == PopupType.Editor || args.Type == PopupType.QuickInfo)
+                {
+                    appointment.Subject = args.Data.Subject;
+                    appointment.StartTime = args.Data.StartTime;
+                    appointment.EndTime = args.Data.EndTime;
+                    appointment.StartTimezone = args.Data.StartTimezone;
+                    appointment.EndTimezone = args.Data.EndTimezone;
+                    appointment.Location = args.Data.Location;
+                    appointment.Description = args.Data.Description;
+                    appointment.IsAllDay = args.Data.IsAllDay;
+                    appointment.RecurrenceId = args.Data.RecurrenceId;
+                    appointment.RecurrenceRule = args.Data.RecurrenceRule;
+                    appointment.RecurrenceException = args.Data.RecurrenceException;
+                    appointment.IsReadOnly = args.Data.IsReadOnly;
+                    appointment.IsBlock = args.Data.IsBlock;
+
+                    appointment.UserId = userId;
+
+                    // At this point, appointment has been updated based on the Calendar event input box
+
+                    if (args.Data.AppointmentId == null || args.Data.AppointmentId == 0)
+                    {
+                        await AppointmentService.AddAppointmentAsync(appointment);
+                    }
+                    else
+                    {
+                        appointment.AppointmentId = args.Data.AppointmentId;
+
+                        // Update existing appointment
+                        await AppointmentService.UpdateAppointmentAsync(appointment, appointment.AppointmentId);
+                    }
+                }
+                StateHasChanged();
+            }
+
+            catch
+            {
+                AppointmentsCollection = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+            }
+
+            appointment = new Appointment();
+        }
+    }
+
+    private async Task RefreshAppointmentsList()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            AppointmentsCollection = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+        }
+    }
+
+    private bool IsDuplicateAppointment(Appointment newAppointment)
+    {
+        return AppointmentsCollection.Any(existingAppointment =>
+        existingAppointment.Subject == newAppointment.Subject &&
+        existingAppointment.StartTime == newAppointment.StartTime &&
+        existingAppointment.EndTime == newAppointment.EndTime &&
+        existingAppointment.Location == newAppointment.Location &&
+        existingAppointment.Description == newAppointment.Description &&
+        existingAppointment.UserId == newAppointment.UserId
+        );
+    }
+
+    public void OnActionFailure(ActionEventArgs<Appointment>
+        args)
+    {
+        RefreshAppointmentsList();
+    }
 }
