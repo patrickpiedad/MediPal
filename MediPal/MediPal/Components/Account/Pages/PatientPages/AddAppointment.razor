@@ -1,0 +1,99 @@
+﻿@page "/addappointment"
+@page "/addappointment/{Id:int}"
+
+@attribute [Authorize]
+
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using MediPal.Components.Services
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+
+@inject IAppointmentService AppointmentService
+@inject NavigationManager NavigationManager
+@inject UserManager<ApplicationUser> UserManager
+@inject ApplicationDbContext DbContext
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="container-fluid">
+
+    <h3>Add Appointment</h3>
+
+    <div class="row">
+
+        <div class="col-lg-7">
+            <EditForm Model="note" OnValidSubmit="HandleSubmit" FormName="AddAppointmentForm">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" />
+
+                @* Note Title *@
+                <label class="form-label">Title</label>
+                <InputText class="form-control" @bind-Value="note.NoteTitle">
+                    @note.NoteTitle
+                </InputText>
+
+                @* Note Date *@
+                <label class="form-label">Date</label>
+                <InputDate class="form-control" @bind-Value="note.Date">
+                    @note.Date
+                </InputDate>
+
+                @* Note Description *@
+                <label class="form-label">Description</label>
+                <InputTextArea class="form-control" @bind-Value="note.NoteDescription">
+                    @note.NoteDescription
+                </InputTextArea>
+
+                <br />
+
+                <button type="submit" class="btn btn-primary me-3">Submit</button>
+                <button type="button" class="btn btn-danger" @onclick="Cancel">Cancel</button>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm] // connects the form input for each parameter above and passes it to the creation of the new symptom
+    // Appointment appointment { get; set; } = new Note();
+
+    private string UserId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        }
+
+        else
+        {
+            NavigationManager.NavigateTo("/Account/Login");
+        }
+
+
+    }
+
+    async Task HandleSubmit()
+    {
+        // This is adding the current authenticated userId (found as only Id in the ASPNETUsers table) as the foreign key in the new symptom
+        note.UserId = UserId;
+
+        await NoteService.AddNoteAsync(note);
+        NavigationManager.NavigateTo("/notelist");
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("/notelist");
+    }
+
+    [Parameter]
+    public int Id { get; set; }
+}

@@ -23,13 +23,13 @@
 <PageTitle>Calendar</PageTitle>
 <h3>Calendar</h3>
 
-<SfButton @onclick="HandleAddAppointment">Add Appointment</SfButton>
+@* <SfButton @onclick="HandleAddAppointment">Add Appointment</SfButton>
 <SfButton @onclick="HandleUpdateAppointment" Disabled="ObservableAppointments.Count == 0">Update Appointment</SfButton>
-<SfButton @onclick="HandleDeleteAppointment" Disabled="ObservableAppointments.Count == 0">Delete Appointment</SfButton>
+<SfButton @onclick="HandleDeleteAppointment" Disabled="ObservableAppointments.Count == 0">Delete Appointment</SfButton> *@
 
 <SfSchedule TValue="Appointment" @bind-SelectedDate="@CurrentDate" Width="100%" CurrentView="View.Month">
-
-    <ScheduleEventSettings DataSource="@ObservableAppointments">
+    
+    <ScheduleEventSettings DataSource="@AppointmentsCollection">
 
         <ScheduleField Id="AppointmentId">
             <FieldSubject Name="Subject"></FieldSubject>
@@ -54,9 +54,7 @@
 
 @code {
 
-    public ObservableCollection<Appointment> ObservableAppointments { get; set; }
     List<Appointment> AppointmentsCollection = new List<Appointment>();
-    int uniqueid = 1;
 
     DateTime CurrentDate = new DateTime(2024, 10, 2);
 
@@ -68,51 +66,43 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        // Set ObservableAppointments equal to new collection plus AppointmentsCollection
-        // AppointmentsCollection = Enumerable.Range(1, 4).Select(x => new Appointment()
-        //     {
-        //         AppointmentId = x,
-        //         Subject = (new string[] { "Chemotherpay Discussion", "Bone Marrow Puncture", "Doctor Meeting", "Lead Medical Team Meeting", "Release" })[new Random().Next(5)],
-        //         StartTime = new DateTime(2024, 10, 8 + x, 9, 0, 0),
-        //         EndTime = new DateTime(2024, 10, 8 + x, 11, 0, 0)
-        //     }).ToList();
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            AppointmentsCollection = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+        }
+    }
 
-        ObservableAppointments = new ObservableCollection<Appointment>(AppointmentsCollection);
+    private async Task OnActionComplete(ActionEventArgs<Appointment> args)
+    {
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
 
         if (user.Identity.IsAuthenticated)
         {
             var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            // ObservableAppointments = new ObservableCollection<Appointment>(AppointmentsCollection);
+            AppointmentsCollection = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
 
+
+            if (args.ActionType == ActionType.EventCreate)
+            {
+                await AppointmentService.AddAppointmentAsync(args.AddedRecords.FirstOrDefault());
+            }
+
+            // if (args.ActionType == ActionType.EventChange)
+            // {
+            //     await AppointmentService.UpdateAppointmentAsync(args.ChangedRecords.FirstOrDefault());
+            // }
+
+            // if (args.ActionType == ActionType.EventRemove)
+            // {
+            //     await AppointmentService.AddAppointmentAsync(args.DeletedRecords.FirstOrDefault());
+            // }
+
+            AppointmentsCollection = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
         }
 
-        else
-        {
-            // ObservableAppointments = new ObservableCollection<Appointment>(AppointmentsCollection);
-        }
-    }
-
-    public void HandleAddAppointment()
-    {
-        uniqueid++;
-        ObservableAppointments.Add(new Appointment() { AppointmentId = uniqueid, Subject = "Meeting", EndTime = new DateTime(2024, 10, 2, 9, 0, 0) });
-    }
-
-    public void HandleDeleteAppointment()
-    {
-        if (ObservableAppointments.Count != 0)
-        {
-            ObservableAppointments.Remove(ObservableAppointments.First());
-        }
-    }
-
-    public void HandleUpdateAppointment()
-    {
-        if (ObservableAppointments.Count != 0)
-        {
-            var data = ObservableAppointments.First();
-            data.Subject = "Appointment Updated";
-        }
     }
 
     // async Task HandleAddAppointment()
