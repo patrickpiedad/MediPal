@@ -15,8 +15,10 @@
 
 @attribute [Authorize(Roles = "Admin, Patient, Doctor")]
 
-<PageTitle>Note List</PageTitle>
-<h3>Note List</h3>
+<PageTitle>My Notes</PageTitle>
+<h3 style="text-align: center">My Notes</h3>
+
+<br />
 
 @if (notes == null || notes.Any() == false)
 {

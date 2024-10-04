@@ -23,14 +23,16 @@
 
 @attribute [Authorize(Roles = "Admin, Patient, Doctor")]
 
-<PageTitle>Calendar</PageTitle>
-<h3>Calendar</h3>
+<PageTitle>My Calendar</PageTitle>
+<h3 style="text-align: center">My Calendar</h3>
+
+<br />
 
 @* <SfButton @onclick="HandleAddAppointment">Add Appointment</SfButton>
 <SfButton @onclick="HandleUpdateAppointment" Disabled="ObservableAppointments.Count == 0">Update Appointment</SfButton>
 <SfButton @onclick="HandleDeleteAppointment" Disabled="ObservableAppointments.Count == 0">Delete Appointment</SfButton> *@
 
-<SfSchedule TValue="Appointment" @bind-SelectedDate="@CurrentDate" Width="100%" CurrentView="View.Month">
+<SfSchedule TValue="Appointment" @bind-SelectedDate="@CurrentDate" Width="100%">
     <ScheduleEvents TValue="Appointment" OnPopupClose="OnPopupClose" ActionCompleted="ActionCompleted" OnActionFailure="OnActionFailure"></ScheduleEvents>
     <ScheduleEventSettings DataSource="@AppointmentsCollection">
 
@@ -131,9 +133,9 @@
                     // appointment.IsBlock = args.AddedRecords.FirstOrDefault().IsBlock;
 
                     // appointment.UserId = userId;
-
+                    StateHasChanged();
                 }
-                StateHasChanged();
+
             }
             catch
             {

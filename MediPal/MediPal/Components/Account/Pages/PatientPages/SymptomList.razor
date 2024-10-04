@@ -15,8 +15,10 @@
 
 @attribute [Authorize(Roles = "Admin, Patient, Doctor")]
 
-<PageTitle>Symptom List</PageTitle>
-<h3>Symptom List</h3>
+<PageTitle>My Symptoms</PageTitle>
+<h3 style="text-align: center">My Symptoms</h3>
+
+<br />
 
 @if (symptoms == null || symptoms.Any() == false)
 {
