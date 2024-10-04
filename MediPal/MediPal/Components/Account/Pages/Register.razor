@@ -123,7 +123,8 @@
 @code {
     private IEnumerable<IdentityError>? identityErrors;
 
-    private List<string> Roles = new List<string> { "Patient", "Doctor", "Admin" };
+    private List<string> Roles = new List<string> { "Patient" };
+    // private List<string> Roles = new List<string> { "Patient", "Doctor", "Admin" };
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
