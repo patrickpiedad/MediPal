@@ -32,7 +32,7 @@
 <SfButton @onclick="HandleUpdateAppointment" Disabled="ObservableAppointments.Count == 0">Update Appointment</SfButton>
 <SfButton @onclick="HandleDeleteAppointment" Disabled="ObservableAppointments.Count == 0">Delete Appointment</SfButton> *@
 
-<SfSchedule TValue="Appointment" EnableAutoRowHeight="true" CurrentView="View.Month" Height="calc(90vh - 4.6rem)" Width="100%">
+<SfSchedule TValue="Appointment" EnableAutoRowHeight="true" AllowMultiRowSelection="false" AllowDragAndDrop="false" AllowMultiCellSelection="false" AllowMultiDrag="false" CurrentView="View.Month" Height="calc(90vh - 4.6rem)" Width="100%">
     <ScheduleEvents TValue="Appointment" OnPopupClose="OnPopupClose" ActionCompleted="ActionCompleted" OnActionFailure="OnActionFailure"></ScheduleEvents>
     <ScheduleEventSettings DataSource="@AppointmentsCollection">
 
