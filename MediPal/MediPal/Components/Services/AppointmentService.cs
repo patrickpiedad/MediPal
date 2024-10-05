@@ -40,21 +40,16 @@ namespace MediPal.Components.Services
         {
             await _context.Appointments.AddAsync(appointment);
             await _context.SaveChangesAsync();
+
+            // Detach the appointment to avoid multiple tracked instances
+            _context.Entry(appointment).State = EntityState.Detached;
         }
 
-        public async Task DeleteAppointmentAsync(int id, string userId)
-        {
-            var dbAppointment = await _context.Appointments.FindAsync(id);
 
-            if (dbAppointment != null)
-            {
-                _context.Appointments.Remove(dbAppointment);
-                await _context.SaveChangesAsync();
-            }
-        }
 
         public async Task UpdateAppointmentAsync(Appointment appointment)
         {
+            // Old dbAppointment fetch before working multiple instance tracking error
             //var dbAppointment = await _context.Appointments.FindAsync(appointment.AppointmentId);
 
             var dbAppointment = await _context.Appointments
@@ -64,18 +59,18 @@ namespace MediPal.Components.Services
             if (dbAppointment != null)
             {
 
-                    // Fetch the existing tracked user from the database to avoid duplicate tracking
-                    var existingUser = await _context.Users
+                // Fetch the existing tracked user from the database to avoid duplicate tracking
+                var existingUser = await _context.Users
                         .FirstOrDefaultAsync(u => u.Id == appointment.UserId);
 
-                    if (existingUser != null)
-                    {
-                        // Detach the old user entity from the context, so we can attach the new one
-                        _context.Entry(dbAppointment.User).State = EntityState.Detached;
+                if (existingUser != null)
+                {
+                    // Detach the old user entity from the context, so we can attach the new one
+                    _context.Entry(dbAppointment.User).State = EntityState.Detached;
 
-                        // Assign the existing user instance
-                        dbAppointment.User = existingUser;
-                    }
+                    // Assign the existing user instance
+                    dbAppointment.User = existingUser;
+                }
 
                 if (appointment != null)
                 {
@@ -97,6 +92,17 @@ namespace MediPal.Components.Services
 
                     await _context.SaveChangesAsync();
                 }
+            }
+        }
+
+        public async Task DeleteAppointmentAsync(int id, string userId)
+        {
+            var dbAppointment = await _context.Appointments.FindAsync(id);
+
+            if (dbAppointment != null)
+            {
+                _context.Appointments.Remove(dbAppointment);
+                await _context.SaveChangesAsync();
             }
         }
     }

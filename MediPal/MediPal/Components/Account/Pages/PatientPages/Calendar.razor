@@ -19,7 +19,7 @@
 @* Blazor WASM *@
 @* @rendermode InteractiveAuto *@
 
-@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@rendermode @(new InteractiveServerRenderMode(prerender: true))
 
 @attribute [Authorize(Roles = "Admin, Patient, Doctor")]
 
@@ -78,31 +78,6 @@
         }
     }
 
-    // private async Task OnActionBegin(ActionEventArgs<Appointment> args)
-    // {
-    //     var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-    //     var user = authState.User;
-
-    //     if (user.Identity.IsAuthenticated)
-    //     {
-    //         var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-    //         if (args.ActionType == ActionType.EventCreate)
-    //         {
-    //             var existingAppointments = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
-
-    //             if (existingAppointments.Any(a => a.StartTime == args.AddedRecords.FirstOrDefault(a).StartTime
-    //             && a.EndTime == args.AddedRecords.FirstOrDefault(a).EndTime
-    //             && a.Subject == args.AddedRecords.FirstOrDefault(a).Subject
-    //             && a.UserId == args.AddedRecords.FirstOrDefault(a).UserId
-    //             && a.Description == args.AddedRecords.FirstOrDefault(a).Description))
-    //             {
-    //                 args.Cancel = true;
-    //                 Console.WriteLine("An appointment already exists for this time.");
-    //             }
-    //         }
-    //     }
-    // }
 
     private async Task ActionCompleted(ActionEventArgs<Appointment> args)
     {
@@ -115,12 +90,15 @@
                 {
                     await AppointmentService.AddAppointmentAsync(appointment);
                 }
+                // This syncs the scheduler instance AppointmentId with the added AppointmentId
                 args.AddedRecords.First<Appointment>().AppointmentId = appointment.AppointmentId;
                 StateHasChanged();
+                await RefreshAppointmentsList();
             }
 
             else if (args.ActionType == ActionType.EventChange)
             {
+
                 if (appointment != null)
                 {
                     // Update existing appointment
@@ -162,13 +140,9 @@
 
     }
 
-    // private async Task OnPopupOpen(PopupOpenEventArgs<Appointment>args)
-    // {
-    //     appointment = new Appointment();
-    // }
 
     private async Task OnPopupClose(PopupCloseEventArgs<Appointment> args)
-     {
+    {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
@@ -211,62 +185,6 @@
         }
     }
 
-    // private async Task OnPopupClose(PopupCloseEventArgs<Appointment>args)
-    // {
-    //     var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-    //     var user = authState.User;
-
-    //     if (user.Identity.IsAuthenticated)
-    //     {
-    //         var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-
-    //         try
-    //         {
-    //             if (args.Type == PopupType.Editor || args.Type == PopupType.QuickInfo)
-    //             {
-    //                 appointment.Subject = args.Data.Subject;
-    //                 appointment.StartTime = args.Data.StartTime;
-    //                 appointment.EndTime = args.Data.EndTime;
-    //                 appointment.StartTimezone = args.Data.StartTimezone;
-    //                 appointment.EndTimezone = args.Data.EndTimezone;
-    //                 appointment.Location = args.Data.Location;
-    //                 appointment.Description = args.Data.Description;
-    //                 appointment.IsAllDay = args.Data.IsAllDay;
-    //                 appointment.RecurrenceId = args.Data.RecurrenceId;
-    //                 appointment.RecurrenceRule = args.Data.RecurrenceRule;
-    //                 appointment.RecurrenceException = args.Data.RecurrenceException;
-    //                 appointment.IsReadOnly = args.Data.IsReadOnly;
-    //                 appointment.IsBlock = args.Data.IsBlock;
-
-    //                 appointment.UserId = userId;
-
-    //                 At this point, appointment has been updated based on the Calendar event input box
-
-    //                 if (args.Data.AppointmentId == null || args.Data.AppointmentId == 0)
-    //                 {
-    //                     await AppointmentService.AddAppointmentAsync(appointment);
-    //                 }
-    //                 else
-    //                 {
-    //                     appointment.AppointmentId = args.Data.AppointmentId;
-
-    //                     Update existing appointment
-    //                     await AppointmentService.UpdateAppointmentAsync(appointment, appointment.AppointmentId);
-    //                 }
-    //             }
-    //             StateHasChanged();
-    //         }
-
-    //         catch
-    //         {
-    //             AppointmentsCollection = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
-    //         }
-
-    //         appointment = new Appointment();
-    //     }
-    // }
-
     private async Task RefreshAppointmentsList()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -296,4 +214,5 @@
     {
         RefreshAppointmentsList();
     }
+
 }
