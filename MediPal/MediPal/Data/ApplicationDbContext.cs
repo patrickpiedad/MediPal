@@ -12,7 +12,6 @@ namespace MediPal.Data
     {
 
         //Add Dbset for each model
-
         public DbSet<Symptom> Symptoms { get; set; } // Creating the table for symptoms to be added when using context to code-first migration
         public DbSet<Note> Notes { get; set; } // Creating the table for notes to be added when using context to code-first migration
         public DbSet<Appointment> Appointments { get; set; } // Creating the table for appointments to be added when using context to code-first migration

@@ -40,6 +40,59 @@ namespace MediPal.Components.Services
         {
             await _context.Appointments.AddAsync(appointment);
             await _context.SaveChangesAsync();
+
+            // Detach the appointment to avoid multiple tracked instances
+            _context.Entry(appointment).State = EntityState.Detached;
+        }
+
+
+
+        public async Task UpdateAppointmentAsync(Appointment appointment)
+        {
+            // Old dbAppointment fetch before working multiple instance tracking error
+            //var dbAppointment = await _context.Appointments.FindAsync(appointment.AppointmentId);
+
+            var dbAppointment = await _context.Appointments
+                .Include(a => a.User) // Include the User entity
+                .FirstOrDefaultAsync(c => c.AppointmentId == appointment.AppointmentId);
+
+            if (dbAppointment != null)
+            {
+
+                // Fetch the existing tracked user from the database to avoid duplicate tracking
+                var existingUser = await _context.Users
+                        .FirstOrDefaultAsync(u => u.Id == appointment.UserId);
+
+                if (existingUser != null)
+                {
+                    // Detach the old user entity from the context, so we can attach the new one
+                    _context.Entry(dbAppointment.User).State = EntityState.Detached;
+
+                    // Assign the existing user instance
+                    dbAppointment.User = existingUser;
+                }
+
+                if (appointment != null)
+                {
+
+                    dbAppointment.Subject = appointment.Subject;
+                    dbAppointment.StartTime = appointment.StartTime;
+                    dbAppointment.EndTime = appointment.EndTime;
+                    dbAppointment.StartTimezone = appointment.StartTimezone;
+                    dbAppointment.EndTimezone = appointment.EndTimezone;
+                    dbAppointment.Location = appointment.Location;
+                    dbAppointment.Description = appointment.Description;
+                    dbAppointment.IsAllDay = appointment.IsAllDay;
+                    dbAppointment.RecurrenceId = appointment.RecurrenceId;
+                    dbAppointment.RecurrenceRule = appointment.RecurrenceRule;
+                    dbAppointment.RecurrenceException = appointment.RecurrenceException;
+
+                    dbAppointment.IsReadOnly = appointment.IsReadOnly;
+                    dbAppointment.IsBlock = appointment.IsBlock;
+
+                    await _context.SaveChangesAsync();
+                }
+            }
         }
 
         public async Task DeleteAppointmentAsync(int id, string userId)
@@ -49,34 +102,6 @@ namespace MediPal.Components.Services
             if (dbAppointment != null)
             {
                 _context.Appointments.Remove(dbAppointment);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task UpdateAppointmentAsync(Appointment appointment, int id)
-        {
-            var dbAppointment = await _context.Appointments.FindAsync(appointment.AppointmentId);
-
-            if (appointment != null)
-            {
-
-                dbAppointment.Subject = appointment.Subject;
-                dbAppointment.StartTime = appointment.StartTime;
-                dbAppointment.EndTime = appointment.EndTime;
-                dbAppointment.StartTimezone = appointment.StartTimezone;
-                dbAppointment.EndTimezone = appointment.EndTimezone;
-                dbAppointment.Location = appointment.Location;
-                dbAppointment.Description = appointment.Description;
-                dbAppointment.IsAllDay = appointment.IsAllDay;
-                dbAppointment.RecurrenceId = appointment.RecurrenceId;
-                dbAppointment.RecurrenceRule = appointment.RecurrenceRule;
-                dbAppointment.RecurrenceException = appointment.RecurrenceException;
-
-                dbAppointment.IsReadOnly = appointment.IsReadOnly;
-                dbAppointment.IsBlock = appointment.IsBlock;
-
-                dbAppointment.UserId = appointment.UserId;
-
                 await _context.SaveChangesAsync();
             }
         }
