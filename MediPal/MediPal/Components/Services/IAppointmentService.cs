@@ -9,7 +9,7 @@ namespace MediPal.Components.Services
         Task<List<Appointment>> GetAppointmentsByUserIdAsync(string userId); // This method gets all appointments by ASPNETUserId, instead of just all appointments
         Task<Appointment> GetAppointmentByIdAsync(int id);
         Task AddAppointmentAsync(Appointment appointment);
-        Task UpdateAppointmentAsync(Appointment appointment, int id);
+        Task UpdateAppointmentAsync(Appointment appointment);
         Task DeleteAppointmentAsync(int id, string userId);
     }
 }

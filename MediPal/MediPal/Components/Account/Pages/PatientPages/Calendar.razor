@@ -115,6 +115,7 @@
                 {
                     await AppointmentService.AddAppointmentAsync(appointment);
                 }
+                args.AddedRecords.First<Appointment>().AppointmentId = appointment.AppointmentId;
                 StateHasChanged();
             }
 
@@ -123,7 +124,7 @@
                 if (appointment != null)
                 {
                     // Update existing appointment
-                    await AppointmentService.UpdateAppointmentAsync(appointment, appointment.AppointmentId);
+                    await AppointmentService.UpdateAppointmentAsync(appointment);
                 }
                 StateHasChanged();
             }
@@ -154,6 +155,7 @@
 
         catch
         {
+            Console.WriteLine("Appointment was unable to be added, changed, or deleted.");
             StateHasChanged();
         }
         appointment = new Appointment();
@@ -166,9 +168,10 @@
     // }
 
     private async Task OnPopupClose(PopupCloseEventArgs<Appointment> args)
-    {
+     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
+
 
         if (user.Identity.IsAuthenticated)
         {

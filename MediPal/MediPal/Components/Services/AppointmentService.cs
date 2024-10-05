@@ -53,31 +53,50 @@ namespace MediPal.Components.Services
             }
         }
 
-        public async Task UpdateAppointmentAsync(Appointment appointment, int id)
+        public async Task UpdateAppointmentAsync(Appointment appointment)
         {
-            var dbAppointment = await _context.Appointments.FindAsync(appointment.AppointmentId);
+            //var dbAppointment = await _context.Appointments.FindAsync(appointment.AppointmentId);
 
-            if (appointment != null)
+            var dbAppointment = await _context.Appointments
+                .Include(a => a.User) // Include the User entity
+                .FirstOrDefaultAsync(c => c.AppointmentId == appointment.AppointmentId);
+
+            if (dbAppointment != null)
             {
 
-                dbAppointment.Subject = appointment.Subject;
-                dbAppointment.StartTime = appointment.StartTime;
-                dbAppointment.EndTime = appointment.EndTime;
-                dbAppointment.StartTimezone = appointment.StartTimezone;
-                dbAppointment.EndTimezone = appointment.EndTimezone;
-                dbAppointment.Location = appointment.Location;
-                dbAppointment.Description = appointment.Description;
-                dbAppointment.IsAllDay = appointment.IsAllDay;
-                dbAppointment.RecurrenceId = appointment.RecurrenceId;
-                dbAppointment.RecurrenceRule = appointment.RecurrenceRule;
-                dbAppointment.RecurrenceException = appointment.RecurrenceException;
+                    // Fetch the existing tracked user from the database to avoid duplicate tracking
+                    var existingUser = await _context.Users
+                        .FirstOrDefaultAsync(u => u.Id == appointment.UserId);
 
-                dbAppointment.IsReadOnly = appointment.IsReadOnly;
-                dbAppointment.IsBlock = appointment.IsBlock;
+                    if (existingUser != null)
+                    {
+                        // Detach the old user entity from the context, so we can attach the new one
+                        _context.Entry(dbAppointment.User).State = EntityState.Detached;
 
-                dbAppointment.UserId = appointment.UserId;
+                        // Assign the existing user instance
+                        dbAppointment.User = existingUser;
+                    }
 
-                await _context.SaveChangesAsync();
+                if (appointment != null)
+                {
+
+                    dbAppointment.Subject = appointment.Subject;
+                    dbAppointment.StartTime = appointment.StartTime;
+                    dbAppointment.EndTime = appointment.EndTime;
+                    dbAppointment.StartTimezone = appointment.StartTimezone;
+                    dbAppointment.EndTimezone = appointment.EndTimezone;
+                    dbAppointment.Location = appointment.Location;
+                    dbAppointment.Description = appointment.Description;
+                    dbAppointment.IsAllDay = appointment.IsAllDay;
+                    dbAppointment.RecurrenceId = appointment.RecurrenceId;
+                    dbAppointment.RecurrenceRule = appointment.RecurrenceRule;
+                    dbAppointment.RecurrenceException = appointment.RecurrenceException;
+
+                    dbAppointment.IsReadOnly = appointment.IsReadOnly;
+                    dbAppointment.IsBlock = appointment.IsBlock;
+
+                    await _context.SaveChangesAsync();
+                }
             }
         }
     }
