@@ -7,11 +7,24 @@
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Identity
 
+@* Syncfusion Calendar Using *@
+@using System.Collections.ObjectModel
+@using System.ComponentModel
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Schedule
+@using Syncfusion.Blazor.Buttons
+
+
 
 @inject ISymptomService SymptomService
 @inject INoteService NoteService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UserManager<ApplicationUser> UserManager
+
+@* Syncfusion Calendar Injects *@
+@inject IAppointmentService AppointmentService
+@inject IJSRuntime JSRuntime
+@inject ApplicationDbContext DbContext
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
@@ -26,11 +39,12 @@
         <div class="row">
 
             @*Patient Information*@
-            <div class="col-lg-4">
-                <div class="card border">
+            <div class="col-lg-4 d-flex">
+                <div class="card border h-100 w-100">
                     <div class="card-body" style="text-align: center;">
                         @* need to detach this into a separate component and link to it here *@
-                        <h5 class="card-title">Patient Information</h5>
+                        <h5 class="card-title fw-bold">Patient Information</h5>
+                        <hr />
                         @if (currentUser != null)
                         {
                             <p class="card-text">Name: @currentUser.FirstName @currentUser.LastName</p>
@@ -46,111 +60,13 @@
                 </div>
             </div>
 
-            @*Treatment Timeline*@
-            <div class="col-lg-4">
-                <div class="card border">
+            @*My Medical Team*@
+            <div class="col-lg-4 d-flex">
+                <div class="card border h-100 w-100">
                     <div class="card-body" style=" text-align: center;">
-                        @* need to detach this into a separate component and link to it here *@
-                        <h5 class="card-title">Treatment Timeline</h5>
-                        <p class="card-text"></p>
-                        <a href="/timeline" class="btn btn-primary">View Details</a>
-                    </div>
-                </div>
-            </div>
 
-            @*My Profile*@
-            <div class="col-lg-4">
-                <div class="card border">
-                    <div class="card-body" style=" text-align: center;">
-                        @* need to detach this into a separate component and link to it here *@
-                        <h5 class="card-title">My Profile</h5>
-                        @if (currentUser != null)
-                        {
-                            <p class="card-text">@currentUser.FirstName @currentUser.LastName</p>
-                        }
-                        <a href="Account/Manage" class="btn btn-primary">Settings</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        @*
-        <NavLink class="nav-link" href="Account/Manage">
-        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
-        </NavLink> *@
-
-        <br />
-        <br />
-
-        @* start row 2 *@
-        <div class="row">
-
-            @*Symptom Tracker*@
-            <div class="col-lg-4">
-                <div class="card border">
-                    <div class="card-body" style=" text-align: center;">
-                        <h5>Symptom Tracker</h5>
-                        <table class="table table-striped">
-
-                            @if (symptoms == null || symptoms.Any() == false)
-                            {
-                                <div>
-                                    <span>No symptoms found.</span>
-                                </div>
-                            }
-
-                            else
-                            {
-                                <thead>
-                                    <tr>
-                                        <th>Symptom Name</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                            }
-                            <tbody>
-                                @foreach (var symptom in symptoms)
-                                {
-                                    <tr>
-                                        <td>@symptom.SymptomName</td>
-                                        <td>@symptom.Date</td>
-                                    </tr>
-                                }
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            @*Week Outlook*@
-            <div class="col-lg-4">
-                <div class="card border">
-                    <div class="card-body" style=" text-align: left;">
-                        @* need to detach this into a separate component and link to it here *@
-                        <h5 class="card-title" style="text-align: center;">Week Outlook</h5>
-                        <div style="padding: 3% 10%;">
-                            <p class="card-text">Monday: Chemotherapy</p>
-                            <p class="card-text">Tuesday: Recovery</p>
-                            <p class="card-text">Wednesday: Recovery</p>
-                            <p class="card-text">Thursday: Recovery</p>
-                            <p class="card-text">Friday: Bone marrow puncture & release</p>
-                            <p class="card-text">Saturday: Break</p>
-                            <p class="card-text">Sunday: Break</p>
-                            <div style="text-align: center;">
-                                <a href="weekoutlook" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            @*Your Medical Team*@
-            <div class="col-lg-4">
-                <div class="card border">
-                    <div class="card-body" style="text-align: left;">
-                        @* need to detach this into a separate component and link to it here *@
-                        <h5 class="card-title" style="text-align: center">Your Medical Team</h5>
+                        <h5 class="card-title fw-bold" style="text-align: center">My Medical Team</h5>
+                        <hr />
 
                         <table class="table">
                             <thead>
@@ -174,63 +90,164 @@
                             </tbody>
 
                         </table>
-
-                        <div style="text-align: center;">
-                            <a href="#" class="btn btn-primary">View Details</a>
-                        </div>
-
                     </div>
                 </div>
             </div>
-        </div>
 
-        <br />
-        <br />
-
-        @* start row 3 *@
-        <div class="row">
-
-            @*Note Tracker*@
-            <div class="col-lg-12">
-                <div class="card border">
+            @*My Profile*@
+            <div class="col-lg-4 d-flex">
+                <div class="card border h-100 w-100">
                     <div class="card-body" style=" text-align: center;">
-                        <h5>Note Tracker</h5>
-                        <table class="table table-striped">
-
-                            @if (notes == null || notes.Any() == false)
-                            {
-                                <div>
-                                    <span>No notes found.</span>
-                                </div>
-                            }
-
-                            else
-                            {
-                                <thead>
-                                    <tr>
-                                        <th>Note Title</th>
-                                        <th>Note Description</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                            }
-                            <tbody>
-                                @foreach (var note in notes)
-                                {
-                                    <tr>
-                                        <td>@note.NoteTitle</td>
-                                        <td>@note.Date</td>
-                                        <td>@note.NoteDescription</td>
-                                    </tr>
-                                }
-
-                            </tbody>
-                        </table>
+                        @* need to detach this into a separate component and link to it here *@
+                        <h5 class="card-title fw-bold">My Profile</h5>
+                        <hr />
+                        @if (currentUser != null)
+                        {
+                            <p class="card-text">@currentUser.FirstName @currentUser.LastName</p>
+                        }
+                        <a href="Account/Manage" class="btn btn-primary">Settings</a>
                     </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @*
+    <NavLink class="nav-link" href="Account/Manage">
+    <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
+    </NavLink> *@
+
+    <br />
+    <br />
+
+    @* start row 2 *@
+    <div class="row">
+
+        @*Week Outlook*@
+        <div class="col-lg-12">
+            <div class="card border">
+                <div class="card-body" style=" text-align: center;">
+                    <h5 class="card-title fw-bold">Week Outlook</h5>
+                    <br />
+                    <SfSchedule CssClass="min-height-calendar" TValue="Appointment" EnableAutoRowHeight="true" AllowMultiRowSelection="false" AllowDragAndDrop="false" AllowMultiCellSelection="false" AllowMultiDrag="false" CurrentView="View.Agenda" Readonly="true" Width="100%">
+
+                        <ScheduleEvents TValue="Appointment"></ScheduleEvents>
+
+                        <ScheduleEventSettings DataSource="@AppointmentsCollection">
+                            <ScheduleField Id="AppointmentId">
+                                <FieldSubject Name="Subject"></FieldSubject>
+                                <FieldLocation Name="Location"></FieldLocation>
+                                <FieldDescription Name="Description"></FieldDescription>
+                                <FieldIsAllDay Name="IsAllDay"></FieldIsAllDay>
+                                <FieldStartTime Name="StartTime"></FieldStartTime>
+                                <FieldEndTime Name="EndTime"></FieldEndTime>
+                                <FieldStartTimezone Name="StartTimezone"></FieldStartTimezone>
+                                <FieldEndTimezone Name="EndTimezone"></FieldEndTimezone>
+                            </ScheduleField>
+                        </ScheduleEventSettings>
+
+                        <ScheduleViews>
+                            <ScheduleView Option="View.Agenda"></ScheduleView>
+                        </ScheduleViews>
+
+                    </SfSchedule>
+
                 </div>
             </div>
         </div>
     </div>
+
+    <br />
+    <br />
+
+    @* start row 3 *@
+    <div class="row">
+
+        @*Symptom Tracker*@
+        <div class="col-lg-6">
+            <div class="card border h-100 w-100">
+                <div class="card-body" style=" text-align: center;">
+                    <h5 class="card-title fw-bold">Symptom Tracker</h5>
+                    <hr />
+                    <table class="table table-striped">
+
+                        @if (symptoms == null || symptoms.Any() == false)
+                        {
+                            <div>
+                                <span>No symptoms found.</span>
+                            </div>
+                        }
+
+                        else
+                        {
+                            <thead>
+                                <tr>
+                                    <th>Symptom</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                        }
+                        <tbody>
+                            @foreach (var symptom in symptoms)
+                            {
+                                <tr>
+                                    <td>@symptom.SymptomName</td>
+                                    <td>@symptom.Date</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @*Note Tracker*@
+        <div class="col-lg-6">
+            <div class="card border h-100 w-100">
+                <div class="card-body" style=" text-align: center;">
+                    <h5 class="card-title fw-bold">Note Tracker</h5>
+                    <hr />
+                    <table class="table table-striped">
+
+                        @if (notes == null || notes.Any() == false)
+                        {
+                            <div>
+                                <span>No notes found.</span>
+                            </div>
+                        }
+
+                        else
+                        {
+                            <thead>
+                                <tr>
+                                    <th>Note</th>
+                                    <th>Description</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                        }
+                        <tbody>
+                            @foreach (var note in notes)
+                            {
+                                <tr>
+                                    <td>@note.NoteTitle</td>
+                                    <td>@note.Date</td>
+                                    <td>@note.NoteDescription</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <br />
+    <br />
 
 </AuthorizeView>
 
@@ -261,6 +278,9 @@
 
             // Get current user details
             currentUser = await UserManager.FindByIdAsync(userId);
+
+            // Get calendar appointment information
+            AppointmentsCollection = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
         }
 
         else
@@ -274,4 +294,7 @@
         doctors.Add(new Doctor("Richard", "Cool", DateOnly.Parse("May 4, 1989"), "M.D.", "Lead Doctor"));
         doctors.Add(new Doctor("Arnie", "Neat", DateOnly.Parse("October 21, 1993"), "M.D.", "Assistant Doctor"));
     }
+
+    List<Appointment> AppointmentsCollection = new List<Appointment>();
+    private DateTime CurrentDate = DateTime.Now;
 }

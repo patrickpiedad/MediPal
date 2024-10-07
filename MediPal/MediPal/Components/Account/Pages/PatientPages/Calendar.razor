@@ -24,11 +24,11 @@
 @attribute [Authorize(Roles = "Admin, Patient, Doctor")]
 
 <PageTitle>My Calendar</PageTitle>
-<h3 style="text-align: center">My Calendar</h3>
+<h3 style="text-align: center" class="fw-bold">My Calendar</h3>
 
 <br />
 
-<SfSchedule TValue="Appointment" EnableAutoRowHeight="true" AllowMultiRowSelection="false" AllowDragAndDrop="false" AllowMultiCellSelection="false" AllowMultiDrag="false" CurrentView="View.Month" Height="calc(90vh - 4.6rem)" Width="100%">
+<SfSchedule TValue="Appointment" @bind-CurrentView="CurrentView" EnableAutoRowHeight="true" AllowMultiRowSelection="false" AllowDragAndDrop="false" AllowMultiCellSelection="false" AllowMultiDrag="false" Height="calc(90vh - 4.6rem)" Width="100%">
     <ScheduleEvents TValue="Appointment" OnPopupClose="OnPopupClose" ActionCompleted="ActionCompleted" OnActionFailure="OnActionFailure"></ScheduleEvents>
     <ScheduleEventSettings DataSource="@AppointmentsCollection">
 
@@ -49,6 +49,7 @@
         <ScheduleView Option="View.Day"></ScheduleView>
         <ScheduleView Option="View.Week"></ScheduleView>
         <ScheduleView Option="View.Month"></ScheduleView>
+        <ScheduleView Option="View.Year"></ScheduleView>
         <ScheduleView Option="View.Agenda"></ScheduleView>
     </ScheduleViews>
 </SfSchedule>
@@ -57,12 +58,13 @@
 
     List<Appointment> AppointmentsCollection = new List<Appointment>();
 
-    DateTime CurrentDate = new DateTime(2024, 10, 2);
+    private DateTime CurrentDate = DateTime.Now;
+    private View CurrentView = View.Month;
 
     //create variable appointment to support CRUD operation in page
     Appointment appointment { get; set; } = new Appointment();
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
