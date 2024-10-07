@@ -28,10 +28,6 @@
 
 <br />
 
-@* <SfButton @onclick="HandleAddAppointment">Add Appointment</SfButton>
-<SfButton @onclick="HandleUpdateAppointment" Disabled="ObservableAppointments.Count == 0">Update Appointment</SfButton>
-<SfButton @onclick="HandleDeleteAppointment" Disabled="ObservableAppointments.Count == 0">Delete Appointment</SfButton> *@
-
 <SfSchedule TValue="Appointment" EnableAutoRowHeight="true" AllowMultiRowSelection="false" AllowDragAndDrop="false" AllowMultiCellSelection="false" AllowMultiDrag="false" CurrentView="View.Month" Height="calc(90vh - 4.6rem)" Width="100%">
     <ScheduleEvents TValue="Appointment" OnPopupClose="OnPopupClose" ActionCompleted="ActionCompleted" OnActionFailure="OnActionFailure"></ScheduleEvents>
     <ScheduleEventSettings DataSource="@AppointmentsCollection">
@@ -90,9 +86,13 @@
                 {
                     await AppointmentService.AddAppointmentAsync(appointment);
                 }
-                // This syncs the scheduler instance AppointmentId with the added AppointmentId
-                args.AddedRecords.First<Appointment>().AppointmentId = appointment.AppointmentId;
-                StateHasChanged();
+
+                if (args.AddedRecords != null && args.AddedRecords.Any())
+                {
+                    // This syncs the scheduler instance AppointmentId with the added AppointmentId
+                    args.AddedRecords.First<Appointment>().AppointmentId = appointment.AppointmentId;
+                    StateHasChanged();
+                }
                 await RefreshAppointmentsList();
             }
 
@@ -110,30 +110,15 @@
             else if (args.ActionType == ActionType.EventRemove)
             {
                 await AppointmentService.DeleteAppointmentAsync(appointment.AppointmentId, appointment.UserId);
-                // appointment = args.AddedRecords.FirstOrDefault<Appointment>(appointment);
-                // appointment.Subject = args.AddedRecords.FirstOrDefault().Subject;
-                // appointment.StartTime = args.AddedRecords.FirstOrDefault().StartTime;
-                // appointment.EndTime = args.AddedRecords.FirstOrDefault().EndTime;
-                // appointment.StartTimezone = args.AddedRecords.FirstOrDefault().StartTimezone;
-                // appointment.EndTimezone = args.AddedRecords.FirstOrDefault().EndTimezone;
-                // appointment.Location = args.AddedRecords.FirstOrDefault().Location;
-                // appointment.Description = args.AddedRecords.FirstOrDefault().Description;
-                // appointment.IsAllDay = args.AddedRecords.FirstOrDefault().IsAllDay;
-                // appointment.RecurrenceId = args.AddedRecords.FirstOrDefault().RecurrenceId;
-                // appointment.RecurrenceRule = args.AddedRecords.FirstOrDefault().RecurrenceRule;
-                // appointment.RecurrenceException = args.AddedRecords.FirstOrDefault().RecurrenceException;
-                // appointment.IsReadOnly = args.AddedRecords.FirstOrDefault().IsReadOnly;
-                // appointment.IsBlock = args.AddedRecords.FirstOrDefault().IsBlock;
 
-                // appointment.UserId = userId;
                 StateHasChanged();
             }
 
         }
 
-        catch
+        catch (Exception ex)
         {
-            Console.WriteLine("Appointment was unable to be added, changed, or deleted.");
+            Console.WriteLine($"An error ocurred in ActionCompleted: {ex.Message}");
             StateHasChanged();
         }
         appointment = new Appointment();
@@ -177,9 +162,9 @@
                 }
             }
 
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("Application has failed to assign values to appointment");
+                Console.WriteLine($"Application has failed to assign values to appointment: {ex.Message}");
                 appointment = new Appointment();
             }
         }
