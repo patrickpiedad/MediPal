@@ -2,19 +2,20 @@
 
 <PageTitle>Project Overview</PageTitle>
 
-<h2 style="text-align: center;">Welcome to MediPal!</h2>
+<h2 style="text-align: center;" class="fw-bold">Welcome to MediPal!</h2>
+<hr />
 
 <br />
 
-<h3 style="text-align: center;">MediPal is open-source medical software that gives users true access to their holistic health picture. This application is meant to simplify getting the information that users want in a way they are able to understand.</h3>
+<h4 style="text-align: center;" class="fst-italic">MediPal is open-source medical software that gives users true access to their holistic health picture. This application is meant to simplify getting the information that users want in a way they are able to understand.</h4>
 
 <br />
 <hr />
 <br />
 
-<h4>Featured Implementations</h4>
+<h4 class="fw-bold">Featured Implementations</h4>
 <br />
-<h5>Major Features</h5>
+<h5 class="fw-bolder">Major Features</h5>
 <ul>
 
     <li>Model-View-ViewModel (MVVM) Architecture</li>
@@ -31,11 +32,12 @@
     </ul>
     <li>ASP.NET Core Identity implementation with authentication and authorization</li>
     <li>Current user authentication state handling to display user-specific data</li>
+    <li>Create calendar appointment functionality (Syncfusion), display in multiple formats</li>
 </ul>
 
 <br />
 
-<h5>Smaller Details</h5>
+<h5 class="fw-bolder">Smaller Details</h5>
 <ul>
 
     <li>Models containing properties with backing fields and constructor</li>
@@ -45,10 +47,10 @@
     <li>Logic to execute specific actions if collections do not show, async functionality, JavaScript interaction when deleting symptoms for user-feedback.</li>
     <li>Model classes for base object structure</li>
     <li>Service interfaces to allow for abstracted interaction with async functions and loosely coupled components</li>
-    <li>Multiple roles available for account creation</li>
     <li>Foreign key implementation in relational database (MS SQL Server)</li>
     <li>Authorization role based access for specific pages and components</li>
     <li>Populate user dashboard items with user account information using current user authentication</li>
+    <li>Database seeding to ensure admin account, roles, and other features are always added to database in new environments</li>
 
 </ul>
 
@@ -56,24 +58,22 @@
 <hr />
 <br />
 
-<h4>Phase 1 (Patient Management) Backlog</h4>
+<h4 class="fw-bold">Phase 1 (Patient Management) Backlog</h4>
 <ul>
     <li>Link 1x doctor role account with multiple patient accounts, allowing doctor to edit the "doctor's notes" part of the assigned patient's symptom list</li>
     <li>Add doctor specific pages that allows them to select their assigned patient (need to implement more foreign keys), and view that patient's symptoms</li>
-    <li>Database seeding to ensure admin account, roles, and other features are always added to database in new environments</li>
-    <li>Create calendar appointment functionality and display appointments based off of calendar on week outlook</li>
     <li>Fully customize UI with built in Bootstrap CSS</li>
     <li>Integrate OAuth or OpenID on BlazorServer side using cookies after authentication is complete</li>
     <li>Complete authentication and authorization of user accounts, to include 2FA, external authentication, and account creation/login through external providers.</li>
     <li>File upload</li>
-    <li>Timeline display based on larger calendar, consider using UI library such as SyncFusion</li>
+    <li>Timeline display based on calendar component</li>
 </ul>
 
 <br />
 <hr />
 <br />
 
-<h4>Phase 2 (Cloud Migration & API Implementation) Backlog</h4>
+<h4 class="fw-bold">Phase 2 (Cloud Migration & API Implementation) Backlog</h4>
 <ul>
 
     <li>Chatbot functionality</li>
@@ -85,7 +85,3 @@
 <br />
 <hr />
 <br />
-
-<div style="text-align:center;">
-    <img src="/landingPage.png" height="800" />
-</div>
