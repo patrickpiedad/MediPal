@@ -11595,17 +11595,5 @@ textarea.form-control-lg {
     .d-print-none {
         display: none !important
     }
-
-    /*Pat Created Custom CSS Classes*/
-
-    .card-full {
-        height: 100%;
-        width: 100%;
-    }
-
-    .min-height-calendar{
-        min-height: 50vh;
-        height: auto;
-    }
 }
 /*# sourceMappingURL=bootstrap.min.css.map */
