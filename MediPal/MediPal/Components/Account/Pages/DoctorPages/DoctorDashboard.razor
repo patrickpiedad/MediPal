@@ -1,0 +1,106 @@
+﻿@page "/doctordashboard"
+
+@using MediPal.Components
+@using MediPal.Models
+@using Microsoft.AspNetCore.Authorization
+@using MediPal.Components.Services
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
+
+@inject IPatientService PatientService
+@inject ISymptomService SymptomService
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@attribute [Authorize(Roles = "Doctor")]
+
+<h3 class="fw-bold">Doctor Dashboard</h3>
+<br />
+
+@if (patients == null)
+{
+    <p>Loading patients...</p>
+}
+else
+{
+    <h4>Select a Patient</h4>
+    <select @onchange="HandlePatientSelection">
+        <option value=""> Select a Patient</option>
+        @foreach (var patient in patients)
+        {
+            <option value="@patient.Id">@patient.FirstName @patient.LastName</option>
+        }
+    </select>
+
+    @if (selectedPatient != null)
+    {
+        <h4>Patient Information for @selectedPatient.FirstName @selectedPatient.LastName</h4>
+
+        <h5>Symptoms</h5>
+        @if (patientSymptoms != null)
+        {
+            <ul>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Symptom Name</th>
+                            <th>Date</th>
+                            <th>Pain Level</th>
+                            <th>Activity</th>
+                            <th>Doctor's Note</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var symptom in patientSymptoms)
+                        {
+                            <tr>
+                                <td>@symptom.User</td>
+                                <td>@symptom.SymptomName</td>
+                                <td>@symptom.Date</td>
+                                <td>@symptom.PainLevel</td>
+                                <td>@symptom.Activity</td>
+                                <td>@symptom.DoctorsNote</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+                }
+            </ul>
+        }
+    }
+}
+
+@code {
+    private List<ApplicationUser> patients;
+    private ApplicationUser selectedPatient;
+    private List<Symptom> patientSymptoms;
+
+    // Load all patients on initialization
+    protected override async Task OnInitializedAsync()
+    {
+        patients = await PatientService.GetAllPatientsAsync();
+    }
+
+    // Handle when a doctor selects a patient from the dropdown
+    private async Task HandlePatientSelection(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        var patientId = e.Value.ToString();
+
+        if (!string.IsNullOrEmpty(patientId))
+        {
+            selectedPatient = await PatientService.GetPatientByUserIdAsync(patientId);
+
+            // Load the symptoms and doctor notes for the selected patient
+            patientSymptoms = await SymptomService.GetSymptomsByPatientIdAsync(patientId);
+        }
+    }
+}

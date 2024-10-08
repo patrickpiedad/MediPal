@@ -4,11 +4,14 @@
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using MediPal.Data
+@using System.Security.Claims
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
 
 <PageTitle>Log in</PageTitle>
 
@@ -57,12 +60,12 @@
             </EditForm>
         </section>
     </div>
-@*     <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            <ExternalLoginPicker />
-        </section>
+    @*     <div class="col-md-6 col-md-offset-2">
+    <section>
+    <h3>Use another service to log in.</h3>
+    <hr />
+    <ExternalLoginPicker />
+    </section>
     </div> *@
 </div>
 
@@ -80,6 +83,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+
         if (HttpMethods.IsGet(HttpContext.Request.Method))
         {
             // Clear the existing external cookie to ensure a clean login process
@@ -92,10 +96,31 @@
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
         var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
         if (result.Succeeded)
         {
             Logger.LogInformation("User logged in.");
-            RedirectManager.RedirectTo(ReturnUrl);
+
+            // Find the user by email
+            var appUser = await UserManager.FindByEmailAsync(Input.Email);
+
+            if (appUser != null)
+            {
+                // Check if the user is in the "Doctor" role
+                if (await UserManager.IsInRoleAsync(appUser, "Doctor"))
+                {
+                    NavigationManager.NavigateTo("/doctordashboard");
+                }
+                else
+                {
+                    // Redirect to the regular user home or any other page you want
+                    NavigationManager.NavigateTo("/");
+                }
+            }
+            else
+            {
+                errorMessage = "Error: User not found.";
+            }
         }
         else if (result.RequiresTwoFactor)
         {
