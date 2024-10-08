@@ -31,6 +31,8 @@ namespace MediPal
             builder.Services.AddScoped<ISymptomService, SymptomService>();
             builder.Services.AddScoped<INoteService, NoteService>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+            builder.Services.AddScoped<IPatientService, PatientService>();
+            builder.Services.AddScoped<IDoctorService, DoctorService>();
             //builder.Services.AddScoped<AppointmentAdaptor>();
 
             builder.Services.AddCascadingAuthenticationState();
