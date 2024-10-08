@@ -12,7 +12,7 @@
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
-@attribute [Authorize(Roles = "Admin, Doctor")]
+@attribute [Authorize(Roles = "Doctor")]
 
 @if (Id is null)
 {
@@ -39,25 +39,25 @@ else
 
                     <div>
                         <label for="symptomName">Symptom Name</label>
-                        <InputText id="symptomName" class="form-control" @bind-Value="CurrentSymptom.SymptomName"></InputText>
+                        <InputText id="symptomName" class="form-control" @bind-Value="CurrentSymptom.SymptomName" readonly ></InputText>
                         @* <ValidationMessage For="@(() => CurrentSymptom.SymptomName)" /> *@
                     </div>
 
                     <div>
                         <label for="date">Date</label>
-                        <InputDate id="date" class="form-control" @bind-Value="CurrentSymptom.Date"></InputDate>
+                        <InputDate id="date" class="form-control" @bind-Value="CurrentSymptom.Date" readonly ></InputDate>
                         @* <ValidationMessage For="@(() => CurrentSymptom.Date)" /> *@
                     </div>
 
                     <div>
                         <label for="painLevel">Pain Level</label>
-                        <InputNumber id="painLevel" class="form-control" @bind-Value="CurrentSymptom.PainLevel"></InputNumber>
+                        <InputNumber id="painLevel" class="form-control" @bind-Value="CurrentSymptom.PainLevel" readonly ></InputNumber>
                         @* <ValidationMessage For="@(() => CurrentSymptom.PainLevel)" /> *@
                     </div>
 
                     <div>
                         <label for="activity">Activity</label>
-                        <InputText id="activity" class="form-control" @bind-Value="CurrentSymptom.Activity"></InputText>
+                        <InputText id="activity" class="form-control" @bind-Value="CurrentSymptom.Activity" readonly ></InputText>
                         @* <ValidationMessage For="@(() => CurrentSymptom.Activity)" /> *@
                     </div>
 
@@ -107,12 +107,12 @@ else
         if (Id is not null)
         {
             await SymptomService.UpdateSymptomAsync(CurrentSymptom, (int)Id);
-            NavigationManager.NavigateTo("symptomlist");
+            NavigationManager.NavigateTo("doctordashboard");
         }
         else
         {
             await SymptomService.AddSymptomAsync(CurrentSymptom);
-            NavigationManager.NavigateTo("/symptomlist");
+            NavigationManager.NavigateTo("/doctordashboard");
         }
     }
 }

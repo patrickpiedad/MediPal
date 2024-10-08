@@ -4,13 +4,11 @@
 @using MediPal.Models
 @using Microsoft.AspNetCore.Authorization
 @using MediPal.Components.Services
-@using System.Security.Claims
 @using Microsoft.AspNetCore.Identity
-
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UserManager<ApplicationUser> UserManager
-
+@inject NavigationManager NavigationManager
 @inject IPatientService PatientService
 @inject ISymptomService SymptomService
 
@@ -19,7 +17,7 @@
 @attribute [Authorize(Roles = "Doctor")]
 
 <h3 class="fw-bold">Doctor Dashboard</h3>
-<br />
+<hr />
 
 @if (patients == null)
 {
@@ -28,53 +26,56 @@
 else
 {
     <h4>Select a Patient</h4>
-    <select @onchange="HandlePatientSelection">
-        <option value=""> Select a Patient</option>
+    <select @onchange="OnPatientChanged">
+        <option value="">Select a Patient</option>
         @foreach (var patient in patients)
         {
             <option value="@patient.Id">@patient.FirstName @patient.LastName</option>
         }
     </select>
 
+    <br />
+
+    <hr />
+
     @if (selectedPatient != null)
     {
-        <h4>Patient Information for @selectedPatient.FirstName @selectedPatient.LastName</h4>
+        <h4 class="fw-bold">Patient Information for @selectedPatient.FirstName @selectedPatient.LastName</h4>
 
-        <h5>Symptoms</h5>
-        @if (patientSymptoms != null)
+        <h5 class="fw-bolder">Symptoms</h5>
+        if (patientSymptoms != null && patientSymptoms.Count > 0)
         {
-            <ul>
-                <table class="table table-striped">
-                    <thead>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Patient Name</th>
+                        <th>Symptom Name</th>
+                        <th>Date</th>
+                        <th>Pain Level</th>
+                        <th>Activity</th>
+                        <th>Doctor's Note</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var symptom in patientSymptoms)
+                    {
                         <tr>
-                            <th>Patient Name</th>
-                            <th>Symptom Name</th>
-                            <th>Date</th>
-                            <th>Pain Level</th>
-                            <th>Activity</th>
-                            <th>Doctor's Note</th>
-                            <th></th>
-                            <th></th>
+                            <td>@symptom.User.FirstName @symptom.User.LastName</td>
+                            <td>@symptom.SymptomName</td>
+                            <td>@symptom.Date</td>
+                            <td>@symptom.PainLevel</td>
+                            <td>@symptom.Activity</td>
+                            <td>@symptom.DoctorsNote</td>
+                            <td><button @onclick="@(() => DoctorEditSymptom(symptom.SymptomID))" class="btn btn-primary">Edit Doctor's Note</button></td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var symptom in patientSymptoms)
-                        {
-                            <tr>
-                                <td>@symptom.User</td>
-                                <td>@symptom.SymptomName</td>
-                                <td>@symptom.Date</td>
-                                <td>@symptom.PainLevel</td>
-                                <td>@symptom.Activity</td>
-                                <td>@symptom.DoctorsNote</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
-
-                }
-            </ul>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No symptoms found for this patient.</p>
         }
     }
 }
@@ -83,24 +84,47 @@ else
     private List<ApplicationUser> patients;
     private ApplicationUser selectedPatient;
     private List<Symptom> patientSymptoms;
+    private string selectedPatientId;
 
-    // Load all patients on initialization
     protected override async Task OnInitializedAsync()
     {
-        patients = await PatientService.GetAllPatientsAsync();
+        try
+        {
+            patients = await PatientService.GetAllPatientsAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading patients: {ex.Message}");
+        }
     }
 
-    // Handle when a doctor selects a patient from the dropdown
-    private async Task HandlePatientSelection(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    private async Task OnPatientChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
     {
-        var patientId = e.Value.ToString();
+        selectedPatientId = e.Value.ToString();
 
-        if (!string.IsNullOrEmpty(patientId))
+        if (!string.IsNullOrEmpty(selectedPatientId))
         {
-            selectedPatient = await PatientService.GetPatientByUserIdAsync(patientId);
-
-            // Load the symptoms and doctor notes for the selected patient
-            patientSymptoms = await SymptomService.GetSymptomsByPatientIdAsync(patientId);
+            try
+            {
+                selectedPatient = await PatientService.GetPatientByUserIdAsync(selectedPatientId);
+                patientSymptoms = await SymptomService.GetSymptomsByPatientIdAsync(selectedPatientId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving patient information: {ex.Message}");
+                selectedPatient = null; // Reset selected patient in case of error
+                patientSymptoms = null; // Clear symptoms
+            }
         }
+        else
+        {
+            selectedPatient = null; // Reset selected patient if nothing is selected
+            patientSymptoms = null;  // Clear symptoms when no patient is selected
+        }
+    }
+
+    void DoctorEditSymptom(int id)
+    {
+        NavigationManager.NavigateTo($"/doctoreditsymptom/{id}");
     }
 }

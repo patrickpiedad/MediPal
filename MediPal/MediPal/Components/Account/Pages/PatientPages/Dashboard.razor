@@ -18,6 +18,7 @@
 
 @inject ISymptomService SymptomService
 @inject INoteService NoteService
+@inject IDoctorService DoctorService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UserManager<ApplicationUser> UserManager
 
@@ -74,17 +75,15 @@
                                     <th>Title</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
-                                    <th>Role</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var doctor in doctors)
                                 {
                                     <tr>
-                                        <td>@doctor.Title</td>
+                                        <td>Doctor</td>
                                         <td>@doctor.FirstName</td>
                                         <td>@doctor.LastName</td>
-                                        <td>@doctor.Role</td>
                                     </tr>
                                 }
                             </tbody>
@@ -255,7 +254,7 @@
 @code {
     List<Symptom> symptoms = new List<Symptom>();
     List<Note> notes = new List<Note>();
-    List<Doctor> doctors = new List<Doctor>();
+    List<ApplicationUser> doctors = new List<ApplicationUser>();
 
     private ClaimsPrincipal? user;
     private ApplicationUser? currentUser;
@@ -280,6 +279,8 @@
 
             // Get calendar appointment information
             AppointmentsCollection = await AppointmentService.GetAppointmentsByUserIdAsync(userId);
+
+            doctors = await DoctorService.GetAllDoctorsAsync();
         }
 
         else
@@ -287,11 +288,6 @@
             symptoms = new List<Symptom>();
             notes = new List<Note>();
         }
-
-        // Need to add doctors in OnInitializedAsync to have them load on program load, this is not connected to the database, need to add later
-        doctors.Add(new Doctor("Kathy", "Awesome", DateOnly.Parse("October 21, 1985"), "M.D.", "Chief Medical Officer"));
-        doctors.Add(new Doctor("Richard", "Cool", DateOnly.Parse("May 4, 1989"), "M.D.", "Lead Doctor"));
-        doctors.Add(new Doctor("Arnie", "Neat", DateOnly.Parse("October 21, 1993"), "M.D.", "Assistant Doctor"));
     }
 
     List<Appointment> AppointmentsCollection = new List<Appointment>();

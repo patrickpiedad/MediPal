@@ -101,19 +101,16 @@
         {
             Logger.LogInformation("User logged in.");
 
-            // Find the user by email
             var appUser = await UserManager.FindByEmailAsync(Input.Email);
 
             if (appUser != null)
             {
-                // Check if the user is in the "Doctor" role
                 if (await UserManager.IsInRoleAsync(appUser, "Doctor"))
                 {
                     NavigationManager.NavigateTo("/doctordashboard");
                 }
                 else
                 {
-                    // Redirect to the regular user home or any other page you want
                     NavigationManager.NavigateTo("/");
                 }
             }
