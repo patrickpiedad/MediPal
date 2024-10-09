@@ -35,9 +35,15 @@ I want this project to empower patients to learn more about their circumstances,
         <li>View (razor components and HTML templates</li>
     </ul>
     <li>Account creation with full form validation and error handling</li>
-    <li>Full CRUD functionality for symptoms with connection to MS SQL Server database</li>
+    <li>Full CRUD functionality MS SQL Server database</li>
+    <ul>
+        <li>Symptoms</li>
+        <li>Notes</li>
+    </ul>
     <li>ASP.NET Core Identity implementation with authentication and authorization</li>
     <li>Current user authentication state handling to display user-specific data</li>
+    <li>Create calendar appointment functionality (Syncfusion), display in multiple formats</li>
+    <li>Doctor Dashboard allowing for selection of patient by name (read by patientId) and view/edit of information</li>
 </ul>
 
 <h3>Smaller Details</h3>
@@ -48,10 +54,11 @@ I want this project to empower patients to learn more about their circumstances,
     <li>Button interactivity to validate properties with model and allow/not allow for form submit as appropriate</li>
     <li>Logic to execute specific actions if collections do not show, async functionality, JavaScript interaction when deleting symptoms for user-feedback.</li>
     <li>Model classes for base object structure</li>
-    <li>Service interfaces to allow for abstracted interaction with async functions</li>
-    <li>Multiple roles available for account creation</li>
+    <li>Service interfaces to allow for abstracted interaction with async functions and loosely coupled components</li>
     <li>Foreign key implementation in relational database (MS SQL Server)</li>
     <li>Authorization role based access for specific pages and components</li>
+    <li>Populate user dashboard items with user account information using current user authentication</li>
+    <li>Database seeding to ensure admin account, roles, and other features are always added to database in new environments</li>
 </ul>
 
 <br></br>
