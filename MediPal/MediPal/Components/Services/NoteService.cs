@@ -28,6 +28,14 @@ namespace MediPal.Components.Services
                 .ToListAsync();
         }
 
+        // This is the method that gets all notes belonging to the specific patient being selected in the doctor's dashboard
+        public async Task<List<Note>> GetNotesByPatientIdAsync(string patientId)
+        {
+            return await _context.Notes
+                .Where(s => s.User.Id == patientId)
+                .ToListAsync();
+        }
+
 
         public async Task<Note> GetNoteByIdAsync(int id)
         {
