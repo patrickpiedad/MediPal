@@ -77,9 +77,8 @@ else
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Patient Name</th>
-                        <th>Symptom Name</th>
                         <th>Date</th>
+                        <th>Symptom Name</th>
                         <th>Pain Level</th>
                         <th>Activity</th>
                         <th>Doctor's Note</th>
@@ -90,9 +89,8 @@ else
                     @foreach (var symptom in patientSymptoms)
                     {
                         <tr>
-                            <td>@symptom.User.FirstName @symptom.User.LastName</td>
-                            <td>@symptom.SymptomName</td>
                             <td>@symptom.Date</td>
+                            <td>@symptom.SymptomName</td>
                             <td>@symptom.PainLevel</td>
                             <td>@symptom.Activity</td>
                             <td>@symptom.DoctorsNote</td>
@@ -117,20 +115,18 @@ else
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Patient Name</th>
+                        <th>Date</th>
                         <th>Note Title</th>
                         <th>Note Description</th>
-                        <th>Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var note in patientNotes)
                     {
                         <tr>
-                            <td>@note.User.FirstName @note.User.LastName</td>
+                            <td>@note.Date</td>
                             <td>@note.NoteTitle</td>
                             <td>@note.NoteDescription</td>
-                            <td>@note.Date</td>
                         </tr>
                     }
                 </tbody>
