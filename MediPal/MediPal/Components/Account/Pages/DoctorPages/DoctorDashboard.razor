@@ -60,7 +60,7 @@ else
                 <tr>
                     <td>@selectedPatient.FirstName</td>
                     <td>@selectedPatient.LastName</td>
-                    <td>@selectedPatient.DateOfBirth</td>
+                    <td>@selectedPatient.DateOfBirth.ToString("MM/dd/yyyy")</td>
                     <td>@selectedPatient.Gender</td>
                     <td>@selectedPatient.Email</td>
                 </tr>
@@ -103,6 +103,11 @@ else
             </table>
         }
 
+        else
+        {
+            <p>No notes found for this patient.</p>
+        }
+
         <br />
         <br />
 
@@ -116,7 +121,6 @@ else
                         <th>Note Title</th>
                         <th>Note Description</th>
                         <th>Date</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -135,7 +139,7 @@ else
 
         else
         {
-            <p>No information found for this patient.</p>
+            <p>No notes found for this patient.</p>
         }
     }
 
