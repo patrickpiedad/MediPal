@@ -16,7 +16,7 @@ MediPal is open source medical software that gives users true access to their ho
 <br></br>
 
 <h1 align="center"> How It's Made </h1>
-Tech Used: C#, Blazor Web App (.NET), Bootstrap, SQL Express
+Tech Used: C#, Blazor, Entity Framework, Bootstrap, MSFT SQL Server (SQL Express)
 <br></br>
 The project is based on Blazor Web App with capability of both client and server side rendering. All main information is currently stored server side, allowing for direct database access without required web API calls. Information is currently stored on local databases using SQL Express. 
 <br></br>
