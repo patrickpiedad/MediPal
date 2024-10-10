@@ -8,6 +8,8 @@ MediPal is open source medical software that gives users true access to their ho
   <img src= https://github.com/patrickpiedad/MediPal/blob/main/PatientView.gif alt="animated" />
 </p>
 
+<br></br>
+
 <h2 align="center">Doctor View</h2>
 <p align="center">
   <img src= https://github.com/patrickpiedad/MediPal/blob/main/DoctorView.gif alt="animated" />
