@@ -1,5 +1,5 @@
 <h1 align="center"> MediPal </h1>
-MediPal is open source medical software that gives users true access to their holistic health picture. This application is meant to simplify getting the important information to the person in ways they are able to understand.
+MediPal is open source medical software that gives users true access to their holistic health picture. This application is meant to solve the pain points of long term medical patients that want to have their information easily accessible, especially in today's medical system where medical teams are low-staffed and overburdened.
 
 <br></br>
 
@@ -25,7 +25,7 @@ Authentication and authorization are both applied to ensure proper access to the
 <br></br>
 
 <h1 align="center"> Inspiration </h1>
-This project is inspired by the experience of my wife and I working through her cancer diagnosis and always having communication issues / information disconnects with the medical team. We were at the regional University Hospital that had the best team, but due to an overburdened medical system and the natural friction that occurs on teams, we encountered a lot of friction in knowing what was going on. 
+This project is inspired by the experience of my wife and I working through her cancer diagnosis and always having communication issues and information disconnects with the medical team. We were at the regional university hospital that had the best team, but due to an overburdened medical system and the natural friction that occurs in large organizations, we encountered a lot of friction in knowing what was going on.
 <br></br>
 I want this project to empower patients to learn more about their circumstances, relieve their pain points in communication, as well as provide a relief to the medical team's burden to keep patient's constantly performed in an already overwhelming environment.
 
@@ -81,7 +81,9 @@ I want this project to empower patients to learn more about their circumstances,
 <br></br>
 
 <h1 align="center"> Lessons Learned </h1>
-This project has taught me how to implement C# fundamentals into an actual .NET application framework. I've learned about application design, dependency injection, authorization and authentication, database integration with personal and foreign keys, and many other topics.
+This project has taught me how to implement C#, Blazor, Entity Framework, and MSFT SQL Server into a comprehensive full stack application. I've learned about application design, dependency injection, authorization and authentication, database integration with personal and foreign keys, amongst other topics.
+
+This project has emphasized the value of proper design with loosely coupled components to facilitate reusability and maintainability. This design has allowed for easier and more effective debugging, as well as ability to work on separate components without breaking the functionality of others.
 
 <br></br>
 
