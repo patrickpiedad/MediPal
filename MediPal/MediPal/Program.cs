@@ -97,7 +97,8 @@ namespace MediPal
 
             app.UseHttpsRedirection();
 
-            app.UseStaticFiles();
+            // app.UseStaticFiles();
+            app.MapStaticAssets();
             app.UseAntiforgery();
 
             app.MapRazorComponents<App>()
