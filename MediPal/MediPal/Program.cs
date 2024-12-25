@@ -66,21 +66,11 @@ namespace MediPal
             builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
             //Add SyncFusion Blazor Licensing
-
-            //7 Day Trial
-            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF5cWWtCf1NpQnxbf1x0ZFRHal1ZTnZZUiweQnxTdEFjUHxecXVUTmBaUEF1Xw==");
-
-            //30 Day Trial
-            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("@32372e302e30Ceo8C68485I/nSECWJP7MFuWdt4iLEajmhaZpojzI9o=");
-
             //Community License
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzUwNzA2NEAzMjM3MmUzMDJlMzBJRzZscUdmbnJITWRIY3ZHdXVsOG41ZE1sc1NQMzUyU3lKNmhyMk41d1dRPQ==");
-
-
+            
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzY0MzQ2MkAzMjM4MmUzMDJlMzBpcFAwT0N2ZDQ3ZFVmMUZvRzZ2Ymt0SEZzRmllWDhUZUFNZjRURk1vbHhnPQ==");
+            
             var app = builder.Build();
-
-
- 
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
