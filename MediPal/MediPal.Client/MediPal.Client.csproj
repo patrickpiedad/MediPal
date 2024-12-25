@@ -16,8 +16,8 @@
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.0" />
     <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="9.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
-    <PackageReference Include="Syncfusion.Blazor.Schedule" Version="27.2.2" />
-    <PackageReference Include="Syncfusion.Blazor.Themes" Version="27.2.2" />
+    <PackageReference Include="Syncfusion.Blazor.Schedule" Version="28.1.36" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="28.1.36" />
   </ItemGroup>
 
 </Project>
